@@ -3,7 +3,7 @@ import os
 import glob
 
 # Creating the tuple of all the processes
-all_processes = glob.glob("laplace-*.py")
+all_processes = glob.glob("*.py")
 
 # This block of code enables us to call the script from command line.
 def execute(process):
