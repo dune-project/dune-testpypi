@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview gmsh
+          sudo apt install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh
 
       - name: Setup venv
         run: |
