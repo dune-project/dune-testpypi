@@ -33,8 +33,8 @@ jobs:
       - name: Setup venv
         run: |
           python3 -m venv dune-env
-          source /dune-env/bin/activate
-          pip install matplotlib scipy pygmsh petsc4py
+          source dune-env/bin/activate
+          pip install matplotlib scipy pygmsh petsc4py triangle
 
       - name: Install dune modules
         run: |
