@@ -1,4 +1,4 @@
-DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
-pip -m dune.fem tutorial
+export DUNEPY_DISABLE_PLOTTING=1
+python -m dune.fem tutorial
 cd fem_tutorial/
-find . -name "*.py" -exec python {} \;
+find . -name "*.py" -maxdepth 0 -exec python {} \;
