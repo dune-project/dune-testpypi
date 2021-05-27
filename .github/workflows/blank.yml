@@ -41,6 +41,7 @@ jobs:
       - name: Install dune modules
         run: |
           pip install dune-fem dune-fem-dg dune-vem
+          DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
 
       - name: Setup dune-py
         run: |
