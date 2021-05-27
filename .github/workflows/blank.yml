@@ -25,21 +25,21 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-    - name: Install dependencies
-      run: |
-        sudo apt update
-        sudo apt install libopenmpi-dev openmpi-bin libsuperlu-dev
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install libopenmpi-dev openmpi-bin libsuperlu-dev
 
-    - name: Setup venv
-      run: |
-        python3 -m venv dune-env
-        source /dune-env/bin/activate
-        pip install matplotlib scipy pygmsh petsc4py
+      - name: Setup venv
+        run: |
+          python3 -m venv dune-env
+          source /dune-env/bin/activate
+          pip install matplotlib scipy pygmsh petsc4py
 
-    - name: Install dune modules
-      run: |
-        pip install dune-fem dune-fem-dg dune-vem
+      - name: Install dune modules
+        run: |
+          pip install dune-fem dune-fem-dg dune-vem
 
-    - name: Tutorial
-      run: |
-        ./test.sh
+      - name: Tutorial
+        run: |
+          ./test.sh
