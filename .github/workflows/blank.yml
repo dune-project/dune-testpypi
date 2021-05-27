@@ -50,4 +50,4 @@ jobs:
         run: |
           export DUNEPY_DISABLE_PLOTTING=1
           cd fem_tutorial
-          find . -name "*.py" -exec python {} \;
+          python ../run.py
