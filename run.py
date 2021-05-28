@@ -18,4 +18,4 @@ ret.sort()
 for r in ret:
     print(r)
 success = all([r[1]==0 for r in ret])
-sys.exit(success)
+sys.exit(0 if success else 1)
