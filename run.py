@@ -11,7 +11,7 @@ def execute(process):
     ret = os.system(f'python {process}')
     return [process,ret]
 
-process_pool = multiprocessing.Pool(processes = 8)
+process_pool = multiprocessing.Pool(processes = 2)
 ret = process_pool.map(execute, all_processes)
 ret.sort()
 for r in ret:
