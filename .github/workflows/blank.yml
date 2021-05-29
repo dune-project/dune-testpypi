@@ -17,6 +17,7 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
+  # build packages
   package:
     runs-on: [ubuntu-latest]
     steps:
@@ -29,22 +30,8 @@ jobs:
           ./clone-modules
         shell: bash
 
-  # https://github.com/marketplace/actions/pypi-publish
-  upload:
-    if: ${{ github.event_name != 'push' }}
-    needs: package
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: Publish a Python distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1
-        with:
-          user: __token__
-          password: ${{ secrets.PYPI_API_TOKEN }}
-  tespypi:
+  # test packages
+  test:
     needs: package
     strategy:
         fail-fast: false
@@ -83,14 +70,18 @@ jobs:
         run: |
           source dune-env/bin/activate
           pip install dune-fem
-          if [ {{ matrix.test }} == "extension" ]; then
-            pip install dune-fem-dg dune-vem
-          fi
-          pip list
+        shell: bash
+
+      - name: Install extension modules
+        if: {{ matrix.test == "extension" }}
+        run: |
+          source dune-env/bin/activate
+          pip install dune-femdg dune-vem
         shell: bash
 
       - name: Setup dune-py
         run: |
+          pip list
           source dune-env/bin/activate
           DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
           python -m dune.fem tutorial
@@ -103,3 +94,19 @@ jobs:
           cd fem_tutorial
           python ../run.py ${{ matrix.test }}
         shell: bash
+
+  # https://github.com/marketplace/actions/pypi-publish
+  upload:
+    if: ${{ false }} # ${{ github.event_name != 'push' }}
+    needs: test
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Publish a Python distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
