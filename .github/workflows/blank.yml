@@ -45,7 +45,7 @@ jobs:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
   tespypi:
-    needs: upload
+    needs: package
     strategy:
         matrix:
             os: [ubuntu-latest] #, macOS-latest]
