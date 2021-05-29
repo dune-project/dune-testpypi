@@ -47,6 +47,7 @@ jobs:
   tespypi:
     needs: package
     strategy:
+        fail-fast: false
         matrix:
             os: [ubuntu-latest] #, macOS-latest]
             test: [core, extensions]
@@ -75,6 +76,8 @@ jobs:
           python3 --version
           python3 -m venv dune-env
           source dune-env/bin/activate
+          which python
+          python version
           pip install --upgrade pip
           pip install matplotlib scipy pygmsh petsc4py triangle
         shell: bash
@@ -83,17 +86,22 @@ jobs:
         run: |
           which python
           python --version
+          source dune-env/bin/activate
+          which python
+          python --version
           pip install dune-fem dune-fem-dg dune-vem
           DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
         shell: bash
 
       - name: Setup dune-py
         run: |
+          source dune-env/bin/activate
           python -m dune.fem tutorial
         shell: bash
 
       - name: Run tutorial
         run: |
+          source dune-env/bin/activate
           export DUNEPY_DISABLE_PLOTTING=1
           cd fem_tutorial
           python ../run.py ${{ matrix.test }}
