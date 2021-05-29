@@ -73,7 +73,7 @@ jobs:
         shell: bash
 
       - name: Install extension modules
-        if: ${{ matrix.test == 'extension' }}
+        if: ${{ matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
           pip install dune-femdg dune-vem
@@ -81,8 +81,8 @@ jobs:
 
       - name: Setup dune-py
         run: |
-          pip list
           source dune-env/bin/activate
+          pip list
           DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
           python -m dune.fem tutorial
         shell: bash
