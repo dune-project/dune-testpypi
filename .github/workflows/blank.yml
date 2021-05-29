@@ -73,11 +73,12 @@ jobs:
 
       - name: Setup venv
         run: |
+          which python
           python3 --version
           python3 -m venv dune-env
           source dune-env/bin/activate
           which python
-          python version
+          python --version
           pip install --upgrade pip
           pip install matplotlib scipy pygmsh petsc4py triangle
         shell: bash
