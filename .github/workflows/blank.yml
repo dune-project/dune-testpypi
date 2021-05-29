@@ -73,7 +73,7 @@ jobs:
         shell: bash
 
       - name: Install extension modules
-        if: {{ matrix.test == "extension" }}
+        if: ${{ matrix.test == "extension" }}
         run: |
           source dune-env/bin/activate
           pip install dune-femdg dune-vem
