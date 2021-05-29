@@ -17,8 +17,35 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
+  package:
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Clone modules
+        run: |
+          ./clone-modules
+        shell: bash
+
+  # https://github.com/marketplace/actions/pypi-publish
+  upload:
+    if: ${{ github.event_name != 'push' }}
+    needs: package
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Publish a Python distribution to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.PYPI_API_TOKEN }}
+  tespypi:
+    needs: upload
     strategy:
         matrix:
             os: [ubuntu-latest] #, macOS-latest]
@@ -45,13 +72,17 @@ jobs:
 
       - name: Setup venv
         run: |
+          python3 --version
           python3 -m venv dune-env
           source dune-env/bin/activate
+          pip install --upgrade pip
           pip install matplotlib scipy pygmsh petsc4py triangle
         shell: bash
 
       - name: Install dune modules
         run: |
+          which python
+          python --version
           pip install dune-fem dune-fem-dg dune-vem
           DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
         shell: bash
