@@ -73,30 +73,26 @@ jobs:
 
       - name: Setup venv
         run: |
-          which python
-          python3 --version
           python3 -m venv dune-env
           source dune-env/bin/activate
-          which python
-          python --version
           pip install --upgrade pip
           pip install matplotlib scipy pygmsh petsc4py triangle
         shell: bash
 
       - name: Install dune modules
         run: |
-          which python
-          python --version
           source dune-env/bin/activate
-          which python
-          python --version
-          pip install dune-fem dune-fem-dg dune-vem
-          DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
+          pip install dune-fem
+          if [ {{ matrix.test }} == "extension" ]; then
+            pip install dune-fem-dg dune-vem
+          fi
+          pip list
         shell: bash
 
       - name: Setup dune-py
         run: |
           source dune-env/bin/activate
+          DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
           python -m dune.fem tutorial
         shell: bash
 
