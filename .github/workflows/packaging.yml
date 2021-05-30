@@ -12,7 +12,7 @@ on:
       upload:
         description: 'upload (testpypi | pypi)'
         required: true
-        default: 'tespypi'
+        default: 'testpypi'
       tags:
         description: 'Test packages'
 
