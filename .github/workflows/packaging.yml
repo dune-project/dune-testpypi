@@ -1,17 +1,7 @@
-# This is a basic workflow to help you get started with Actions
-
-name: CI
+name: test pypi packages
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
-  schedule:
-    - cron: "0 0 * * *"
-
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     inputs:
@@ -29,18 +19,6 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # build packages
-  package:
-    runs-on: [ubuntu-latest]
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
-      - name: Clone modules
-        run: |
-          ./clone-modules
-        shell: bash
-
   # test packages
   test:
     needs: package
@@ -74,20 +52,25 @@ jobs:
           python3 -m venv dune-env
           source dune-env/bin/activate
           pip install --upgrade pip
-          pip install matplotlib scipy pygmsh petsc4py triangle
+          pip install matplotlib scipy pygmsh petsc4py triangle scikit-build
         shell: bash
 
+      - name: clone dune modules and build
+        run: |
+          source dune-env/bin/activate
+          ./clone-modules
+ 
       - name: Install dune modules
         run: |
           source dune-env/bin/activate
-          pip install dune-fem
+          pip install -v --find-links file://$PWD/dist dune-fem
         shell: bash
 
       - name: Install extension modules
         if: ${{ matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
-          pip install dune-fem-dg dune-vem
+          pip install -v --find-links file://$PWD/dist dune-fem-dg dune-vem
         shell: bash
 
       - name: Setup dune-py
