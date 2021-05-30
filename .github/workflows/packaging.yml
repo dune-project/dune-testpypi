@@ -10,9 +10,9 @@ on:
         required: true
         default: 'Warning'
       upload:
-        description: 'upload'
+        description: 'upload (testpypi | pypi)'
         required: true
-        default: 'None'
+        default: 'tespypi'
       tags:
         description: 'Test packages'
 
