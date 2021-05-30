@@ -114,16 +114,18 @@ jobs:
     needs: test
     runs-on: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/download-artifact@v2
         with:
-          python-version: 3.9
+          name: packages
+          path: dist
+
       - name: Publish package to PyPI
         if: ${{ github.event.inputs.upload == 'pypi' }} # && ${{ github.event_name != 'push' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+
       - name: Publish package to TestPyPI
         if: ${{ github.event.inputs.upload == 'testpypi' }} # && ${{ github.event_name != 'push' }}
         uses: pypa/gh-action-pypi-publish@release/v1
