@@ -19,7 +19,6 @@ on:
 jobs:
   # test packages
   test:
-    needs: package
     strategy:
         fail-fast: false
         matrix:
