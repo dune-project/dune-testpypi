@@ -1,4 +1,4 @@
-name: test pypi packages
+name: upload packages
 
 # Controls when the action will run. 
 on:
