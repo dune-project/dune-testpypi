@@ -86,12 +86,11 @@ jobs:
           export DUNEPY_DISABLE_PLOTTING=1
           export DUNE_LOG_LEVEL=${{ github.event.inputs.logLevel }}
           cd fem_tutorial
-          python ../run.py ${{ matrix.test }}
+          python ../run-tutorial.py ${{ matrix.test }}
         shell: bash
 
   # https://github.com/marketplace/actions/pypi-publish
   upload:
-    if: ${{ github.event.inputs.upload != 'None' }} # && ${{ github.event_name != 'push' }}
     needs: test
     runs-on: [ubuntu-latest]
     steps:
@@ -99,8 +98,16 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: 3.9
-      - name: Publish a Python distribution to PyPI
+      - name: Publish package to PyPI
+        if: ${{ github.event.inputs.upload = 'pypi' }} # && ${{ github.event_name != 'push' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
+      - name: Publish package to TestPyPI
+        if: ${{ github.event.inputs.upload = 'testpypi' }} # && ${{ github.event_name != 'push' }}
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}
+          repository_url: https://test.pypi.org/legacy/

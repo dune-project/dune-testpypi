@@ -79,5 +79,5 @@ jobs:
           export DUNEPY_DISABLE_PLOTTING=1
           export DUNE_LOG_LEVEL=${{ github.event.inputs.logLevel }}
           cd fem_tutorial
-          python ../run.py ${{ matrix.test }}
+          python ../run-tutorial.py ${{ matrix.test }}
         shell: bash
