@@ -19,8 +19,22 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # build packages
+  build:
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: clone dune modules and build
+        run: |
+          pip install scikit-build
+          ./clone-modules
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: packages
+          path: dist
+
   # test packages
   test:
+    needs: build
     strategy:
         fail-fast: false
         matrix:
@@ -46,6 +60,16 @@ jobs:
           fi
         shell: bash
 
+      - uses: actions/download-artifact@v2
+        with:
+          name: packages
+          path: dist
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: my-artifact
+          path: dist
+
       - name: Setup venv
         run: |
           python3 -m venv dune-env
@@ -54,11 +78,6 @@ jobs:
           pip install matplotlib scipy pygmsh petsc4py triangle scikit-build
         shell: bash
 
-      - name: clone dune modules and build
-        run: |
-          source dune-env/bin/activate
-          ./clone-modules
- 
       - name: Install dune modules
         run: |
           source dune-env/bin/activate
