@@ -99,13 +99,13 @@ jobs:
         with:
           python-version: 3.9
       - name: Publish package to PyPI
-        if: ${{ github.event.inputs.upload = 'pypi' }} # && ${{ github.event_name != 'push' }}
+        if: ${{ github.event.inputs.upload == 'pypi' }} # && ${{ github.event_name != 'push' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
       - name: Publish package to TestPyPI
-        if: ${{ github.event.inputs.upload = 'testpypi' }} # && ${{ github.event_name != 'push' }}
+        if: ${{ github.event.inputs.upload == 'testpypi' }} # && ${{ github.event_name != 'push' }}
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: __token__
