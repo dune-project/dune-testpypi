@@ -20,7 +20,7 @@ on:
 jobs:
   # build packages
   build:
-    runs-on: ${{ matrix.os }}
+    runs-on: [ubuntu-latest]
     steps:
       - name: clone dune modules and build
         run: |
