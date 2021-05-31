@@ -13,8 +13,10 @@ on:
         description: 'upload (testpypi | pypi)'
         required: true
         default: 'testpypi'
-      tags:
-        description: 'Test packages'
+      runtest:
+        description: "Run tests (only turn this off in exceptional circumstances)"
+        required: true
+        default: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -35,6 +37,7 @@ jobs:
 
   # test packages
   test:
+    if: ${{ github.event.inputs.runtest }} # && ${{ github.event_name != 'push' }}
     needs: build
     strategy:
         fail-fast: false
@@ -64,11 +67,6 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: packages
-          path: dist
-
-      - uses: actions/upload-artifact@v2
-        with:
-          name: my-artifact
           path: dist
 
       - name: Setup venv
