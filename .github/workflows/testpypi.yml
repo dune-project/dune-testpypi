@@ -40,10 +40,7 @@ jobs:
             sudo apt install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew update
-            brew install openmpi superlu suite-sparse petsc paraview gmsh
-            brew link gcc
-            brew link openmpi
-            brew doctor
+            brew install openmpi superlu suite-sparse paraview gmsh
           fi
         shell: bash
 
