@@ -44,14 +44,15 @@ def execute(process):
     ret = os.system(f'python {process}')
     return [process,ret]
 
-examples = sys.argv[1]
-process_pool = multiprocessing.Pool(processes = 2)
-ret = process_pool.map(execute, tests[examples])
+if __name__ == "__main__":
+    examples = sys.argv[1]
+    process_pool = multiprocessing.Pool(processes = 2)
+    ret = process_pool.map(execute, tests[examples])
 
-ret.sort()
-for r in ret:
-    print(r)
-# also print which scripts are not being run by comparing with all_tests
+    ret.sort()
+    for r in ret:
+        print(r)
+    # also print which scripts are not being run by comparing with all_tests
 
-success = all([r[1]==0 or r[1]=="disabled" for r in ret])
-sys.exit(0 if success else 1)
+    success = all([r[1]==0 or r[1]=="disabled" for r in ret])
+    sys.exit(0 if success else 1)
