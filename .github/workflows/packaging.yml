@@ -94,6 +94,8 @@ jobs:
         shell: bash
 
       - name: Setup dune-py
+        # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
+        if: ${{ matrix.python == '3.9' }} || ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           source dune-env/bin/activate
           pip list
@@ -102,6 +104,8 @@ jobs:
         shell: bash
 
       - name: Run tutorial
+        # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
+        if: ${{ matrix.python == '3.9' }} || ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           source dune-env/bin/activate
           export DUNEPY_DISABLE_PLOTTING=1

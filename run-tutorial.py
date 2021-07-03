@@ -29,24 +29,26 @@ tests = {
       "elasticity.py",
       "spiral.py",
       "wave.py",
-      "chemical.py",
-      "chimpl.py",
-      "euler.py",
-      "twophaseflow.py",
-      "vemdemo.py",
+      # "chemical.py",
+      # "chimpl.py",
+      # "euler.py",
+      # "twophaseflow.py",
+      # "vemdemo.py",
     ]}
 
 disabled = ["3dexample.py", "limit.py"]
 
 # This block of code enables us to call the script from command line.
 def execute(process):
+    print("START:",process,"...")
     if process in disabled: return [process,'disabled']
     ret = os.system(f'python {process}')
+    print("...",process,"completed")
     return [process,ret]
 
 if __name__ == "__main__":
     examples = sys.argv[1]
-    process_pool = multiprocessing.Pool(processes = 2)
+    process_pool = multiprocessing.Pool(processes = 1)
     ret = process_pool.map(execute, tests[examples])
 
     ret.sort()
