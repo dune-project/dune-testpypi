@@ -95,7 +95,7 @@ jobs:
 
       - name: Setup dune-py
         # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
-        if: ${{ matrix.python == '3.9' }} || ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
           source dune-env/bin/activate
           pip list

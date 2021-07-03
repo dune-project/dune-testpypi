@@ -30,10 +30,10 @@ tests = {
       "spiral.py",
       "wave.py",
       # "chemical.py",
-      # "chimpl.py",
+      "chimpl.py",
       # "euler.py",
       # "twophaseflow.py",
-      # "vemdemo.py",
+      "vemdemo.py",
     ]}
 
 disabled = ["3dexample.py", "limit.py"]
