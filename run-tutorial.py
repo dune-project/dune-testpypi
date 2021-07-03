@@ -32,7 +32,7 @@ tests = {
       "chemical.py",
       "chimpl.py",
       "euler.py",
-      "twophaseflow.py",
+      # "twophaseflow.py",
       "vemdemo.py",
     ]}
 
