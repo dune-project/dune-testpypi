@@ -29,7 +29,7 @@ tests = {
       "elasticity.py",
       "spiral.py",
       "wave.py",
-      # "chemical.py",
+      "chemical.py",
       "chimpl.py",
       # "euler.py",
       # "twophaseflow.py",

@@ -41,6 +41,9 @@ jobs:
     needs: build
     strategy:
         fail-fast: false
+        # Note:
+        # 1) macOS and python 3.7 is disabled due to linker error
+        # 2) macOS does not install petsc4py
         matrix:
             os: [ubuntu-latest, macOS-latest]
             test: [core, extensions]
@@ -105,7 +108,7 @@ jobs:
 
       - name: Run tutorial
         # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
-        if: ${{ matrix.python == '3.9' }} || ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
           source dune-env/bin/activate
           export DUNEPY_DISABLE_PLOTTING=1
