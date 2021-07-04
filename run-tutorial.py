@@ -31,7 +31,7 @@ tests = {
       "wave.py",
       "chemical.py",
       "chimpl.py",
-      "euler.py",
+      # "euler.py",
       # "twophaseflow.py",
       "vemdemo.py",
     ]}
