@@ -14,7 +14,7 @@ mkdir dist
 mkdir repos
 cd repos
 for m in "${modules[@]}"; do
-  git clone https://gitlab.dune-project.org/$m
+  git clone -b $1 https://gitlab.dune-project.org/$m
 done
 packaging=$PWD/dune-common/bin/dunepackaging.py
 ./dune-common/bin/dunecontrol exec $packaging --onlysdist
