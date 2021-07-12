@@ -32,11 +32,12 @@ jobs:
     runs-on: [ubuntu-latest]
     steps:
       - name: clone dune branch ${{ github.event.inputs.branch}} and build python packages
-      - uses: actions/checkout@v2
+        uses: actions/checkout@v2
         run: |
           pip install scikit-build
           ./clone-modules ${{ github.event.inputs.branch }}
-      - uses: actions/upload-artifact@v2
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
         with:
           name: packages
           path: dist
@@ -58,11 +59,10 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: setup python ${{ matrix.python }}
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+        uses: actions/checkout@v2
+        uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
-
       - name: Install dependencies
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
@@ -73,12 +73,11 @@ jobs:
             brew install openmpi superlu suite-sparse paraview gmsh
           fi
         shell: bash
-
-      - uses: actions/download-artifact@v2
+      - name: download artifacts
+        uses: actions/download-artifact@v2
         with:
           name: packages
           path: dist
-
       - name: Setup venv
         run: |
           python3 -m venv dune-env
@@ -89,20 +88,17 @@ jobs:
             pip install petsc4py
           fi
         shell: bash
-
       - name: pip install dune modules
         run: |
           source dune-env/bin/activate
           pip install -v --find-links file://$PWD/dist dune-fem
         shell: bash
-
       - name: Install extension modules
         if: ${{ matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
           pip install -v --find-links file://$PWD/dist dune-fem-dg dune-vem
         shell: bash
-
       - name: Setup dune-py
         # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
@@ -112,7 +108,6 @@ jobs:
           DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
           python -m dune.fem tutorial
         shell: bash
-
       - name: Run tutorial
         # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
@@ -130,17 +125,19 @@ jobs:
     needs: test
     runs-on: [ubuntu-latest]
     steps:
-      - name: Publish package to ${{ github.event.inputs.upload }}
-      - uses: actions/download-artifact@v2
+      - name: download artifacts
+        uses: actions/download-artifact@v2
         with:
           name: packages
           path: dist
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish package to ${{ github.event.inputs.upload }}
+        uses: pypa/gh-action-pypi-publish@release/v1
         if: ${{ github.event.inputs.upload == 'pypi' }} # && ${{ github.event_name != 'push' }}
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-      - uses: pypa/gh-action-pypi-publish@release/v1
+      - name: Publish package to ${{ github.event.inputs.upload }}
+        uses: pypa/gh-action-pypi-publish@release/v1
         if: ${{ github.event.inputs.upload == 'testpypi' }} # && ${{ github.event_name != 'push' }}
         with:
           user: __token__
