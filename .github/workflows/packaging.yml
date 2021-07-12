@@ -31,8 +31,9 @@ jobs:
   build:
     runs-on: [ubuntu-latest]
     steps:
-      - name: clone dune branch ${{ github.event.inputs.branch}} and build python packages
+      - name: starting
         uses: actions/checkout@v2
+      - name: clone dune branch ${{ github.event.inputs.branch}} and build python packages
         run: |
           pip install scikit-build
           ./clone-modules ${{ github.event.inputs.branch }}
@@ -58,8 +59,9 @@ jobs:
 
     runs-on: ${{ matrix.os }}
     steps:
-      - name: setup python ${{ matrix.python }}
+      - name: starting
         uses: actions/checkout@v2
+      - name: setup python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
           python-version: ${{ matrix.python }}
