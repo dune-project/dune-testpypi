@@ -29,14 +29,20 @@ on:
 jobs:
   # build packages
   build:
+    name: build
     runs-on: [ubuntu-latest]
+    env:
+      BRANCH: releases/2.8
     steps:
+      - name: environment
+        if: github.event.inputs.branch != ''
+        run: echo "::set-env name=BRANCH::${{ github.event.inputs.branch }}"
       - name: starting
         uses: actions/checkout@v2
-      - name: clone dune branch ${{ github.event.inputs.branch}} and build python packages
+      - name: clone dune branch $BRANCH and build python packages
         run: |
           pip install scikit-build
-          ./clone-modules ${{ github.event.inputs.branch }}
+          ./clone-modules $BRANCH
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
