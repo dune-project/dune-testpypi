@@ -20,10 +20,6 @@ on:
         description: 'branch e.g. (master | releases/x.y) [releases/2.8]'
         required: true
         default: 'releases/2.8'
-      runtest:
-        description: "Run tests (only turn this off in exceptional circumstances)"
-        required: true
-        default: true
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -51,8 +47,10 @@ jobs:
 
   # test packages
   test:
-    if: ${{ github.event.inputs.runtest }} # && ${{ github.event_name != 'push' }}
+    name: testing tutorial
     needs: build
+    env:
+      LOGLEVEL: Warning
     strategy:
         fail-fast: false
         # Note:
@@ -62,11 +60,13 @@ jobs:
             os: [ubuntu-latest, macOS-latest]
             test: [core, extensions]
             python: [3.7,3.9]
-
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
         uses: actions/checkout@v2
+      - name: environment
+        if: github.event.inputs.logLevel != ''
+        run: echo "::set-env name=LOGLEVEL::${{ github.event.inputs.logLevel }}"
       - name: setup python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
@@ -122,31 +122,36 @@ jobs:
         run: |
           source dune-env/bin/activate
           export DUNEPY_DISABLE_PLOTTING=1
-          export DUNE_LOG_LEVEL=${{ github.event.inputs.logLevel }}
+          export DUNE_LOG_LEVEL=$LOGLEVEL
           cd fem_tutorial
           python ../run-tutorial.py ${{ matrix.test }}
         shell: bash
 
   # https://github.com/marketplace/actions/pypi-publish
   upload:
-    if: ${{ github.event.inputs.upload == 'testpypi' || github.event.inputs.upload == 'pypi' }}
+    name: uploading
+    env:
+      UPLOAD: none
     needs: test
     runs-on: [ubuntu-latest]
     steps:
+      - name: environment
+        if: github.event.inputs.upload != ''
+        run: echo "::set-env name=UPLOAD::${{ github.event.inputs.upload }}"
       - name: download artifacts
         uses: actions/download-artifact@v2
         with:
           name: packages
           path: dist
-      - name: Publish package to ${{ github.event.inputs.upload }}
+      - name: Publish package to ${{ UPLOAD }}
         uses: pypa/gh-action-pypi-publish@release/v1
-        if: ${{ github.event.inputs.upload == 'pypi' }} # && ${{ github.event_name != 'push' }}
+        if: $UPLOAD == 'pypi' 
         with:
           user: __token__
           password: ${{ secrets.PYPI_API_TOKEN }}
-      - name: Publish package to ${{ github.event.inputs.upload }}
+      - name: Publish package to ${{ UPLOAD }}
         uses: pypa/gh-action-pypi-publish@release/v1
-        if: ${{ github.event.inputs.upload == 'testpypi' }} # && ${{ github.event_name != 'push' }}
+        if: $UPLOAD == 'testpypi' 
         with:
           user: __token__
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}

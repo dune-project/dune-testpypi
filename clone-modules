@@ -13,6 +13,7 @@ modules=(
 mkdir dist
 mkdir repos
 cd repos
+echo "Cloning into branch $1"
 for m in "${modules[@]}"; do
   git clone -b $1 https://gitlab.dune-project.org/$m
 done
