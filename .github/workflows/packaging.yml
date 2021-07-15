@@ -35,7 +35,7 @@ jobs:
         run: echo "::set-env name=BRANCH::${{ github.event.inputs.branch }}"
       - name: starting
         uses: actions/checkout@v2
-      - name: clone dune branch ${{ BRANCH }} and build python packages
+      - name: clone dune and build python packages
         run: |
           pip install scikit-build
           ./clone-modules $BRANCH
@@ -143,7 +143,7 @@ jobs:
         with:
           name: packages
           path: dist
-      - name: Publish package to ${{ UPLOAD }}
+      - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
         if: ${{ UPLOAD }} == 'pypi' 
         with:
