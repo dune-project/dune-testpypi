@@ -32,7 +32,7 @@ jobs:
     steps:
       - name: environment
         if: github.event.inputs.branch != ''
-        run: echo "::set-env name=BRANCH::${{ github.event.inputs.branch }}"
+        run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
       - name: starting
         uses: actions/checkout@v2
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
@@ -66,7 +66,7 @@ jobs:
         uses: actions/checkout@v2
       - name: environment
         if: github.event.inputs.logLevel != ''
-        run: echo "::set-env name=LOGLEVEL::${{ github.event.inputs.logLevel }}"
+        run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
       - name: setup python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
@@ -137,7 +137,7 @@ jobs:
     steps:
       - name: environment
         if: github.event.inputs.upload != ''
-        run: echo "::set-env name=UPLOAD::${{ github.event.inputs.upload }}"
+        run: echo "UPLOAD=${{ github.event.inputs.upload }}" >> $GITHUB_ENV
       - name: download artifacts
         uses: actions/download-artifact@v2
         with:
