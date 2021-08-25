@@ -1,14 +1,14 @@
 # download modules
 modules=(
   'core/dune-common.git'
-  # 'core/dune-geometry.git'
-  # 'core/dune-grid.git'
-  # 'core/dune-istl.git'
-  # 'core/dune-localfunctions.git'
-  # 'extensions/dune-alugrid.git'
-  # 'dune-fem/dune-fem.git'
-  # 'dune-fem/dune-fem-dg.git'
-  # 'dune-fem/dune-vem.git'
+  'core/dune-geometry.git'
+  'core/dune-grid.git'
+  'core/dune-istl.git'
+  'core/dune-localfunctions.git'
+  'extensions/dune-alugrid.git'
+  'dune-fem/dune-fem.git'
+  'dune-fem/dune-fem-dg.git'
+  'dune-fem/dune-vem.git'
 )
 mkdir dist
 mkdir repos
@@ -21,7 +21,7 @@ packaging=$PWD/dune-common/bin/dunepackaging.py
 version=""
 if [ "$1" != "master" ]; then
   version="${1:1}"
-  echo $version
+  echo "Use version" $version
 fi
 ./dune-common/bin/dunecontrol exec $packaging --onlysdist --version=$version
 mv */dist/*.tar.gz ../dist
