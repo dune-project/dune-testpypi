@@ -7,6 +7,9 @@ on:
     - cron: "0 0 * * *"
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+    # Note: the defaults are repeated within the env section
+    #       of some of the jobs so any change to the default
+    #       need to be done twice!
     inputs:
       logLevel:
         description: 'Log level'
