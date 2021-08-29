@@ -27,6 +27,7 @@ if [ $? -eq 0 ]; then
   echo "Use version" $version
   ./dune-common/bin/dunecontrol exec $packaging --onlysdist --version=$tag
 else
+  echo "Use dev versioning"
   ./dune-common/bin/dunecontrol exec $packaging --onlysdist
 fi
 mv */dist/*.tar.gz ../dist
