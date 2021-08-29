@@ -27,7 +27,7 @@ on:
         #       and the build will fail
         description: 'tag e.g. (master | v2.8.0) [master]'
         required: true
-        default: 'master'
+        default: 'feature/cmake-python-overhaul'
       fembranch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
@@ -36,7 +36,7 @@ on:
         #       and the build will fail
         description: 'tag e.g. (master | v2.8.0.1) [master]'
         required: true
-        default: 'master'
+        default: 'feature/cmake-python-overhaul'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,8 +45,8 @@ jobs:
     name: build
     runs-on: [ubuntu-latest]
     env:
-      BRANCH: master
-      FEMBRANCH: master
+      BRANCH: feature/cmake-python-overhaul
+      FEMBRANCH: feature/cmake-python-overhaul
     steps:
       - name: environmentCore
         if: github.event.inputs.branch != ''
@@ -138,7 +138,7 @@ jobs:
         run: |
           source dune-env/bin/activate
           pip list
-          DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
+          # DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
           python -m dune.fem tutorial
         shell: bash
       - name: Run tutorial
