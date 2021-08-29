@@ -24,10 +24,11 @@ packaging=$PWD/dune-common/bin/dunepackaging.py
 # otherwise use the default 'dev' numbering.
 tag=$(git describe --exact-match 2> \dev\null)
 if [ $? -eq 0 ]; then
-  version=$tag
   echo "Use version" $version
+  ./dune-common/bin/dunecontrol exec $packaging --onlysdist --version=$tag
+else
+  ./dune-common/bin/dunecontrol exec $packaging --onlysdist
 fi
-./dune-common/bin/dunecontrol exec $packaging --onlysdist --version=$version
 mv */dist/*.tar.gz ../dist
 cd ..
 rm -rf repos
