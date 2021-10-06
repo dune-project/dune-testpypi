@@ -18,7 +18,6 @@ cd repos
 echo "Cloning into branch $1"
 for m in "${coremodules[@]}"; do
   git clone --depth 1 -b $1 https://gitlab.dune-project.org/$m
-  cd 
 done
 echo "Cloning into branch $2"
 for m in "${femmodules[@]}"; do
