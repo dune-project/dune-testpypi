@@ -48,9 +48,10 @@ jobs:
       BRANCH: v2.8.0
       FEMBRANCH: v2.8.0.0
     steps:
-      - name: environment
+      - name: environmentCore
         if: github.event.inputs.branch != ''
         run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
+      - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
       - name: starting
