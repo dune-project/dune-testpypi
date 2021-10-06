@@ -25,9 +25,18 @@ on:
         #       e.g. N=2.8.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'tag e.g. (master | v2.8.0rc1) [v2.8.0rc1]'
+        description: 'tag e.g. (master | v2.8.0) [v2.8.0]'
         required: true
-        default: 'v2.8.0rc1'
+        default: 'v2.8.0'
+      fembranch:
+        # note: this should be either 'master' or a tag of the form
+        #       vN where 'N' is a legal python package version
+        #       e.g. N=2.8.0rc1
+        #       otherwise the distributions will not be generated
+        #       and the build will fail
+        description: 'tag e.g. (master | v2.8.0.0) [v2.8.0.0]'
+        required: true
+        default: 'v2.8.0.0'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -36,17 +45,20 @@ jobs:
     name: build
     runs-on: [ubuntu-latest]
     env:
-      BRANCH: v2.8.0rc1
+      BRANCH: v2.8.0
+      FEMBRANCH: v2.8.0.0
     steps:
       - name: environment
         if: github.event.inputs.branch != ''
         run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
+        if: github.event.inputs.fembranch != ''
+        run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
       - name: starting
         uses: actions/checkout@v2
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           pip install scikit-build
-          ./clone-modules $BRANCH
+          ./clone-modules $BRANCH $FEMBRANCH
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
