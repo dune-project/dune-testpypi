@@ -1,40 +1,12 @@
-# download modules
-coremodules=(
-  'core/dune-common.git'
-  'core/dune-geometry.git'
-  'core/dune-grid.git'
-  'core/dune-istl.git'
-  'core/dune-localfunctions.git'
-  'extensions/dune-alugrid.git'
-)
-femmodules=(
-  'dune-fem/dune-fem.git'
-  'dune-fem/dune-fem-dg.git'
-  'dune-fem/dune-vem.git'
-)
+coreversion="${1:1}"
+femversion="${2:1}"
 
+echo "versions $coreversion, $femversion"
 ls .
 echo Downloading dune-common into $PWD
-git clone --depth 1 -b $1 https://gitlab.dune-project.org/dune-common.git
-
+git clone --depth 1 -b $1 https://gitlab.dune-project.org/core/dune-common.git
 mkdir dist
 mkdir repos
-cd repos
-echo "Cloning core modules into $PWD"
-for m in "${coremodules[@]}"; do
-  if ! python3 ../testpypi.py $m $1 ; then
-      echo "Cloning $m branch $1"
-      git clone --depth 1 -b $1 https://gitlab.dune-project.org/$m
-  fi
-done
-echo "Cloning fem modules into $PWD"
-for m in "${femmodules[@]}"; do
-  if ! python3 ../testpypi.py $m $2 ; then
-      echo "Cloning $m branch $2"
-      git clone --depth 1 -b $2 https://gitlab.dune-project.org/$m
-  fi
-done
-
 
 package()
 {
@@ -50,11 +22,55 @@ package()
     $packaging --onlysdist
   fi
 }
-export packaging=$PWD/../dune-common/bin/dunepackaging.py
+export packaging=$PWD/dune-common/bin/dunepackaging.py
 export -f package
-echo "Calling dunecontrol from $PWD"
-ls ..
-../dune-common/bin/dunecontrol exec package
+
+#################################
+
+# download modules into repos
+cd repos
+declare -A coremodules
+coremodules+=(
+  [dune-common]='core/dune-common.git'
+  [dune-geometry]='core/dune-geometry.git'
+  [dune-grid]='core/dune-grid.git'
+  [dune-istl]='core/dune-istl.git'
+  [dune-localfunctions]='core/dune-localfunctions.git'
+  [dune-alugrid]='extensions/dune-alugrid.git'
+)
+declare -A femmodules
+femmodules=(
+  [dune-fem]='dune-fem/dune-fem.git'
+  [dune-fem-dg]='dune-fem/dune-fem-dg.git'
+  [dune-vem]='dune-fem/dune-vem.git'
+)
+
+echo "Cloning core modules into $PWD"
+for m in "${!coremodules[@]}" ; do
+  p="${coremodules[$m]}"
+  echo "module: $m from $p"
+  if ! python3 ../testpypi.py $m $coreversion ; then
+      echo "Cloning from $p branch $1"
+      git clone --depth 1 -b $1 https://gitlab.dune-project.org/$p
+      cd $m
+      package
+      cd ..
+  fi
+done
+echo "Cloning fem modules into $PWD"
+for m in "${!femmodules[@]}" ; do
+  p="${femmodules[$m]}"
+  echo "module: $m from $p"
+  if ! python3 ../testpypi.py $m $femversion ; then
+      echo "Cloning from $p branch $2"
+      git clone --depth 1 -b $2 https://gitlab.dune-project.org/$p
+      cd $m
+      package
+      cd ..
+  fi
+done
+
+#####################################
 
 mv */dist/*.tar.gz ../dist
 cd ..
