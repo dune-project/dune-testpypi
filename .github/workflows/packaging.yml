@@ -179,3 +179,9 @@ jobs:
           user: __token__
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
+          ## this is needed so long as versioning for
+          ## fem and core packages can differ (i.e. 2.8.0.x) but are uploaded
+          ## in same script.
+          ## Test if required version for core is available on pypi and use
+          ## instead of git?
+          # skip_existing: true
