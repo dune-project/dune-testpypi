@@ -12,19 +12,24 @@ femmodules=(
   'dune-fem/dune-fem-dg.git'
   'dune-fem/dune-vem.git'
 )
+
+echo Downloading dune-common into $PWD
 git clone --depth 1 -b $1 https://gitlab.dune-project.org/dune-common
+
 mkdir dist
 mkdir repos
 cd repos
-echo "Cloning into branch $1"
+echo "Cloning core modules into $PWD"
 for m in "${coremodules[@]}"; do
   if ! python3 testpypi.py $m $1 ; then
+      echo "Cloning $m branch $1"
       git clone --depth 1 -b $1 https://gitlab.dune-project.org/$m
   fi
 done
-echo "Cloning into branch $2"
+echo "Cloning fem modules into $PWD"
 for m in "${femmodules[@]}"; do
   if ! python3 testpypi.py $m $2 ; then
+      echo "Cloning $m branch $2"
       git clone --depth 1 -b $2 https://gitlab.dune-project.org/$m
   fi
 done
@@ -46,6 +51,8 @@ package()
 }
 export packaging=$PWD/../dune-common/bin/dunepackaging.py
 export -f package
+echo "Calling dunecontrol from $PWD"
+ls ..
 ../dune-common/bin/dunecontrol exec package
 
 mv */dist/*.tar.gz ../dist
