@@ -83,7 +83,6 @@ jobs:
             python: [3.7,3.9]
     runs-on: ${{ matrix.os }}
     steps:
-      if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
       - name: starting
         uses: actions/checkout@v2
       - name: environment
@@ -94,6 +93,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt update
@@ -106,6 +106,7 @@ jobs:
           fi
         shell: bash
       - name: download artifacts
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         uses: actions/download-artifact@v2
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
@@ -113,6 +114,7 @@ jobs:
           name: packages
           path: dist
       - name: Setup venv
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
           python3 -m venv dune-env
           source dune-env/bin/activate
@@ -123,6 +125,7 @@ jobs:
           fi
         shell: bash
       - name: pip install dune modules
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
           source dune-env/bin/activate
           pip install --pre -v --find-links file://$PWD/dist dune-fem
