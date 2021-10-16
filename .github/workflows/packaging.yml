@@ -83,6 +83,7 @@ jobs:
             python: [3.7,3.9]
     runs-on: ${{ matrix.os }}
     steps:
+      if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
       - name: starting
         uses: actions/checkout@v2
       - name: environment
