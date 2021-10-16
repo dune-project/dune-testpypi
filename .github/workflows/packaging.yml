@@ -131,8 +131,7 @@ jobs:
           pip install --pre -v --find-links file://$PWD/dist dune-fem
         shell: bash
       - name: Install extension modules
-        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
-        if: ${{ matrix.test == 'extensions' }}
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
           pip install --pre -v --find-links file://$PWD/dist dune-fem-dg dune-vem
