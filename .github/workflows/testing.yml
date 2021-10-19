@@ -1,4 +1,4 @@
-name: upload packages
+name: testing scenarios
 
 # Controls when the action will run.
 on:
