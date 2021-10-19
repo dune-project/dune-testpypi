@@ -99,7 +99,7 @@ jobs:
         matrix:
             os: [ubuntu-latest, macOS-latest]
             python: [3.9]
-            matrix: ${{fromJson(needs.getTests.outputs.matrix)}}
+            tests: ${{fromJson(needs.getTests.outputs.matrix.include)}}
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
@@ -134,5 +134,5 @@ jobs:
             repos
       - name: Run test
         run: |
-            bash ${{ matrix.filepath }}
+            bash ${{ matrix.test.filepath }}
         shell: bash
