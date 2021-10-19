@@ -102,6 +102,12 @@ jobs:
       - name: environment
         if: github.event.inputs.logLevel != ''
         run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
+      - name: environmentCore
+        if: github.event.inputs.branch != ''
+        run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
+      - name: environmentFem
+        if: github.event.inputs.fembranch != ''
+        run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
       - name: setup python 3.9
         uses: actions/setup-python@v2
         with:
@@ -134,5 +140,5 @@ jobs:
             tar xzf dist/repos.tar.gz
             mkdir test
             cd test
-            bash ../${{ matrix.filepath }}
+            bash ../${{ matrix.filepath }} $BRANCH $FEMBRANCH
         shell: bash
