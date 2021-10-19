@@ -50,8 +50,7 @@ jobs:
         # Start Generate Json String
         echo "$matrixArray" | \
         jq --slurp --raw-input 'split("\n")[:-1]' | \
-        jq  "{\"filepath\": .[], ubuntu-latest }" | \
-        jq  "{\"filepath\": .[], macOS-latest }" | \
+        jq  "{\"filepath\": .[], \"ubuntu-latest\" }, {\"filepath\": .[], \"macOS-latest\" }" | \
         jq -sc "{ \"include\": . }" > tmp
         cat ./tmp
         # End Generate Json String
