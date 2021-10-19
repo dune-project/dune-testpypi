@@ -88,8 +88,9 @@ jobs:
   # test packages
   test:
     name: testing tutorial
-    needs: build
-    needs: getTests
+    needs: |
+      build
+      getTests
     env:
       LOGLEVEL: Warning
     strategy:
