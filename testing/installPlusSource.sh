@@ -8,6 +8,7 @@ dune-common/bin/dunecontrol --only=dune-fem all
 cd -
 python -m dune.fem
 cd fem_tutorial
+pip list
 python concepts.py
 cd ..
 
@@ -18,6 +19,7 @@ dune-common/bin/dunecontrol --only=dune-fem all
 cd -
 python -m dune.fem
 cd fem_tutorial
+pip list
 python laplace-adaptive.py
 cd ..
 
@@ -28,5 +30,6 @@ dune-common/bin/dunecontrol --only=dune-fem all
 cd -
 python -m dune.fem
 cd fem_tutorial
+pip list
 python laplace-adaptive.py
 cd ..
