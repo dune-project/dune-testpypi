@@ -132,5 +132,5 @@ jobs:
             tar xvzf dist/repos.tar.gz
             mkdir test
             cd test
-            bash ${{ matrix.filepath }}
+            bash ../${{ matrix.filepath }}
         shell: bash
