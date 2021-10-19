@@ -1,0 +1,141 @@
+name: upload packages
+
+# Controls when the action will run.
+on:
+  # schedual test for nightly build
+  schedule:
+    - cron: "0 0 * * *"
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    # Note: the defaults are repeated within the env section
+    #       of some of the jobs so any change to the default
+    #       need to be done twice!
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'Warning'
+      branch:
+        # note: this should be either 'master' or a tag of the form
+        #       vN where 'N' is a legal python package version
+        #       e.g. N=2.8.0rc1
+        #       otherwise the distributions will not be generated
+        #       and the build will fail
+        description: 'tag e.g. (master | v2.8.0) [master]'
+        required: true
+        default: 'feature/cmake-python-overhaul'
+      fembranch:
+        # note: this should be either 'master' or a tag of the form
+        #       vN where 'N' is a legal python package version
+        #       e.g. N=2.8.0rc1
+        #       otherwise the distributions will not be generated
+        #       and the build will fail
+        description: 'tag e.g. (master | v2.8.0.1) [master]'
+        required: true
+        default: 'feature/cmake-python-overhaul'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # generate test file matrix
+  getTests:
+    runs-on: ubuntu-latest
+    outputs:
+       matrix: ${{ steps.setmatrix.outputs.matrix }}
+    steps:
+    - name: checkout source code
+      uses: actions/checkout@v1
+    - id: setmatrix
+      run: |
+        matrixArray=$(find ./testing -name '*.sh') # Creates array of all files .sh withing testing
+        # Start Generate Json String
+        echo "$matrixArray" | \
+        jq --slurp --raw-input 'split("\n")[:-1]' | \
+        jq  "{\"filepath\": .[] }" | \
+        jq -sc "{ \"include\": . }" > tmp
+        cat ./tmp
+        # End Generate Json String
+        matrixStringifiedObject=$(cat ./tmp) # Use this as jq @sh not working right
+        echo "::set-output name=matrix::$matrixStringifiedObject"
+
+  # build packages
+  build:
+    name: build
+    runs-on: [ubuntu-latest]
+    env:
+      BRANCH: feature/cmake-python-overhaul
+      FEMBRANCH: feature/cmake-python-overhaul
+    steps:
+      - name: environmentCore
+        if: github.event.inputs.branch != ''
+        run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
+      - name: environmentFem
+        if: github.event.inputs.fembranch != ''
+        run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
+      - name: starting
+        uses: actions/checkout@v2
+      - name: clone dune branch ${{ env.BRANCH }} and build python packages
+        run: |
+          pip install scikit-build
+          mkdir DUNE
+          cd DUNE
+          ./clone-modules $BRANCH $FEMBRANCH
+          cd ..
+      - name: upload artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: packages
+          path: |
+            repos/
+            dist/
+
+  # test packages
+  test:
+    name: testing tutorial
+    needs: build
+    env:
+      LOGLEVEL: Warning
+    strategy:
+        fail-fast: false
+        # Note:
+        # 1) macOS and python 3.7 is disabled due to linker error
+        # 2) macOS does not install petsc4py
+        matrix:
+            os: [ubuntu-latest, macOS-latest]
+            python: [3.9]
+            matrix: ${{fromJson(needs.getTests.outputs.matrix)}}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: starting
+        uses: actions/checkout@v2
+      - name: environment
+        if: github.event.inputs.logLevel != ''
+        run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
+      - name: setup python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install dependencies
+        run: |
+          if [ "$RUNNER_OS" == "Linux" ]; then
+            sudo apt update
+            sudo apt install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh
+          elif [ "$RUNNER_OS" == "macOS" ]; then
+            brew update
+            rm /usr/local/bin/2to3
+            brew install python@3.9
+            brew install openmpi superlu suite-sparse paraview gmsh
+          fi
+        shell: bash
+      - name: download artifacts
+        uses: actions/download-artifact@v2
+        # if all packages exist on pypi then no artifacts are uploaded so don't fail
+        continue-on-error: true
+        with:
+          name: packages
+          path: |
+            dist
+            repos
+      - name: Run test
+        run: |
+            bash ${{ matrix.filepath }}
+        shell: bash
