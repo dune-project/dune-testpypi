@@ -1,6 +1,8 @@
 python -m venv dune-env 
 . dune-env/bin/activate
-../repos/dune-common/bin/dunecontrol all
+cd ../repos
+dune-common/bin/dunecontrol all
+cd -
 python -m dune.fem
 cd fem_tutorial
 python concepts.py

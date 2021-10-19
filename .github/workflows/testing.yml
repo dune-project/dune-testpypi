@@ -129,7 +129,7 @@ jobs:
         run: |
             echo "Running: ${{ matrix.filepath }}"
             ls -R
-            tar xvzf dist/repos.tar.gz
+            tar xzf dist/repos.tar.gz
             mkdir test
             cd test
             bash ../${{ matrix.filepath }}
