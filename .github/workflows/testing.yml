@@ -50,7 +50,8 @@ jobs:
         # Start Generate Json String
         echo "$matrixArray" | \
         jq --slurp --raw-input 'split("\n")[:-1]' | \
-        jq  "{\"filepath\": .[] }" | \
+        jq  "{\"filepath\": .[], ubuntu-latest }" | \
+        jq  "{\"filepath\": .[], macOS-latest }" | \
         jq -sc "{ \"include\": . }" > tmp
         cat ./tmp
         # End Generate Json String
@@ -96,10 +97,7 @@ jobs:
         # Note:
         # 1) macOS and python 3.7 is disabled due to linker error
         # 2) macOS does not install petsc4py
-        matrix:
-            os: [ubuntu-latest, macOS-latest]
-            python: [3.9]
-            tests: ${{fromJson(needs.getTests.outputs.matrix.include)}}
+        matrix: ${{fromJson(needs.getTests.outputs.matrix)}}
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
@@ -110,7 +108,7 @@ jobs:
       - name: setup python ${{ matrix.python }}
         uses: actions/setup-python@v2
         with:
-          python-version: ${{ matrix.python }}
+          python-version: 3.9
       - name: Install dependencies
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
