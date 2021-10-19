@@ -131,6 +131,7 @@ jobs:
             repos
       - name: Run test
         run: |
-            echo "${{ matrix.filepath }}"
+            echo "Running: ${{ matrix.filepath }}"
+            ls -R
             bash ${{ matrix.filepath }}
         shell: bash
