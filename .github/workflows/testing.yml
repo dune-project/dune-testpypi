@@ -127,6 +127,8 @@ jobs:
           path: dist
       - name: Run test
         run: |
+            export DUNEPY_DISABLE_PLOTTING=1
+            export DUNE_LOG_LEVEL=$LOGLEVEL
             echo "Running: ${{ matrix.filepath }}"
             ls -R
             tar xzf dist/repos.tar.gz
