@@ -76,4 +76,3 @@ mv */dist/*.tar.gz ../dist
 cd ..
 
 tar cvzf dist/repos.tar.gz repos
-rm -rf repos
