@@ -76,10 +76,7 @@ jobs:
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           pip install scikit-build
-          mkdir DUNE
-          cd DUNE
           ./clone-modules $BRANCH $FEMBRANCH
-          cd ..
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
@@ -92,6 +89,7 @@ jobs:
   test:
     name: testing tutorial
     needs: build
+    needs: getTests
     env:
       LOGLEVEL: Warning
     strategy:
