@@ -49,9 +49,9 @@ jobs:
         matrixArray=$(find ./testing -name '*.sh') # Creates array of all files .sh withing testing
         # Start Generate Json String
         echo "$matrixArray" | \
-        jq --slurp --raw-input 'split("\n")[:-1]' | \
-        jq  "{\"filepath\": .[], \"ubuntu-latest\" }, {\"filepath\": .[], \"macOS-latest\" }" | \
-        jq -sc "{ \"include\": . }" > tmp
+          jq --slurp --raw-input 'split("\n")[:-1]' | \
+          jq  "{\"filepath\": .[], \"os\":\"ubuntu-latest\" }, {\"filepath\": .[], \"os\": \"macOS-latest\" }" | \
+          jq -sc "{ \"include\": . }" > tmp
         cat ./tmp
         # End Generate Json String
         matrixStringifiedObject=$(cat ./tmp) # Use this as jq @sh not working right
