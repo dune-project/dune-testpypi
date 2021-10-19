@@ -104,7 +104,7 @@ jobs:
       - name: environment
         if: github.event.inputs.logLevel != ''
         run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
-      - name: setup python ${{ matrix.python }}
+      - name: setup python 3.9
         uses: actions/setup-python@v2
         with:
           python-version: 3.9
@@ -131,5 +131,6 @@ jobs:
             repos
       - name: Run test
         run: |
-            bash ${{ matrix.test.filepath }}
+            echo "${{ matrix.filepath }}"
+            bash ${{ matrix.filepath }}
         shell: bash
