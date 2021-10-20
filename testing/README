@@ -1,0 +1,50 @@
+Running the workflow:
+=====================
+Login into github and goto Goto https://github.com/adedner/dune-testpypi
+Open the Actions tab and on the left choose 'testing scenarios'.
+On the right click 'Run workflow' which open a window with some fields to
+fill out. Select the 'feature/cmake-python-overhaul' branch instead of
+'main'. The other fields are then already filled out to select the
+corresponding branch in core and fem modules. Simply click 'Run workflow'
+to start the process.
+
+Folder structure:
+=================
+Every file ending '.sh' in the 'testing' folder will be run in the following environment:
+- every test script is executed in an empty folder (test)
+- below this folder there are two folders
+  - dist: containing the python package tar gz files from the requestes
+    tag/branch of all core modules and dune-fem modules
+    (see completeInstall.sh to see how to install from those files)
+  - repos: contains all core and fem dune source modules unconfigured
+    (see completeSourceNoEnv.sh / completeSourceInEnv.sh for usage)
+- Each test script is called with two arguments: the branch/tag name of the
+  core and the fem modules, respectively. These are the two arguments that
+  can be set when starting the workflow.
+
+
+
+Existing Tests
+==============
+
+completeInstall.sh
+-------------------
+First install dune.grid in a venv and run example script then add dune.fem to that
+and run a script from the fem tutorial.
+
+completeSourceInEnv.sh
+----------------------
+Setup a venv and configure all dune source modules, then run a script from
+the fem tutorial.
+
+completeSourceNoEnv.sh
+----------------------
+Configure all dune source modules without an active venv, then run a script from
+the fem tutorial using the packages from the dune internal venv.
+
+installPlusSource.sh
+--------------------
+Setup a venv and install dune.grid. Then configure dune-fem from source and
+test a tutorial example. Then install dune.alugrid a reconfigure dune and
+run a tutorial example using dune.algurid. Finally, build dune-alugrid from
+source and run example.
