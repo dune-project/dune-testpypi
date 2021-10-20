@@ -1,9 +1,9 @@
-python -m venv dune-env
+python3 -m venv dune-env
 . dune-env/bin/activate
 pip install --find-links file://$PWD/../dist dune.fem
 
 # add dune-mmesh and test
 cd ../repos
-dune-common/bin/dunecontrol --only=dune-mmesh all
+dunecontrol --only=dune-mmesh --opts=dune-mmesh/cmake/config.opts all
 cd dune-mmesh/scripts
 python test.py
