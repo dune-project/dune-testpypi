@@ -1,6 +1,6 @@
 python -m venv dune-env
 . dune-env/bin/activate
-pip install --find-links file://$PWD/../dist dune.grid
+pip install --pre --find-links file://$PWD/../dist dune.grid
 
 # add dune-fem and test
 cd ../repos
@@ -13,7 +13,7 @@ python concepts.py
 cd ..
 
 # install dune-alugrid and test again
-pip install --find-links file://$PWD/../dist dune.alugrid
+pip install --pre --find-links file://$PWD/../dist dune.alugrid
 cd ../repos
 dune-common/bin/dunecontrol --only=dune-fem all
 cd -
