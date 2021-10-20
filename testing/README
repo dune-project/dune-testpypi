@@ -1,30 +1,35 @@
-Running the workflow:
-=====================
-Login into github and goto Goto https://github.com/adedner/dune-testpypi
-Open the Actions tab and on the left choose 'testing scenarios'.
-On the right click 'Run workflow' which open a window with some fields to
-fill out. Select the 'feature/cmake-python-overhaul' branch instead of
-'main'. The other fields are then already filled out to select the
-corresponding branch in core and fem modules. Simply click 'Run workflow'
-to start the process.
+Running the Workflow
+====================
 
-Each script can be run with a similar setup to the github setting using the
-script testing/locallyRunTest which should be run from the 'testing' folder.
+1. Login into github and goto [https://github.com/adedner/dune-testpypi](https://github.com/adedner/dune-testpypi).
+2. Open the 'Actions' tab and on the left choose 'testing scenarios'.
+3. On the right click 'Run workflow' which opens a window with some fields to
+fill out. Select the corresponding branches in core and fem modules.
+4. Click the 'Run workflow' button to start the process.
+
+Running locally
+---------------
+Each test script can be run locally with a setup similar to the github setting.
+Therefore, use the script 'testing/locallyRunTest' which should be run from the 'testing' folder.
+
 The script takes three arguments:
-the script file to run and the tag/branches to use for core and fem respectively.
-The test is run in a temporary folder below the testing folder.
-There is no checking done at the moment and also no software / python
+- The script file to run
+- The tag/branches to use for the core modules
+- The tag/branches to use for the fem modules
+
+The test is run in a temporary folder below the 'testing' folder.
+Be aware that there is no checking done at the moment and also no software / python
 package is installed so everything must be available, i.e., scikit-build.
 
-Folder structure:
-=================
+Folder Structure
+================
 Every file ending '.sh' in the 'testing' folder will be run in the following environment:
-- every test script is executed in an empty folder (test)
-- below this folder there are two folders
-  - dist: containing the python package tar gz files from the requestes
+- Every test script is executed in an empty folder (test)
+- Below this folder there are two folders
+  - dist: containing the python package .tar.gz files from the requested
     tag/branch of all core modules and dune-fem modules
     (see completeInstall.sh to see how to install from those files)
-  - repos: contains all core and fem dune source modules unconfigured
+  - repos: contains all source modules unconfigured
     (see completeSourceNoEnv.sh / completeSourceInEnv.sh for usage)
 - Each test script is called with two arguments: the branch/tag name of the
   core and the fem modules, respectively. These are the two arguments that
@@ -32,27 +37,26 @@ Every file ending '.sh' in the 'testing' folder will be run in the following env
 
 
 
-Existing Tests
-==============
+Default Tests
+=============
 
 completeInstall.sh
 -------------------
-First install dune.grid in a venv and run example script then add dune.fem to that
-and run a script from the fem tutorial.
+Setup a venv, install dune.grid and run example script.
+Then add dune.fem and run a script from the fem tutorial.
 
 completeSourceInEnv.sh
 ----------------------
-Setup a venv and configure all dune source modules, then run a script from
-the fem tutorial.
+Setup a venv, configure all dune source modules and run a script from the fem tutorial.
 
 completeSourceNoEnv.sh
 ----------------------
-Configure all dune source modules without an active venv, then run a script from
-the fem tutorial using the packages from the dune internal venv.
+Configure all dune source modules without an active venv.
+Then run a script from the fem tutorial using the packages from the dune internal venv.
 
 installPlusSource.sh
 --------------------
-Setup a venv and install dune.grid. Then configure dune-fem from source and
-test a tutorial example. Then install dune.alugrid a reconfigure dune and
-run a tutorial example using dune.algurid. Finally, build dune-alugrid from
-source and run example.
+Setup a venv and install dune.grid.
+Then configure dune-fem from source and test a tutorial example.
+Then install dune.alugrid, reconfigure dune and run a tutorial example using dune.algurid.
+Finally, build dune-alugrid from source and run example.

@@ -1,4 +1,4 @@
-# call with three arguement:
+# call with three arguments:
 # - the test script to run
 # - the branch/tag to use for the core modules
 # - the branch/tag to use for the fem modules
