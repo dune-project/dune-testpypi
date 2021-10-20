@@ -44,6 +44,10 @@ femmodules=(
   [dune-fem-dg]='dune-fem/dune-fem-dg.git'
   [dune-vem]='dune-fem/dune-vem.git'
 )
+declare -A othermodules
+othermodules=(
+  [dune-mmesh]='samuel.burbulla/dune-mmesh.git'
+)
 
 echo "Cloning core modules into $PWD"
 for m in "${!coremodules[@]}" ; do
@@ -68,6 +72,16 @@ for m in "${!femmodules[@]}" ; do
       package
       cd ..
   fi
+done
+echo "Cloning other modules into $PWD"
+for m in "${!othermodules[@]}" ; do
+  p="${othermodules[$m]}"
+  echo "module: $m from $p"
+  echo "Cloning from $p branch $2"
+  git clone --depth 1 -b $2 https://gitlab.dune-project.org/$p
+  cd $m
+  package
+  cd ..
 done
 
 #####################################
