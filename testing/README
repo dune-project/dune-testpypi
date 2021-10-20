@@ -8,6 +8,14 @@ fill out. Select the 'feature/cmake-python-overhaul' branch instead of
 corresponding branch in core and fem modules. Simply click 'Run workflow'
 to start the process.
 
+Each script can be run with a similar setup to the github setting using the
+script testing/locallyRunTest which should be run from the 'testing' folder.
+The script takes three arguments:
+the script file to run and the tag/branches to use for core and fem respectively.
+The test is run in a temporary folder below the testing folder.
+There is no checking done at the moment and also no software / python
+package is installed so everything must be available, i.e., scikit-build.
+
 Folder structure:
 =================
 Every file ending '.sh' in the 'testing' folder will be run in the following environment:
