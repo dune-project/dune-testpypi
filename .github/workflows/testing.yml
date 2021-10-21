@@ -140,5 +140,5 @@ jobs:
             tar xzf dist/repos.tar.gz
             mkdir test
             cd test
-            bash ../${{ matrix.filepath }} $BRANCH $FEMBRANCH
+            bash -e ../${{ matrix.filepath }} $BRANCH $FEMBRANCH
         shell: bash
