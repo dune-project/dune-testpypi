@@ -10,7 +10,7 @@ fill out. Select the corresponding branches in core and fem modules.
 Running locally
 ---------------
 Each test script can be run locally with a setup similar to the github setting.
-Therefore, use the script 'testing/locallyRunTest' which should be run from the 'testing' folder.
+To this end, use the script 'testing/locallyRunTest' which should be run from the 'testing' folder.
 
 The script takes three arguments:
 - The script file to run
@@ -58,5 +58,6 @@ installPlusSource.sh
 --------------------
 Setup a venv and install dune.grid.
 Then configure dune-fem from source and test a tutorial example.
-Then install dune.alugrid, reconfigure dune and run a tutorial example using dune.algurid.
-Finally, build dune-alugrid from source and run example.
+Add dune-fem-dg from source and test a tutorial example.
+Install dune.polygongrid and test a script to see that it works with dune.fem.
+Finally, build dune-alugrid from source, reconfigure dune-fem and run a tutorial example.

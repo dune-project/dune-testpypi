@@ -30,13 +30,13 @@ pip install --pre --find-links file://$PWD/dune-polygongrid/dist dune.polygongri
 pip list
 testScript="\
 from dune.polygongrid import polygonGrid ;\
-view = polygonGrid( domain, dualGrid=False ) \
-from dune.fem.space import lagrange
-spc = lagrange(view)
-print(spc.size)
+from dune.grid import cartesianDomain ;\
+view = polygonGrid( cartesianDomain([0,0],[1,1],[10,10]), dualGrid=False ) ;\
+from dune.fem.space import lagrange ;\
+spc = lagrange(view) ;\
+print(spc.size) \
 "
-python -c $testScript
-cd ..
+python -c "$testScript"
 
 # add dune-alugrid from source and test again
 cp -r ../repos/dune-alugrid .

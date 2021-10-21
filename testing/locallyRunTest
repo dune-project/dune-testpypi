@@ -28,4 +28,4 @@ export DUNEPY_DISABLE_PLOTTING=1
 export DUNE_LOG_LEVEL=$LOGLEVEL
 mkdir test
 cd test
-bash ../testing/$1 $coreBranch $femBranch
+bash -e ../testing/$1 $coreBranch $femBranch
