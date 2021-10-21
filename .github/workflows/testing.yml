@@ -85,6 +85,9 @@ jobs:
 
   # test packages
   test:
+    env:
+      BRANCH: feature/cmake-python-overhaul
+      FEMBRANCH: feature/cmake-python-overhaul
     name: testing tutorial
     needs: [ build, getTests ]
     env:

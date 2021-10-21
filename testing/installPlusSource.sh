@@ -21,7 +21,11 @@ cd ..
 
 # install polygongrid and test that can be used within dune-fem
 . ../package
+
+echo "cloning dune-poylygongrid with branch $1"
 git clone --depth 1 -b $1 https://gitlab.dune-project.org/extensions/dune-polygongrid.git
+echo "done"
+
 cd dune-polygongrid
 package ../../repos
 cd ..
