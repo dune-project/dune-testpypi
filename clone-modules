@@ -5,24 +5,11 @@ echo "versions $coreversion, $femversion"
 ls .
 echo Downloading dune-common into $PWD
 git clone --depth 1 -b $1 https://gitlab.dune-project.org/core/dune-common.git
+base=$PWD
 mkdir dist
 mkdir repos
 
-package()
-{
-  # check if the commit in dune-common is tagged. If tagged use the tag as
-  # version number (assumes the tag is a valid python package version, i.e., v2.8.0rc1
-  # otherwise use the default 'dev' numbering.
-  tag=$(git describe --exact-match --tags 2> \dev\null)
-  if [ $? -eq 0 ]; then
-    echo "Use version" $version
-    $packaging --onlysdist --version=$tag
-  else
-    echo "Use dev versioning"
-    $packaging --onlysdist
-  fi
-}
-export packaging=$PWD/dune-common/bin/dunepackaging.py
+. package
 export -f package
 
 #################################
@@ -57,7 +44,7 @@ for m in "${!coremodules[@]}" ; do
       echo "Cloning from $p branch $1"
       git clone --depth 1 -b $1 https://gitlab.dune-project.org/$p
       cd $m
-      package
+      package $base
       cd ..
   fi
 done
@@ -69,7 +56,7 @@ for m in "${!femmodules[@]}" ; do
       echo "Cloning from $p branch $2"
       git clone --depth 1 -b $2 https://gitlab.dune-project.org/$p
       cd $m
-      package
+      package $base
       cd ..
   fi
 done
@@ -80,7 +67,7 @@ for m in "${!othermodules[@]}" ; do
   echo "Cloning from $p branch $2"
   git clone --depth 1 -b $2 https://gitlab.dune-project.org/$p
   cd $m
-  package
+  package $base
   cd ..
 done
 
@@ -89,4 +76,4 @@ done
 mv */dist/*.tar.gz ../dist
 cd ..
 
-tar cvzf dist/repos.tar.gz repos
+tar cvzf dist/repos.tar.gz repos >/dev/null 2>&1

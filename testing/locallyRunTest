@@ -8,6 +8,7 @@
 testScript=$1
 coreBranch=$2
 femBranch=$3
+LOGLEVEL=DEBUG
 
 testBase=$PWD/..
 
@@ -17,6 +18,7 @@ cd $TMPNAME
 ln -s .. testing
 ln -s ../../clone-modules .
 ln -s ../../testpypi.py .
+ln -s ../../package .
 
 # start to clone dune modules and make distribution
 ./clone-modules $coreBranch $femBranch
@@ -26,4 +28,4 @@ export DUNEPY_DISABLE_PLOTTING=1
 export DUNE_LOG_LEVEL=$LOGLEVEL
 mkdir test
 cd test
-bash ../testing/$1
+bash ../testing/$1 $coreBranch $femBranch
