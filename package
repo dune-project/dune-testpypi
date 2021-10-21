@@ -1,6 +1,7 @@
 package()
 {
   packaging=$1/dune-common/bin/dunepackaging.py
+  echo "packaging: $1"
   # check if the commit in dune-common is tagged. If tagged use the tag as
   # version number (assumes the tag is a valid python package version, i.e., v2.8.0rc1
   # otherwise use the default 'dev' numbering.

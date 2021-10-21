@@ -27,7 +27,9 @@ git clone --depth 1 -b $1 https://gitlab.dune-project.org/extensions/dune-polygo
 echo "done"
 
 cd dune-polygongrid
+echo $PWD
 package ../../repos
+echo "PACKAGED"
 cd ..
 pip install --pre --find-links file://$PWD/dune-polygongrid/dist dune.polygongrid
 # this should not be needed: dunecontrol --only=dune-fem all
@@ -53,18 +55,3 @@ python -c "import dune.algrid ; assert not 'dev' in dune.alugrid.__version__"
 python laplace-adaptive.py
 cd ..
 
-
-# install mmesh and test that can be used within dune-fem
-. ../package
-
-echo "cloning dune-mmesh with branch $1"
-git clone --depth 1 -b $1 https://gitlab.dune-project.org/samuel.burbulla/dune-mmesh.git
-echo "done"
-
-cd dune-mmesh
-package ../../repos
-cd ..
-pip install --pre --find-links file://$PWD/dune-mmesh/dist dune.mmesh
-pip list
-cd dune-mmesh/scripts
-python test.py
