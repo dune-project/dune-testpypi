@@ -28,7 +28,7 @@ echo "done"
 
 cd dune-polygongrid
 echo $PWD
-package ../../repos
+package $PWD/../../repos
 echo "PACKAGED"
 cd ..
 pip install --pre --find-links file://$PWD/dune-polygongrid/dist dune.polygongrid
