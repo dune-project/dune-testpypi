@@ -1,5 +1,7 @@
 python -m venv dune-env
 . dune-env/bin/activate
+pip install scikit-build
+
 pip install --pre --find-links file://$PWD/../dist dune.alugrid dune.istl dune.localfunctions
 
 # add dune-fem and test
