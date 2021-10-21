@@ -58,6 +58,7 @@ jobs:
         uses: actions/checkout@v2
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
+          set +e
           pip install scikit-build
           ./clone-modules $BRANCH $FEMBRANCH
       - name: upload artifacts
@@ -140,6 +141,7 @@ jobs:
         # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
+          set +e
           source dune-env/bin/activate
           pip list
           python -m dune.fem tutorial
@@ -148,6 +150,7 @@ jobs:
         # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
+          set +e
           source dune-env/bin/activate
           export DUNEPY_DISABLE_PLOTTING=1
           export DUNE_LOG_LEVEL=$LOGLEVEL

@@ -1,7 +1,9 @@
 package()
 {
   packaging="$1/dune-common/bin/dunepackaging.py"
-  if [ ! -f $packaging ]; packaging="dunepackaging.py"
+  if [ ! -f $packaging ]; then
+    packaging="dunepackaging.py"
+  fi
 
   set +e # the next command is allowed to fail
   # check if the commit in dune-common is tagged. If tagged use the tag as
