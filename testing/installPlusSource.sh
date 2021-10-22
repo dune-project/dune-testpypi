@@ -32,9 +32,9 @@ cd dune-polygongrid
 echo $PWD
 package $PWD/../..
 echo "PACKAGED"
+mv dist/* ../../dist
 cd ..
-pip install --pre --find-links file://$PWD/dune-polygongrid/dist dune.polygongrid
-# this should not be needed: dunecontrol --only=dune-fem all
+pip install --pre --find-links file://$PWD/../dist dune.polygongrid
 pip list
 testScript="\
 from dune.polygongrid import polygonGrid ;\
