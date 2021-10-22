@@ -1,0 +1,23 @@
+package()
+{
+  packaging="$1/dune-common/bin/dunepackaging.py"
+  if [ ! -f $packaging ]; then
+    packaging="dunepackaging.py"
+  fi
+
+  set +e # the next command is allowed to fail
+  # check if the commit in dune-common is tagged. If tagged use the tag as
+  # version number (assumes the tag is a valid python package version, i.e., v2.8.0rc1
+  # otherwise use the default 'dev' numbering.
+  tag=$(git describe --exact-match --tags >/dev/null 2>&1)
+  ret=$?
+  set -e
+
+  if [ $ret -eq 0 ]; then
+    echo "Use version" $version
+    $packaging --onlysdist --version=$tag
+  else
+    echo "Use dev versioning"
+    $packaging --onlysdist
+  fi
+}

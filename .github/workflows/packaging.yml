@@ -27,7 +27,7 @@ on:
         #       and the build will fail
         description: 'tag e.g. (master | v2.8.0) [master]'
         required: true
-        default: 'master'
+        default: 'feature/cmake-python-overhaul'
       fembranch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
@@ -36,7 +36,7 @@ on:
         #       and the build will fail
         description: 'tag e.g. (master | v2.8.0.1) [master]'
         required: true
-        default: 'master'
+        default: 'feature/cmake-python-overhaul'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,8 +45,8 @@ jobs:
     name: build
     runs-on: [ubuntu-latest]
     env:
-      BRANCH: master
-      FEMBRANCH: master
+      BRANCH: feature/cmake-python-overhaul
+      FEMBRANCH: feature/cmake-python-overhaul
     steps:
       - name: environmentCore
         if: github.event.inputs.branch != ''
@@ -58,6 +58,7 @@ jobs:
         uses: actions/checkout@v2
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
+          set +e
           pip install scikit-build
           ./clone-modules $BRANCH $FEMBRANCH
       - name: upload artifacts
@@ -93,6 +94,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             sudo apt update
@@ -105,6 +107,7 @@ jobs:
           fi
         shell: bash
       - name: download artifacts
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         uses: actions/download-artifact@v2
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
@@ -112,6 +115,7 @@ jobs:
           name: packages
           path: dist
       - name: Setup venv
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
           python3 -m venv dune-env
           source dune-env/bin/activate
@@ -122,12 +126,13 @@ jobs:
           fi
         shell: bash
       - name: pip install dune modules
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
           source dune-env/bin/activate
           pip install --pre -v --find-links file://$PWD/dist dune-fem
         shell: bash
       - name: Install extension modules
-        if: ${{ matrix.test == 'extensions' }}
+        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
           pip install --pre -v --find-links file://$PWD/dist dune-fem-dg dune-vem
@@ -136,15 +141,16 @@ jobs:
         # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
+          set +e
           source dune-env/bin/activate
           pip list
-          DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
           python -m dune.fem tutorial
         shell: bash
       - name: Run tutorial
         # macOS fails with python 3.7: Symbol not found: _PyCMethod_New
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
+          set +e
           source dune-env/bin/activate
           export DUNEPY_DISABLE_PLOTTING=1
           export DUNE_LOG_LEVEL=$LOGLEVEL
