@@ -41,7 +41,7 @@ from dune.polygongrid import polygonGrid ;\
 from dune.grid import cartesianDomain ;\
 print(\"STARTED\") ;\
 view = polygonGrid( cartesianDomain([0,0],[1,1],[10,10]), dualGrid=False ) ;\
-print(\"have grid\",grid.size(0)) ;\
+print(\"have grid\",view.size(0)) ;\
 from dune.fem.space import finiteVolume ;\
 print(\"SPACE\") ;\
 spc = finiteVolume(view) ;\
@@ -52,11 +52,15 @@ python -c "$testScript"
 # add dune-alugrid from source and test again
 cp -r ../repos/dune-alugrid .
 dunecontrol --only=dune-alugrid all
+# at the moment we need to remove the build dirs of the source modules
+# depending on dune-alugrid because their metadata will point to the
+# installed dune-alugrid and this leads to a mismatch failure
+rm -rf dune-fem/build-cmake dune-fem-dg
+# only need to rebuild dune-fem
 dunecontrol --only=dune-fem all
-python -m dune.fem
 cd fem_tutorial
 pip list
-python -c "import dune.algrid ; assert not 'dev' in dune.alugrid.__version__"
+# at the moment dune packages don't provide a __version__ attribute.
+# python -c "import dune.algrid ; assert not 'dev' in dune.alugrid.__version__"
 python laplace-adaptive.py
 cd ..
-
