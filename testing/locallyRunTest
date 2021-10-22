@@ -21,7 +21,12 @@ ln -s ../../testpypi.py .
 ln -s ../../package .
 
 # start to clone dune modules and make distribution
+python3 -m venv tempenv
+. tempenv/bin/activate
+pip install scikit-build
+pip install requests
 ./clone-modules $coreBranch $femBranch
+deactivate
 
 # now run test
 export DUNEPY_DISABLE_PLOTTING=1

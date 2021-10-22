@@ -1,6 +1,6 @@
-python -m venv dune-env
+python3 -m venv dune-env
 . dune-env/bin/activate
-pip install scikit-build
+pip install scikit-build requests
 
 pip install --pre --find-links file://$PWD/../dist dune.alugrid dune.istl dune.localfunctions
 
@@ -39,10 +39,13 @@ pip list
 testScript="\
 from dune.polygongrid import polygonGrid ;\
 from dune.grid import cartesianDomain ;\
+print(\"STARTED\") ;\
 view = polygonGrid( cartesianDomain([0,0],[1,1],[10,10]), dualGrid=False ) ;\
-from dune.fem.space import lagrange ;\
-spc = lagrange(view) ;\
-print(spc.size) \
+print(\"have grid\",grid.size(0)) ;\
+from dune.fem.space import finiteVolume ;\
+print(\"SPACE\") ;\
+spc = finiteVolume(view) ;\
+print(\"have space\",spc.size) \
 "
 python -c "$testScript"
 
