@@ -33,6 +33,10 @@ femmodules=(
   [dune-fem-dg]='dune-fem/dune-fem-dg.git'
   [dune-vem]='dune-fem/dune-vem.git'
 )
+declare -A extramodules
+extramodules=(
+  [dune-polygongrid]='extensions/dune-polygongrid.git'
+)
 
 echo "Cloning core modules into $PWD"
 for m in "${!coremodules[@]}" ; do
@@ -53,6 +57,18 @@ for m in "${!femmodules[@]}" ; do
   if ! python3 ../testpypi.py $m $femversion ; then
       echo "Cloning from $p branch $2"
       git clone --depth 1 -b $2 https://gitlab.dune-project.org/$p
+      cd $m
+      package $base
+      cd ..
+  fi
+done
+echo "Cloning extra modules into $PWD"
+for m in "${!extramodules[@]}" ; do
+  p="${extramodules[$m]}"
+  echo "module: $m from $p"
+  if ! python3 ../testpypi.py $m $coreversion ; then
+      echo "Cloning from $p branch $1"
+      git clone --depth 1 -b $1 https://gitlab.dune-project.org/$p
       cd $m
       package $base
       cd ..
