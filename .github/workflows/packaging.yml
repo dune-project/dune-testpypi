@@ -73,6 +73,8 @@ jobs:
     needs: build
     env:
       LOGLEVEL: Warning
+      BRANCH: master
+      FEMBRANCH: master
     strategy:
         fail-fast: false
         # Note:
@@ -86,7 +88,13 @@ jobs:
     steps:
       - name: starting
         uses: actions/checkout@v2
-      - name: environment
+      - name: environmentCore
+        if: github.event.inputs.branch != ''
+        run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
+      - name: environmentFem
+        if: github.event.inputs.fembranch != ''
+        run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
+      - name: environmentLog
         if: github.event.inputs.logLevel != ''
         run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
       - name: setup python ${{ matrix.python }}
@@ -128,6 +136,7 @@ jobs:
       - name: pip install dune modules
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
         run: |
+          ls dist
           source dune-env/bin/activate
           pip install --pre -v --find-links file://$PWD/dist dune-fem
         shell: bash
@@ -144,6 +153,9 @@ jobs:
           set +e
           source dune-env/bin/activate
           pip list
+          if [[ $BRANCH = 2.8* ]] ; then
+            DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
+          fi
           python -m dune.fem tutorial
         shell: bash
       - name: Run tutorial
