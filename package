@@ -9,7 +9,8 @@ package()
   # check if the commit in dune-common is tagged. If tagged use the tag as
   # version number (assumes the tag is a valid python package version, i.e., v2.8.0rc1
   # otherwise use the default 'dev' numbering.
-  tag=$(git describe --exact-match --tags)
+  # tag=$(git describe --exact-match --tags) # this fails if the current commit has multiple tags 
+  tag=$(git tag --contains | sort | tail -1)
   ret=$?
   set -e
 
