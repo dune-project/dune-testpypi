@@ -187,6 +187,10 @@ jobs:
         with:
           name: packages
           path: dist
+      - name: remove repository tar.gz since it can't be uploaded
+        run: |
+          rm dist/repos.tar.gz
+        shell: bash
       - name: Publish package to ${{ env.UPLOAD }}
         uses: pypa/gh-action-pypi-publish@release/v1
         if: ${{ env.UPLOAD == 'pypi' }}
