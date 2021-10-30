@@ -14,7 +14,8 @@ echo "cloning dune-mmesh with branch $1"
 git clone --depth 1 -b $1 https://gitlab.dune-project.org/samuel.burbulla/dune-mmesh.git
 
 ./dune-common/bin/dunecontrol --opts=dune-mmesh/cmake/config.opts all
-./dune-common/bin/dunecontrol --opts=dune-mmesh/cmake/config.opts make install_python
+# ./dune-common/bin/dunecontrol --opts=dune-mmesh/cmake/config.opts make install_python
+./dune-common/bin/setup-dunepy.py --opts=dune-mmesh/cmake/config.opts install
 
 # test that it can be used within dune-fem==2.8.0
 cd dune-mmesh/scripts
