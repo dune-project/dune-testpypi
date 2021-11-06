@@ -25,7 +25,7 @@ python3 -m venv tempenv
 . tempenv/bin/activate
 pip install scikit-build
 pip install requests
-./clone-modules $coreBranch $femBranch
+./clone-modules $coreBranch $femBranch "none"
 deactivate
 
 # now run test

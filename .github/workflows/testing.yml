@@ -76,7 +76,7 @@ jobs:
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           pip install scikit-build
-          ./clone-modules $BRANCH $FEMBRANCH
+          ./clone-modules $BRANCH $FEMBRANCH "none"
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:

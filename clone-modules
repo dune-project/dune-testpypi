@@ -1,12 +1,22 @@
 set +e
 
+coretag=$1
+femtag=$2
+if [ $3 = "none" ]; then
+  upload=0
+else
+  upload=1
+fi
 coreversion="${1:1}"
 femversion="${2:1}"
 
-echo "versions $coreversion, $femversion"
+echo "versions: $coreversion, $femversion (tags $coretag, $femtag)"
 ls .
 echo Downloading dune-common into $PWD
-git clone --depth 1 -b $1 https://gitlab.dune-project.org/core/dune-common.git
+git clone --depth 1 -b $coretag https://gitlab.dune-project.org/core/dune-common.git
+if [ $? ]; then # the branch/tag didn't exist so use master
+  git clone --depth 1 https://gitlab.dune-project.org/core/dune-common.git
+fi
 base=$PWD
 mkdir dist
 mkdir repos
@@ -38,41 +48,47 @@ extramodules=(
   [dune-polygongrid]='extensions/dune-polygongrid.git'
 )
 
-echo "Cloning core modules into $PWD"
-for m in "${!coremodules[@]}" ; do
-  p="${coremodules[$m]}"
+#########################################
+
+clonemodule()
+{
   echo "module: $m from $p"
-  if ! python3 ../testpypi.py $m $coreversion ; then
-      echo "Cloning from $p branch $1"
-      git clone --depth 1 -b $1 https://gitlab.dune-project.org/$p
+  # test if package with this version is already uploaded to pypi
+  # if it is no new package will be build and the pypi package is used
+  if ! python3 ../testpypi.py $m $v ; then
+      echo "Try cloning from $p branch $t"
+      git clone --depth 1 -b $t https://gitlab.dune-project.org/$p
+      if [ $? ]; then # the branch/tag didn't exist so use master
+        if [ $upload = 1]; then
+          echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
+          echo "Rerun test with 'upload=none'."
+          exit(1)
+        fi
+        git clone --depth 1 https://gitlab.dune-project.org/$p
+      fi
       cd $m
+      git log | head
       package $base
       cd ..
   fi
+}
+
+#########################################
+
+echo "Cloning core modules into $PWD"
+for m in "${!coremodules[@]}" ; do
+  p="${coremodules[$m]}"
+  clonemodule $m $p $coreversion $coretag
 done
 echo "Cloning fem modules into $PWD"
 for m in "${!femmodules[@]}" ; do
   p="${femmodules[$m]}"
-  echo "module: $m from $p"
-  if ! python3 ../testpypi.py $m $femversion ; then
-      echo "Cloning from $p branch $2"
-      git clone --depth 1 -b $2 https://gitlab.dune-project.org/$p
-      cd $m
-      package $base
-      cd ..
-  fi
+  clonemodule $m $p $femversion $femtag
 done
 echo "Cloning extra modules into $PWD"
 for m in "${!extramodules[@]}" ; do
   p="${extramodules[$m]}"
-  echo "module: $m from $p"
-  if ! python3 ../testpypi.py $m $coreversion ; then
-      echo "Cloning from $p branch $1"
-      git clone --depth 1 -b $1 https://gitlab.dune-project.org/$p
-      cd $m
-      package $base
-      cd ..
-  fi
+  clonemodule $m $p $coreversion $coretag
 done
 
 #####################################

@@ -52,13 +52,16 @@ jobs:
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
+      - name: environmentUpload
+        if: github.event.inputs.upload != ''
+        run: echo "UPLOAD=${{ github.event.inputs.upload }}" >> $GITHUB_ENV
       - name: starting
         uses: actions/checkout@v2
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           set +e
           pip install scikit-build
-          ./clone-modules $BRANCH $FEMBRANCH
+          ./clone-modules $BRANCH $FEMBRANCH $UPLOAD
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:
