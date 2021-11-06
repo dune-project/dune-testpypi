@@ -2,20 +2,17 @@ set +e
 
 coretag=$1
 femtag=$2
-if [ $3 = "none" ]; then
-  upload=0
-else
-  upload=1
-fi
+upload=$3
 coreversion="${1:1}"
 femversion="${2:1}"
 
 echo "versions: $coreversion, $femversion (tags $coretag, $femtag)"
 ls .
 echo Downloading dune-common into $PWD
-git clone --depth 1 -b $coretag https://gitlab.dune-project.org/core/dune-common.git
+git clone --depth 1 -b $coretag https://gitlab.dune-project.org/core/dune-common.git > /dev/null 2>&1
 if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master
-  git clone --depth 1 https://gitlab.dune-project.org/core/dune-common.git
+  echo "using dune-common master since $coretag branch not found!"
+  git clone --depth 1 https://gitlab.dune-project.org/core/dune-common.git > /dev/null 2>&1
 fi
 base=$PWD
 mkdir dist
@@ -64,17 +61,20 @@ clonemodule()
       echo "Try cloning from $p branch $t"
       git clone --depth 1 -b $t https://gitlab.dune-project.org/$p > /dev/null 2>&1
       if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master
-        if [ $upload = 1 ]; then
+        if [ ! $upload = "none" ]; then
           echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
           echo "Rerun test with 'upload=none'."
           exit 1
         fi
-        git clone --depth 1 https://gitlab.dune-project.org/$p
+        echo "using master since $coretag branch not found!"
+        git clone --depth 1 https://gitlab.dune-project.org/$p > /dev/null 2>&1
       fi
       cd $m
       git log | head
       package $base
       cd ..
+  else
+      echo "module with this version found on $upload - using that instead of cloning"
   fi
 }
 
