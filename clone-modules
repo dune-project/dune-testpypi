@@ -62,8 +62,8 @@ clonemodule()
   # if it is no new package will be build and the pypi package is used
   if ! python3 ../testpypi.py $m $v ; then
       echo "Try cloning from $p branch $t"
-      git clone --depth 1 -b $t https://gitlab.dune-project.org/$p
-      if [ $? ]; then # the branch/tag didn't exist so use master
+      git clone --depth 1 -b $t https://gitlab.dune-project.org/$p > /dev/null 2>&1
+      if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master
         if [ $upload = 1 ]; then
           echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
           echo "Rerun test with 'upload=none'."
@@ -101,4 +101,4 @@ done
 mv */dist/*.tar.gz ../dist
 cd ..
 
-tar cvzf dist/repos.tar.gz repos >/dev/null 2>&1
+tar cvzf dist/repos.tar.gz repos > /dev/null 2>&1
