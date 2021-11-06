@@ -14,7 +14,7 @@ echo "versions: $coreversion, $femversion (tags $coretag, $femtag)"
 ls .
 echo Downloading dune-common into $PWD
 git clone --depth 1 -b $coretag https://gitlab.dune-project.org/core/dune-common.git
-if [ $? ]; then # the branch/tag didn't exist so use master
+if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master
   git clone --depth 1 https://gitlab.dune-project.org/core/dune-common.git
 fi
 base=$PWD
@@ -55,9 +55,9 @@ clonemodule()
 {
   m=$1
   p=$2
-  v=$4
+  v=$3
   t=$4
-  echo "cloning called with $m $p $v $t"
+  echo "cloning called with $m $p $v $t into $PWD"
   # test if package with this version is already uploaded to pypi
   # if it is no new package will be build and the pypi package is used
   if ! python3 ../testpypi.py $m $v ; then
