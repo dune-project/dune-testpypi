@@ -24,10 +24,11 @@ mkdir repos
 . package
 export -f package
 
+cd repos
+
 #################################
 
 # download modules into repos
-cd repos
 declare -A coremodules
 coremodules+=(
   [dune-common]='core/dune-common.git'
@@ -62,7 +63,7 @@ clonemodule()
         if [ $upload = 1]; then
           echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
           echo "Rerun test with 'upload=none'."
-          exit(1)
+          exit 1
         fi
         git clone --depth 1 https://gitlab.dune-project.org/$p
       fi
