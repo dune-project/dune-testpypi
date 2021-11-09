@@ -25,7 +25,7 @@ cd ..
 . ../package
 
 echo "cloning dune-poylygongrid with branch $1"
-clonemodule dune-polygongrid extensions/dune-polygongrid.gi $1 $1
+clonemodule dune-polygongrid extensions/dune-polygongrid.git $1 $1
 # git clone --depth 1 -b $1 https://gitlab.dune-project.org/extensions/dune-polygongrid.git
 echo "done"
 
