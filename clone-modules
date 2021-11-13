@@ -12,6 +12,8 @@ git clone --depth 1 -b $coretag https://gitlab.dune-project.org/core/dune-common
 if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master
   echo "using dune-common master since $coretag branch not found!"
   git clone --depth 1 https://gitlab.dune-project.org/core/dune-common.git > /dev/null 2>&1
+else
+  echo "cloned dune-common $coretag"
 fi
 set -e
 base=$PWD
