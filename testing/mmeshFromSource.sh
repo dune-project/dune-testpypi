@@ -1,12 +1,13 @@
 python3 -m venv dune-env
 . dune-env/bin/activate
+pip install scikit-build requests
 pip install --pre --find-links file://$PWD/../dist dune.fem
 
 # install dune-mmesh
 . ../package
 
 echo "cloning dune-mmesh with branch $1"
-clonemodule dune-mmsh samuel.burbulla/dune-mmesh.git
+clonemodule dune-mmesh samuel.burbulla/dune-mmesh.git
 echo "done"
 
 cd dune-mmesh
