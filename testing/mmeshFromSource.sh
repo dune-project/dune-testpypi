@@ -6,7 +6,7 @@ pip install --pre --find-links file://$PWD/../dist dune.fem
 . ../package
 
 echo "cloning dune-mmesh with branch $1"
-git clone --depth 1 -b $1 https://gitlab.dune-project.org/samuel.burbulla/dune-mmesh.git
+clonemodule dune-mmsh samuel.burbulla/dune-mmesh.git
 echo "done"
 
 cd dune-mmesh

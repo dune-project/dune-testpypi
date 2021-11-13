@@ -34,7 +34,7 @@ clonemodule()
       echo "Try cloning from $p branch $t"
       git clone --depth 1 -b $t https://gitlab.dune-project.org/$p # > /dev/null 2>&1
       if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master - if no upload is to be done
-        if [ ! "$upload" = "none" ]; then
+        if [ ! "$upload" = "none" ] && [ ! "$upload" = "" ]; then
           echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
           echo "Rerun test with 'upload=none'."
           exit 1
