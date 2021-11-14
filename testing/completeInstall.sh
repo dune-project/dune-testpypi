@@ -1,6 +1,6 @@
 python -m venv dune-env
 . dune-env/bin/activate
-pip install matplotlib
+pip install matplotlib mpi4py
 
 pip install --pre --find-links file://$PWD/../dist dune.grid
 python -m dune.grid

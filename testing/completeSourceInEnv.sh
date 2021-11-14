@@ -1,6 +1,6 @@
 python -m venv dune-env 
 . dune-env/bin/activate
-pip install matplotlib
+pip install matplotlib mpi4py
 
 cd ../repos
 dune-common/bin/dunecontrol --module=dune.grid all
