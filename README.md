@@ -14,8 +14,8 @@ Contains two _actions_
 
 # Testing scenarios action:
 
-Running
-=======
+Manually running action
+------------------------
 
 1. Login into github and goto [https://github.com/adedner/dune-testpypi](https://github.com/adedner/dune-testpypi).
 2. Open the 'Actions' tab and on the left choose 'testing scenarios'.
@@ -56,22 +56,15 @@ Every file ending '.sh' in the 'testing' folder will be run in the following env
 Available tests
 ---------------
 
-completeInstall.sh
--------------------
+1. __completeInstall.sh__:
 Setup a venv, install dune.grid and run example script.
 Then add dune.fem and run a script from the fem tutorial.
-
-completeSourceInEnv.sh
-----------------------
+1. __completeSourceInEnv.sh__:
 Setup a venv, configure all dune source modules and run a script from the fem tutorial.
-
-completeSourceNoEnv.sh
-----------------------
+1. __completeSourceNoEnv.sh__:
 Configure all dune source modules without an active venv.
 Then run a script from the fem tutorial using the packages from the dune internal venv.
-
-installPlusSource.sh
---------------------
+1. __installPlusSource.sh__:
 Setup a venv and install dune.grid.
 Then configure dune-fem from source and test a tutorial example.
 Add dune-fem-dg from source and test a tutorial example.
