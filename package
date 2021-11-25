@@ -27,7 +27,7 @@ clonemodule()
   p=$2 # path to module (part after https://gitlab.dune-project.org/)
   v=$3 # version tag to check if available on pypi
   t=$4 # tag/branch to try to clone into - master used if not available
-  echo "cloning called with $m $p $v $t into $PWD"
+  echo "cloning called for module:$m path:$p version:$v tag:$t into $PWD"
   # test if package with this version is already uploaded to pypi
   # if it is no new package will be build and the pypi package is used
   if ! python3 ../testpypi.py $m $v ; then
