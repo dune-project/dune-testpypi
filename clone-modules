@@ -46,6 +46,7 @@ femmodules=(
 declare -A extramodules
 extramodules=(
   [dune-polygongrid]='extensions/dune-polygongrid.git'
+  [dune-spgrid]='extensions/dune-spgrid.git'
 )
 
 #########################################
