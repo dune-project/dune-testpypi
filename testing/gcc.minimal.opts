@@ -1,0 +1,29 @@
+GXX_RELEASE_WARNING_OPTS=" \
+    -Wall \
+    -Wunused \
+    -Wmissing-include-dirs \
+    -Wcast-align \
+    -Wno-missing-braces \
+    -Wmissing-field-initializers \
+    -Wno-sign-compare"
+
+GXX_RELEASE_OPTS=" \
+    -fdiagnostics-color=always \
+    -fno-strict-aliasing \
+    -fstrict-overflow \
+    -fno-finite-math-only \
+    -O3 \
+    -march=x86-64 \
+    -mtune=generic \
+    -funroll-loops \
+    -g0"
+
+CMAKE_FLAGS="
+-DCMAKE_C_COMPILER=/usr/bin/gcc
+-DCMAKE_CXX_COMPILER=/usr/bin/g++
+-DCMAKE_CXX_FLAGS_RELEASE='$GXX_RELEASE_OPTS $GXX_RELEASE_WARNING_OPTS'
+-DCMAKE_CXX_FLAGS_DEBUG='-O0 -g -ggdb -Wall -Wextra -Wno-unused-parameter -Wno-sign-compare'
+-DCMAKE_CXX_FLAGS_RELWITHDEBINFO='$GXX_RELEASE_OPTS $GXX_RELEASE_WARNING_OPTS -g -ggdb -Wall'
+-DCMAKE_BUILD_TYPE=Release
+"
+
