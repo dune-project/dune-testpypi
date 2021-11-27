@@ -5,7 +5,7 @@ download=$4
 coreversion="${1:1}"
 femversion="${2:1}"
 
-case "$test" in
+case "$download" in
 dune) echo "using dune gitlab for download"
       base="https://gitlab.dune-project.org"
       coreurl="$base/core"
