@@ -24,7 +24,7 @@ clonemodule()
 {
   set +e
   m=$1 # module name
-  p=$2 # path to module (part after https://gitlab.dune-project.org/)
+  p=$2 # path to module
   v=$3 # version tag to check if available on pypi
   t=$4 # tag/branch to try to clone into - master used if not available
   echo "cloning called for module:$m path:$p version:$v tag:$t into $PWD"
@@ -32,7 +32,7 @@ clonemodule()
   # if it is no new package will be build and the pypi package is used
   if ! python3 ../testpypi.py $m $v ; then
       echo "Try cloning from $p branch $t"
-      git clone --depth 1 -b $t https://gitlab.dune-project.org/$p # > /dev/null 2>&1
+      git clone --depth 1 -b $t $p # > /dev/null 2>&1
       if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master - if no upload is to be done
         if [ ! "$upload" = "none" ] && [ ! "$upload" = "" ]; then
           echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
@@ -40,7 +40,7 @@ clonemodule()
           exit 1
         fi
         echo "using master since $t branch not found!"
-        git clone --depth 1 https://gitlab.dune-project.org/$p # > /dev/null 2>&1
+        git clone --depth 1 $p # > /dev/null 2>&1
       fi
       cd $m
       git log | head
