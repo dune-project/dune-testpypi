@@ -13,6 +13,10 @@ on:
         description: 'Log level'
         required: true
         default: 'Warning'
+      download:
+        description: 'download location ( dune | lund )'
+        required: true
+        default: 'dune'
       upload:
         description: 'upload (none | testpypi | pypi)'
         required: true
@@ -45,6 +49,7 @@ jobs:
     env:
       BRANCH: master
       FEMBRANCH: master
+      DOWNLOAD: dune
     steps:
       - name: environmentCore
         if: github.event.inputs.branch != ''
@@ -52,6 +57,9 @@ jobs:
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
+      - name: environmentDownload
+        if: github.event.inputs.download != ''
+        run: echo "DOWNLOAD=${{ github.event.inputs.download }}" >> $GITHUB_ENV
       - name: environmentUpload
         if: github.event.inputs.upload != ''
         run: echo "UPLOAD=${{ github.event.inputs.upload }}" >> $GITHUB_ENV
@@ -61,7 +69,7 @@ jobs:
         run: |
           set +e
           pip install scikit-build
-          ./clone-modules $BRANCH $FEMBRANCH $UPLOAD
+          ./clone-modules $BRANCH $FEMBRANCH $UPLOAD $DOWNLOAD
       - name: upload artifacts
         uses: actions/upload-artifact@v2
         with:

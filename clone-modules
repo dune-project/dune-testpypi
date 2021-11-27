@@ -1,17 +1,39 @@
 coretag=$1
 femtag=$2
 upload=$3
+download=$4
 coreversion="${1:1}"
 femversion="${2:1}"
+
+case "$download" in
+dune) echo "using dune gitlab for download"
+      base="https://gitlab.dune-project.org"
+      coreurl="$base/core"
+      femurl="$base/dune-fem"
+      exturl="$base/extensions"
+      ;;
+lund) echo "using lund forl for download"
+      base="https://gitlab.maths.lth.se/dune"
+      coreurl="$base"
+      femurl="$base"
+      exturl="$base"
+      ;;
+*)    echo "no valid download location specified - using dune"
+      base="https://gitlab.dune-project.org"
+      coreurl="$base/core"
+      femurl="$base/dune-fem"
+      exturl="$base/extensions"
+      ;;
+esac
 
 echo "versions: $coreversion, $femversion (tags $coretag, $femtag)"
 ls .
 echo Downloading dune-common into $PWD
 set +e
-git clone --depth 1 -b $coretag https://gitlab.dune-project.org/core/dune-common.git > /dev/null 2>&1
+git clone --depth 1 -b $coretag $coreurl/dune-common.git > /dev/null 2>&1
 if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master
   echo "using dune-common master since $coretag branch not found!"
-  git clone --depth 1 https://gitlab.dune-project.org/core/dune-common.git > /dev/null 2>&1
+  git clone --depth 1 $coreurl/dune-common.git > /dev/null 2>&1
 else
   echo "cloned dune-common $coretag"
 fi
@@ -30,23 +52,23 @@ cd repos
 # download modules into repos
 declare -A coremodules
 coremodules+=(
-  [dune-common]='core/dune-common.git'
-  [dune-geometry]='core/dune-geometry.git'
-  [dune-grid]='core/dune-grid.git'
-  [dune-istl]='core/dune-istl.git'
-  [dune-localfunctions]='core/dune-localfunctions.git'
-  [dune-alugrid]='extensions/dune-alugrid.git'
+  [dune-common]='dune-common.git'
+  [dune-geometry]='dune-geometry.git'
+  [dune-grid]='dune-grid.git'
+  [dune-istl]='dune-istl.git'
+  [dune-localfunctions]='dune-localfunctions.git'
 )
 declare -A femmodules
 femmodules=(
-  [dune-fem]='dune-fem/dune-fem.git'
-  [dune-fem-dg]='dune-fem/dune-fem-dg.git'
-  [dune-vem]='dune-fem/dune-vem.git'
+  [dune-fem]='dune-fem.git'
+  [dune-fem-dg]='dune-fem-dg.git'
+  [dune-vem]='dune-vem.git'
 )
 declare -A extramodules
 extramodules=(
-  [dune-polygongrid]='extensions/dune-polygongrid.git'
-  [dune-spgrid]='extensions/dune-spgrid.git'
+  [dune-alugrid]='dune-alugrid.git'
+  [dune-polygongrid]='dune-polygongrid.git'
+  [dune-spgrid]='dune-spgrid.git'
 )
 
 #########################################
@@ -56,17 +78,17 @@ extramodules=(
 echo "Cloning core modules into $PWD"
 for m in "${!coremodules[@]}" ; do
   p="${coremodules[$m]}"
-  clonemodule $m $p $coreversion $coretag
+  clonemodule $m "$coreurl/$p" $coreversion $coretag
 done
 echo "Cloning fem modules into $PWD"
 for m in "${!femmodules[@]}" ; do
   p="${femmodules[$m]}"
-  clonemodule $m $p $femversion $femtag
+  clonemodule $m "$femurl/$p" $femversion $femtag
 done
 echo "Cloning extra modules into $PWD"
 for m in "${!extramodules[@]}" ; do
   p="${extramodules[$m]}"
-  clonemodule $m $p $coreversion $coretag
+  clonemodule $m "$exturl/$p" $coreversion $coretag
 done
 
 #####################################
