@@ -1,3 +1,8 @@
+base="https://gitlab.dune-project.org"
+coreurl="$base/core"
+femurl="$base/dune-fem"
+exturl="$base/extensions"
+
 python3 -m venv dune-env
 . dune-env/bin/activate
 pip install scikit-build requests mpi4py
@@ -25,8 +30,7 @@ cd ..
 . ../package
 
 echo "cloning dune-poylygongrid with branch $1"
-clonemodule dune-polygongrid extensions/dune-polygongrid.git $1 $1
-# git clone --depth 1 -b $1 https://gitlab.dune-project.org/extensions/dune-polygongrid.git
+clonemodule dune-polygongrid "$exturl/extensions/dune-polygongrid.git" $1 $1
 echo "done"
 
 cd dune-polygongrid
