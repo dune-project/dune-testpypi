@@ -30,7 +30,7 @@ cd ..
 . ../package
 
 echo "cloning dune-poylygongrid with branch $1"
-clonemodule dune-polygongrid "$exturl/extensions/dune-polygongrid.git" $1 $1
+clonemodule dune-polygongrid "$exturl/dune-polygongrid.git" $1 $1
 echo "done"
 
 cd dune-polygongrid
