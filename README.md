@@ -2,15 +2,26 @@
 
 Contains two _actions_
 
-1. "testing scenairos": this runs all bash scripts contained in the
-   `testing` subfolder. More details are given below.
-   This action is run every night.
-2. 'upload packages': this action can be run manually to upload packages to
-   a package index (currently pypi, testpypi). This action uses the
+1. "testing scenairos": this runs all bash scripts contained in the `testing` subfolder. More details are given below.
+
+   __Note__: this action is run every night.
+2. "upload packages": this action can be run manually to upload packages to
+   a package index (currently `pypi` and `testpypi`). This action uses the
    `dune-fem` tutorial to test the packages before upload. The 'tag' to use
    (can be different for core and dune-fem modules) can be set as
    parameters. Instead of a 'tag' it is also possible to provide a branch
-   name but then uploading is disabled.
+   name but then uploading is disabled. 
+
+   __Note__: for a new version tag, i.e., without a `-rX` ending the tag has to exists for all modules of the given class
+   (core or dune-fem) otherwise it is not possible to upload the packages (running without an upload is possible).
+   This is to avoid inconsistent package versions where one module is ahead of the others.
+   It is possible to upload post-releases for individual modules; before upload these will be tested with the available versions
+   on `pypi`.
+   
+   __Note__: it is not possible to overwrite an existing package on either `pypi` or `testpypi`. This actions first checks if
+   a requested version already exists on the upload package index and if so the dune module will not be cloned but will be
+   downloaded from the index (and no upload is attempted).
+   
 
 # Testing scenarios action:
 
