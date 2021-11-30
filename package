@@ -30,22 +30,31 @@ clonemodule()
   echo "cloning called for module:$m path:$p version:$v tag:$t into $PWD"
   # test if package with this version is already uploaded to pypi
   # if it is no new package will be build and the pypi package is used
+  
+  # check whether this is a bugfix version, i.e. -r in version tag
+  REV=`echo $v | grep "\-r"`
   if ! python3 ../testpypi.py $m $v ; then
       echo "Try cloning from $p branch $t"
       git clone --depth 1 -b $t $p # > /dev/null 2>&1
       if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master - if no upload is to be done
-        if [ ! "$upload" = "none" ] && [ ! "$upload" = "" ]; then
-          echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
-          echo "Rerun test with 'upload=none'."
+        if [ ! "$upload" = "none" ] && [ ! "$upload" = "" ] && [ "$REV" = "" ]; then
+          echo "required branch $t not found in $m - this inconsistent state for non-bugfix version and should not be uploaded."
+          echo "Rerun test with 'upload=none'." 
           exit 1
         fi
-        echo "using master since $t branch not found!"
-        git clone --depth 1 $p # > /dev/null 2>&1
-      fi
-      cd $m
-      git log | head
-      package $base
-      cd ..
+        # if not bugfix then clone master at this point
+        if [ "$REV" == "" ]; then 
+          echo "using master since $t branch not found!"
+          git clone --depth 1 $p # > /dev/null 2>&1
+        else
+          echo "module with this version found on $upload - using that instead of cloning"
+        fi 
+      else
+        cd $m
+        git log | head
+        package $base
+        cd ..
+      fi  
   else
       echo "module with this version found on $upload - using that instead of cloning"
   fi
