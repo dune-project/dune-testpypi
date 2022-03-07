@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd ../repos
 
 FLAGS="-O3 -DNDEBUG"
@@ -18,10 +20,13 @@ CMAKE_FLAGS=\"-DCMAKE_CXX_FLAGS=\\\"$FLAGS\\\"  \\
 #-DCMAKE_LD_FLAGS=\\\"$PY_LDFLAGS\\\" \\
 
 dune-common/bin/dunecontrol --opts=femdg-config.opts --module=dune-fem-dg all
+echo "Done with dune-controlling!"
 
 # source config opts for this to work with python
-. femdg-config.opts
+echo "Sourcing config.opts"
+source femdg-config.opts
 
+echo "Setting PYTHONPATH"
 # set python path variable
 MODULES=`dune-common/bin/dunecontrol --print`
 for MOD in $MODULES; do
