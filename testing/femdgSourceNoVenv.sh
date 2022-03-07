@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install missing python packages in users local environment
-pip install -u numpy scipy fenics-ufl matplotlib
+pip install -U numpy scipy fenics-ufl matplotlib
 
 cd ../repos
 
