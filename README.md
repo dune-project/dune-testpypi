@@ -70,14 +70,17 @@ Available tests
 1. __completeInstall.sh__:
 Setup a venv, install dune.grid and run example script.
 Then add dune.fem and run a script from the fem tutorial.
-1. __completeSourceInEnv.sh__:
+2. __completeSourceInEnv.sh__:
 Setup a venv, configure all dune source modules and run a script from the fem tutorial.
-1. __completeSourceNoEnv.sh__:
+3. __completeSourceNoEnv.sh__:
 Configure all dune source modules without an active venv.
 Then run a script from the fem tutorial using the packages from the dune internal venv.
-1. __installPlusSource.sh__:
+4. __installPlusSource.sh__:
 Setup a venv and install dune.grid.
 Then configure dune-fem from source and test a tutorial example.
 Add dune-fem-dg from source and test a tutorial example.
 Install dune.polygongrid and test a script to see that it works with dune.fem.
 Finally, build dune-alugrid from source, reconfigure dune-fem and run a tutorial example.
+5. __femdgSourceNoVenv.sh__:
+Download and execute the dune-fem-dg build script and run one test from dune-fem-dg and one test from dune-fempy.
+
