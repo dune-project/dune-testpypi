@@ -27,14 +27,14 @@ echo "Sourcing config.opts"
 source femdg-config.opts
 
 echo "Setting PYTHONPATH"
+DUNE_PATH=${PWD}
 # set python path variable
-MODULES=`dune-common/bin/dunecontrol --print`
+MODULES=$(./dune-common/bin/dunecontrol --print)
 for MOD in $MODULES; do
-  MODFOUND=`echo $PYTHONPATH | grep $MOD`
-  if [ "$MODFOUND" == "" ]; then
-    export PYTHONPATH=$PYTHONPATH:${PWD}/${MOD}/build-cmake/python
-  fi
+  export PYTHONPATH=$PYTHONPATH:$DUNE_PATH/${MOD}/build-cmake/python
 done
+echo "PYTHONPATH = $PYTHONPATH"
 
+echo "Running euler scripts"
 cd dune-fem-dg/pydemo/euler
 python testdg.py
