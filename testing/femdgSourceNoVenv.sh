@@ -19,5 +19,17 @@ CMAKE_FLAGS=\"-DCMAKE_CXX_FLAGS=\\\"$FLAGS\\\"  \\
 
 dune-common/bin/dunecontrol --opts=femdg-config.opts --module=dune-fem-dg all
 
+# source config opts for this to work with python
+. femdg-config.opts
+
+# set python path variable
+MODULES=`dune-common/bin/dunecontrol --print`
+for MOD in $MODULES; do
+  MODFOUND=`echo $PYTHONPATH | grep $MOD`
+  if [ "$MODFOUND" == "" ]; then
+    export PYTHONPATH=$PYTHONPATH:${PWD}/${MOD}/build-cmake/python
+  fi
+done
+
 cd dune-fem-dg/pydemo/euler
 python testdg.py
