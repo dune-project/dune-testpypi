@@ -126,8 +126,6 @@ jobs:
             # after selecting a specific mirror, we need to run 'apt-get update'
             sudo apt-get update
             sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh libboost-all-dev
-            # python packages for runs without venv
-            sudo apt-get install python3-dev python3-matplotlib python3-numpy python3-mpi4py python3-scipy python3-ufl
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew update
             rm /usr/local/bin/2to3
