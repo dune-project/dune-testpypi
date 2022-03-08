@@ -16,7 +16,7 @@ python -m dune.fem
 cd fem_tutorial
 pip list
 #python concepts.py
-python solver.py
+python solvers.py
 cd ..
 
 # install dune-fem-dg and test again
