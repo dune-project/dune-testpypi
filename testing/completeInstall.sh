@@ -13,3 +13,8 @@ python -m dune.fem
 cd fem_tutorial
 python concepts.py
 cd ..
+
+pip install --pre --find-links file://$PWD/../dist dune.vem
+cd fem_tutorial
+python vemdemo.py
+cd ..
