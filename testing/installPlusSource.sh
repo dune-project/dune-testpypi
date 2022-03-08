@@ -15,7 +15,8 @@ dunecontrol --only=dune-fem all
 python -m dune.fem
 cd fem_tutorial
 pip list
-python concepts.py
+#python concepts.py
+python solvers.py
 cd ..
 
 # install dune-fem-dg and test again
@@ -67,5 +68,6 @@ cd fem_tutorial
 pip list
 # at the moment dune packages don't provide a __version__ attribute.
 # python -c "import dune.algrid ; assert not 'dev' in dune.alugrid.__version__"
-python laplace-adaptive.py
+#python laplace-adaptive.py
+python mcf-algorithm.py
 cd ..
