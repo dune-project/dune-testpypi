@@ -147,6 +147,7 @@ jobs:
           pip install --upgrade pip
           pip install matplotlib scipy pygmsh triangle scikit-build mpi4py
           if [ "$RUNNER_OS" == "Linux" ]; then
+            echo "CURRENTLY MPI4PY IS DISABLED"
             # petsc4py is failing at the moment - need to check
             # pip install petsc4py
           fi
