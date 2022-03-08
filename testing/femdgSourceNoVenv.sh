@@ -10,10 +10,11 @@ pip install -U scipy fenics-ufl matplotlib
 cd ../repos
 
 FLAGS="-O3 -DNDEBUG"
+BUILDDIR=build-cmake
 
 echo "\
 DUNEPATH=`pwd`
-BUILDDIR=build-cmake
+BUILDDIR=$BUILDDIR
 CMAKE_FLAGS=\"-DCMAKE_CXX_FLAGS=\\\"$FLAGS\\\"  \\
  -DALLOW_CXXFLAGS_OVERWRITE=ON \\
  -DDUNE_PYTHON_USE_VENV=OFF \\
@@ -35,10 +36,11 @@ DUNE_PATH=${PWD}
 # set python path variable
 MODULES=$(./dune-common/bin/dunecontrol --print)
 for MOD in $MODULES; do
-  if test -f "$DUNE_PATH/${MOD}/build-cmake/set-dune-pythonpath"; then
-    . $DUNE_PATH/${MOD}/build-cmake/set-dune-pythonpath
+  BUILDPATH=$DUNE_PATH/${MOD}/$BUILDDIR
+  if test -f "$BUILDPATH/set-dune-pythonpath"; then
+    . $BUILDPATH/set-dune-pythonpath
   else
-    export PYTHONPATH=$PYTHONPATH:$DUNE_PATH/${MOD}/build-cmake/python
+    export PYTHONPATH=$PYTHONPATH:$BUILDPATH/python
   fi
 done
 echo "PYTHONPATH = $PYTHONPATH"
