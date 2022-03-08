@@ -147,7 +147,8 @@ jobs:
           pip install --upgrade pip
           pip install matplotlib scipy pygmsh triangle scikit-build mpi4py
           if [ "$RUNNER_OS" == "Linux" ]; then
-            pip install petsc4py
+            # petsc4py is failing at the moment - need to check
+            # pip install petsc4py
           fi
         shell: bash
       - name: pip install dune modules
