@@ -35,7 +35,11 @@ DUNE_PATH=${PWD}
 # set python path variable
 MODULES=$(./dune-common/bin/dunecontrol --print)
 for MOD in $MODULES; do
-  export PYTHONPATH=$PYTHONPATH:$DUNE_PATH/${MOD}/build-cmake/python
+  if test -f "$DUNE_PATH/${MOD}/build-cmake/set-dune-pythonpath"; then
+    . $DUNE_PATH/${MOD}/build-cmake/set-dune-pythonpath
+  else
+    export PYTHONPATH=$PYTHONPATH:$DUNE_PATH/${MOD}/build-cmake/python
+  fi
 done
 echo "PYTHONPATH = $PYTHONPATH"
 
