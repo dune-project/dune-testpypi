@@ -1,7 +1,11 @@
 #!/bin/bash
 
 # install missing python packages in users local environment
-pip install -U jinja2 wheel setuptools mpi4py numpy scipy fenics-ufl matplotlib
+# Note: wheel and setuptools may not be required
+# dune-common dependencies
+pip install -U jinja2 wheel setuptools mpi4py numpy
+# dune-fem dependencies
+pip install -U scipy fenics-ufl matplotlib
 
 cd ../repos
 
@@ -38,6 +42,19 @@ for MOD in $MODULES; do
 done
 echo "PYTHONPATH = $PYTHONPATH"
 
-echo "Running euler scripts"
+echo "Running euler script"
 cd dune-fem-dg/pydemo/euler
 python testdg.py
+
+cd $DUNE_PATH
+
+echo "Running advection script"
+cd dune-fem-dg/pydemo/camc-paper
+mpirun -np 4 python advection.py 2
+
+cd $DUNE_PATH
+echo "Running fem-tutorial script"
+python -m dune.fem
+cd fem_tutorial
+
+mpirun -np 4 python laplace-adaptive.py
