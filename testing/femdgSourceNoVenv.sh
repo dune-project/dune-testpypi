@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # install missing python packages in users local environment
-pip install -U mpi4py numpy scipy fenics-ufl matplotlib
+pip install -U jinja2 wheel setuptools mpi4py numpy scipy fenics-ufl matplotlib
 
 cd ../repos
 
