@@ -9,6 +9,7 @@ python example.py
 cd ..
 
 pip install --pre --find-links file://$PWD/../dist dune.vem
+python -m dune.fem
 cd fem_tutorial
 python vemdemo.py
 cd ..
