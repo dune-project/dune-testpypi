@@ -71,7 +71,7 @@ __Note__: We test the `example.py` script from dune.grid,
           the test script from dune.mmesh, loading dune.alugrid and dune.polygongrid,
           and a test script from dune.femdg.
           From the tutorial we test dune.femdg and dune.vem (`vemdemo.py` and `chemical.py`)
-          and `concepts.py, solvers.py, mcf_algorithm.py,discontinuousgalerkin.py`.
+          and `concepts.py, solvers.py, mcf-algorithm.py,discontinuousgalerkin.py`.
 
 In detail tests scripts are
 

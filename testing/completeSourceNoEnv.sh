@@ -17,6 +17,6 @@ cd -
 $runDune python -m dune.fem
 cd fem_tutorial
 $runDune python solvers.py
-$runDune discontinuousgalerkin.py
+$runDune python discontinuousgalerkin.py
 cd ..
 

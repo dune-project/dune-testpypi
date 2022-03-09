@@ -19,5 +19,5 @@ cd -
 python -m dune.fem
 cd fem_tutorial
 python chemical.py
-python mcf_algorithm.py
+python mcf-algorithm.py
 cd ..
