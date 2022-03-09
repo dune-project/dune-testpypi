@@ -120,9 +120,10 @@ jobs:
             # use apt-spy2 to select closest apt mirror,
             # which helps avoid connectivity issues in Azure;
             # see https://github.com/actions/virtual-environments/issues/675
-            sudo gem install apt-spy2
-            sudo apt-spy2 check
-            sudo apt-spy2 fix --commit
+            # APT-SPY2 fails also
+            # sudo gem install apt-spy2
+            # sudo apt-spy2 check
+            # sudo apt-spy2 fix --commit
             # after selecting a specific mirror, we need to run 'apt-get update'
             sudo apt-get update -o Acquire::Retries=3
             sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh libboost-all-dev
