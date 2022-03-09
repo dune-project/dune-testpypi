@@ -67,23 +67,31 @@ Every file ending '.sh' in the 'testing' folder will be run in the following env
 Available tests
 ---------------
 
+__Note__: We test the `example.py` script from dune.grid,
+          the test script from dune.mmesh, loading dune.alugrid and dune.polygongrid,
+          and a test script from dune.femdg.
+          From the tutorial we test dune.femdg and dune.vem (`vemdemo.py` and `chemical.py`)
+          and `concepts.py, solvers.py, mcf_algorithm.py,discontinuousgalerkin.py`.
+
+In detail tests scripts are
+
 1. __completeInstall.sh__:
   - Setup a venv, install dune.grid and run example script. Then add dune.fem and run a script from the fem tutorial.
-  - Tests run are `example.py` from dune.grid and `concepts.py, vemdemo.py` from dune.fem.
+  - Tests run are `example.py` from dune.grid and `vemdemo.py` from dune.fem.
 2. __completeSourceInEnv.sh__:
   - Setup a venv, configure all dune source modules and run a script from the fem tutorial.
-  - Tests run are `example.py` from dune.grid and `concepts.py` from dune.fem.
+  - Tests run are `example.py` from dune.grid and `chemical.py, mcf_algorithm.py` from dune.fem.
 3. __completeSourceNoEnv.sh__:
   - Configure all dune source modules without an active venv.
     Then run a script from the fem tutorial using the packages from the dune internal venv.
-  - Tests run are `example.py` from dune.grid and `concepts.py` from dune.fem.
+  - Tests run are `example.py` from dune.grid and `solvers.py, discontinuousgalerkin.py` from dune.fem.
 4. __installPlusSource.sh__:
   - Setup a venv and install dune.grid.
     Then configure dune-fem from source and test a tutorial example.
     Add dune-fem-dg from source and test a tutorial example.
     Install dune.polygongrid and test a script to see that it works with dune.fem.
     Finally, build dune-alugrid from source, reconfigure dune-fem and run a tutorial example.
-  - Tests run are `solvers.py, chemical.py` from dune.fem and a test script
+  - Tests run are `concepts.py` from dune.fem and a test script
     form both dune.alugrid and dune.polygongrid.
 5. __femdgSourceNoVenv.sh__:
   - Download and execute the dune-fem-dg build script and run one test from dune-fem-dg and one test from dune-fempy.
