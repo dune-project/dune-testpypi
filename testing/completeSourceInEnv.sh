@@ -13,6 +13,7 @@ cd ..
 
 cd ../repos
 dune-common/bin/dunecontrol --module=dune.fem all
+dune-common/bin/dunecontrol --module=dune.fem.dg all
 cd -
 
 python -m dune.fem
