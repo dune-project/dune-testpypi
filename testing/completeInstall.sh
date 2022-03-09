@@ -8,12 +8,6 @@ cd grid_tutorial
 python example.py
 cd ..
 
-pip install --pre --find-links file://$PWD/../dist dune.fem
-python -m dune.fem
-cd fem_tutorial
-python concepts.py
-cd ..
-
 pip install --pre --find-links file://$PWD/../dist dune.vem
 cd fem_tutorial
 python vemdemo.py

@@ -16,6 +16,6 @@ cd -
 
 $runDune python -m dune.fem
 cd fem_tutorial
-$runDune python concepts.py
+$runDune python solvers.py
 cd ..
 

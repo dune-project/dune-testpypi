@@ -17,5 +17,5 @@ cd -
 
 python -m dune.fem
 cd fem_tutorial
-python concepts.py
+python chemical.py
 cd ..

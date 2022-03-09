@@ -15,17 +15,15 @@ dunecontrol --only=dune-fem all
 python -m dune.fem
 cd fem_tutorial
 pip list
-#python concepts.py
-python solvers.py
+python concepts.py
 cd ..
 
-# install dune-fem-dg and test again
-cp -r ../repos/dune-fem-dg .
-dunecontrol --only=dune-fem-dg all
-cd fem_tutorial
-pip list
-python chemical.py
-cd ..
+# # install dune-fem-dg and test again
+# cp -r ../repos/dune-fem-dg .
+# dunecontrol --only=dune-fem-dg all
+# cd fem_tutorial
+# pip list
+# cd ..
 
 # install polygongrid and test that can be used within dune-fem
 . ../package
