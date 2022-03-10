@@ -38,7 +38,8 @@ MODULES=$(./dune-common/bin/dunecontrol --print)
 for MOD in $MODULES; do
   BUILDPATH=$DUNE_PATH/${MOD}/$BUILDDIR
   if test -f "$BUILDPATH/set-dune-pythonpath"; then
-    . $BUILDPATH/set-dune-pythonpath
+    echo "Sourcing $BUILDPATH/set-dune-pythonpath"
+    source $BUILDPATH/set-dune-pythonpath
   else
     export PYTHONPATH=$PYTHONPATH:$BUILDPATH/python
   fi
