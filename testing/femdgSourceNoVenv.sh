@@ -32,18 +32,20 @@ echo "Sourcing config.opts"
 source femdg-config.opts
 
 echo "Setting PYTHONPATH"
-DUNE_PATH=${PWD}
+#DUNE_PATH=${PWD}
 # set python path variable
-MODULES=$(./dune-common/bin/dunecontrol --print)
-for MOD in $MODULES; do
-  BUILDPATH=$DUNE_PATH/${MOD}/$BUILDDIR
-  if test -f "$BUILDPATH/set-dune-pythonpath"; then
-    echo "Sourcing $BUILDPATH/set-dune-pythonpath"
-    source $BUILDPATH/set-dune-pythonpath
-  else
-    export PYTHONPATH=$PYTHONPATH:$BUILDPATH/python
-  fi
-done
+#MODULES=$(./dune-common/bin/dunecontrol --print)
+#for MOD in $MODULES; do
+#  BUILDPATH=$DUNE_PATH/${MOD}/$BUILDDIR
+#  if test -f "$BUILDPATH/set-dune-pythonpath"; then
+#    echo "Sourcing $BUILDPATH/set-dune-pythonpath"
+#    source $BUILDPATH/set-dune-pythonpath
+#  else
+#    export PYTHONPATH=$PYTHONPATH:$BUILDPATH/python
+#  fi
+#done
+
+source dune-fem-dg/$BUILDDIR/set-dune-pythonpath
 echo "PYTHONPATH = $PYTHONPATH"
 
 echo "Running euler script"
