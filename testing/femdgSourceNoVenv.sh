@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# make commands visible
+set -x
+
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
 # dune-common dependencies
