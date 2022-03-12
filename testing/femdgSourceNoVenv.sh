@@ -43,13 +43,13 @@ echo "Running euler script"
 cd dune-fem-dg/pydemo/euler
 python testdg.py
 
-cd $DUNE_PATH
+cd $DUNEPATH
 
 echo "Running advection script"
 cd dune-fem-dg/pydemo/camc-paper
 mpirun -np 2 --oversubscribe python advection.py 2
 
-cd $DUNE_PATH
+cd $DUNEPATH
 echo "Running fem-tutorial script"
 python -m dune.fem
 cd fem_tutorial
