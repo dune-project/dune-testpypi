@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # make commands visible
-set -x
+# set -x
 
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
@@ -16,7 +16,7 @@ FLAGS="-O3 -DNDEBUG"
 BUILDDIR=build-cmake
 
 echo "\
-DUNEPATH=`pwd`
+DUNEPATH=\$(pwd)
 BUILDDIR=$BUILDDIR
 CMAKE_FLAGS=\"-DCMAKE_CXX_FLAGS=\\\"$FLAGS\\\"  \\
  -DALLOW_CXXFLAGS_OVERWRITE=ON \\
