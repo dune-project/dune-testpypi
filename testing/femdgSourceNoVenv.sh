@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # make commands visible
-set -x
+# set -x
 
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
