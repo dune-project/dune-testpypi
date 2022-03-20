@@ -27,7 +27,7 @@ on:
         #       e.g. N=2.8.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'tag e.g. (master | v2.8.0) [master]'
+        description: 'core tag e.g. (master | v2.8.0) [master]'
         required: true
         default: 'master'
       fembranch:
@@ -36,7 +36,7 @@ on:
         #       e.g. N=2.8.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'tag e.g. (master | v2.8.0.1) [master]'
+        description: 'fem tag e.g. (master | v2.8.0.1) [master]'
         required: true
         default: 'master'
 
@@ -144,6 +144,8 @@ jobs:
         run: |
           python3 -m venv dune-env
           source dune-env/bin/activate
+          PYVERS=$(python --version)
+          echo "Selected python version $PYVERS"
           pip install --upgrade pip
           pip install matplotlib scipy pygmsh triangle scikit-build mpi4py
           if [ "$RUNNER_OS" == "Linux" ]; then
