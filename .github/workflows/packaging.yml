@@ -123,12 +123,14 @@ jobs:
             sudo apt-spy2 fix --commit
             # after selecting a specific mirror, we need to run 'apt-get update'
             sudo apt-get update -o Acquire::Retries=3
-            sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh
+            sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview
+            # gmsh
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew update
             rm /usr/local/bin/2to3
             brew install python@3.9
-            brew install openmpi superlu suite-sparse paraview gmsh
+            brew install openmpi superlu suite-sparse paraview
+            # gmsh
           fi
         shell: bash
       - name: download artifacts
@@ -147,7 +149,8 @@ jobs:
           PYVERS=$(python --version)
           echo "Selected python version $PYVERS"
           pip install --upgrade pip
-          pip install matplotlib scipy pygmsh triangle scikit-build mpi4py
+          pip install matplotlib scipy triangle scikit-build mpi4py
+          # pygmsh
           if [ "$RUNNER_OS" == "Linux" ]; then
             echo "CURRENTLY MPI4PY IS DISABLED"
             # petsc4py is failing at the moment - need to check
