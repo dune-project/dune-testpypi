@@ -71,7 +71,6 @@ jobs:
           pip install scikit-build auditwheel
           ./clone-modules $BRANCH $FEMBRANCH $UPLOAD $DOWNLOAD
       - name: build wheels
-        uses: actions/upload-artifact@v2
         run:
           if [ "$RUNNER_OS" == "Linux" ]; then
             pip wheel ./dune-common -w output
