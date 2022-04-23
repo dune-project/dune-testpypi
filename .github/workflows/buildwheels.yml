@@ -45,7 +45,13 @@ jobs:
   # build packages
   build:
     name: build
-    runs-on: [ubuntu-latest]
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        python: [3.8]
+    
+    runs-on: ${{ matrix.os }}
     env:
       BRANCH: master
       FEMBRANCH: master
@@ -63,6 +69,10 @@ jobs:
       - name: environmentUpload
         if: github.event.inputs.upload != ''
         run: echo "UPLOAD=${{ github.event.inputs.upload }}" >> $GITHUB_ENV
+      - name: setup python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
       - name: starting
         uses: actions/checkout@v2
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
