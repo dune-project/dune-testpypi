@@ -73,13 +73,10 @@ jobs:
       - name: build wheels
         run:
           if [ "$RUNNER_OS" == "Linux" ]; then
-            pip wheel ./dune-common* -w output
+            pip wheel ./dist/dune-common* -w output
             auditwheel repair output/dune_common*.whl -w output
           fi  
         shell: bash  
-        with: 
-          name: package
-          path: dist  
       - uses: actions/upload-artifact@v2
         with:
           path: ./wheelhouse/*.whl
