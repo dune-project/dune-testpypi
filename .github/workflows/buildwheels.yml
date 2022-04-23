@@ -75,12 +75,9 @@ jobs:
           name: packages
           path: dist
 
-
-#name: Build wheels on ${{ matrix.os }}
-
   build_wheels:
-    name: Build wheels on ubuntu-latest
-    needs: build
+    name: Build wheels
+    needs: [build]
     runs-on: [ubuntu-latest] 
     #   ${{ matrix.os }}
     #strategy:
