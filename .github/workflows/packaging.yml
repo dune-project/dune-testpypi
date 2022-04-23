@@ -2,7 +2,7 @@ name: upload packages
 
 # Controls when the action will run.
 on:
-  # schedual test for nightly build
+  # schedule test for manual packaging 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     # Note: the defaults are repeated within the 'env' section
