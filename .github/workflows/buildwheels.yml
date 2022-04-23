@@ -86,7 +86,7 @@ jobs:
     name: uploading
     env:
       UPLOAD: none
-    needs: test
+    needs: build
     runs-on: [ubuntu-latest]
     steps:
       - name: environment
