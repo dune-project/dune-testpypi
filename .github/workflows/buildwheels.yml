@@ -162,14 +162,14 @@ jobs:
         run: |
           ls dist
           source dune-env/bin/activate
-          pip install  -v --find-links file://$PWD/dist dune-fem
+          pip install  -v --find-links file://$PWD/dist dune-common
         shell: bash
-      - name: Install extension modules
-        if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
-        run: |
-          source dune-env/bin/activate
-          pip install  -v --find-links file://$PWD/dist dune-fem-dg dune-vem
-        shell: bash
+     #- name: Install extension modules
+     #   if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
+     #   run: |
+     #     source dune-env/bin/activate
+     #     pip install  -v --find-links file://$PWD/dist dune-fem-dg dune-vem
+     #   shell: bash
       - name: Setup dune-py
         # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' }}
