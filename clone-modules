@@ -12,7 +12,7 @@ dune) echo "using dune gitlab for download"
       femurl="$base/dune-fem"
       exturl="$base/extensions"
       ;;
-lund) echo "using lund forl for download"
+lund) echo "using lund fork for download"
       base="https://gitlab.maths.lth.se/dune"
       coreurl="$base"
       femurl="$base"

@@ -2,7 +2,7 @@ name: upload packages
 
 # Controls when the action will run.
 on:
-  # schedual test for nightly build
+  # schedule test for manual packaging 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     # Note: the defaults are repeated within the 'env' section
@@ -27,7 +27,7 @@ on:
         #       e.g. N=2.8.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'tag e.g. (master | v2.8.0) [master]'
+        description: 'core tag e.g. (master | v2.8.0) [master]'
         required: true
         default: 'master'
       fembranch:
@@ -36,7 +36,7 @@ on:
         #       e.g. N=2.8.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'tag e.g. (master | v2.8.0.1) [master]'
+        description: 'fem tag e.g. (master | v2.8.0.1) [master]'
         required: true
         default: 'master'
 
@@ -123,12 +123,14 @@ jobs:
             sudo apt-spy2 fix --commit
             # after selecting a specific mirror, we need to run 'apt-get update'
             sudo apt-get update -o Acquire::Retries=3
-            sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh
+            sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview
+            # gmsh
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew update
             rm /usr/local/bin/2to3
             brew install python@3.9
-            brew install openmpi superlu suite-sparse paraview gmsh
+            brew install openmpi superlu suite-sparse paraview
+            # gmsh
           fi
         shell: bash
       - name: download artifacts
@@ -144,8 +146,11 @@ jobs:
         run: |
           python3 -m venv dune-env
           source dune-env/bin/activate
+          PYVERS=$(python --version)
+          echo "Selected python version $PYVERS"
           pip install --upgrade pip
-          pip install matplotlib scipy pygmsh triangle scikit-build mpi4py
+          pip install matplotlib scipy triangle scikit-build mpi4py
+          # pygmsh
           if [ "$RUNNER_OS" == "Linux" ]; then
             echo "CURRENTLY MPI4PY IS DISABLED"
             # petsc4py is failing at the moment - need to check
@@ -157,13 +162,13 @@ jobs:
         run: |
           ls dist
           source dune-env/bin/activate
-          pip install --pre -v --find-links file://$PWD/dist dune-fem
+          pip install  -v --find-links file://$PWD/dist dune-fem
         shell: bash
       - name: Install extension modules
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
-          pip install --pre -v --find-links file://$PWD/dist dune-fem-dg dune-vem
+          pip install  -v --find-links file://$PWD/dist dune-fem-dg dune-vem
         shell: bash
       - name: Setup dune-py
         # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
