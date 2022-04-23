@@ -1,8 +1,8 @@
-name: upload packages
+name: build wheels
 
 # Controls when the action will run.
 on:
-  # schedual test for nightly build
+  # schedule test for nightly build
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
     # Note: the defaults are repeated within the 'env' section
@@ -90,9 +90,9 @@ jobs:
         # 1) macOS and python 3.6 is disabled due to linker error
         # 2) macOS does not install petsc4py
         matrix:
-            os: [ubuntu-latest, macOS-latest]
+            os: [ubuntu-latest]
             test: [core, extensions]
-            python: [3.6,3.9]
+            python: [3.9]
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
@@ -180,7 +180,7 @@ jobs:
           if [[ $BRANCH = 2.8* ]] ; then
             DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
           fi
-          python -m dune.fem tutorial
+          # python -m dune.fem tutorial
         shell: bash
       - name: Run tutorial
         # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
@@ -190,9 +190,16 @@ jobs:
           source dune-env/bin/activate
           export DUNEPY_DISABLE_PLOTTING=1
           export DUNE_LOG_LEVEL=$LOGLEVEL
-          cd fem_tutorial
-          python ../run-tutorial.py ${{ matrix.test }}
+          #cd fem_tutorial
+          #python ../run-tutorial.py ${{ matrix.test }}
         shell: bash
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v2.4.0
+
+      - uses: actions/upload-artifact@v2
+        with:
+          path: ./wheelhouse/*.whl
 
   # https://github.com/marketplace/actions/pypi-publish
   upload:
