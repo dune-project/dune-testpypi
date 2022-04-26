@@ -53,11 +53,13 @@ cd $DUNE_PATH
 
 echo "Running advection script"
 cd dune-fem-dg/pydemo/camc-paper
-mpirun -np 2 --oversubscribe python advection.py 2
+# mpirun -np 2 --oversubscribe python advection.py 2
+python advection.py 2
 
 cd $DUNE_PATH
 echo "Running fem-tutorial script"
 python -m dune.fem
 cd fem_tutorial
 
-mpirun -np 2 --oversubscribe python laplace-adaptive.py
+#mpirun -np 2 --oversubscribe python laplace-adaptive.py
+python laplace-adaptive.py
