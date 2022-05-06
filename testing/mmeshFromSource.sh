@@ -20,7 +20,7 @@ echo $PWD
 package $PWD/../..
 echo "PACKAGED"
 cd ..
-pip install --pre --find-links file://$PWD/dune-mmesh/dist dune.mmesh
+pip install --pre --find-links file://$PWD/dune-mmesh/dist --find-links file://$PWD/../dist dune.mmesh
 pip list
 
 # test that it can be used within dune-fem
