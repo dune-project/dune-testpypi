@@ -44,10 +44,10 @@ jobs:
     steps:
     - name: printParameters
       run: |
-        echo "${{ steps.vars.outputs.short_ref }}"
+        echo "${GITHUB_REF##*/}"
         echo "Using log level : ${{ github.event.inputs.logLevel }}"
         echo "Using dune-core branch: ${{ github.event.inputs.branch }}"
-        echo "Using dune-fem: brnach: ${{ github.event.inputs.fembranch }}"
+        echo "Using dune-fem: branch: ${{ github.event.inputs.fembranch }}"
     - name: checkout source code
       uses: actions/checkout@v1
     - id: setmatrix
