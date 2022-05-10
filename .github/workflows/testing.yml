@@ -39,16 +39,15 @@ jobs:
   # generate test file matrix
   getTests:
     runs-on: ubuntu-latest
-    env:
-      BRANCH: master
-      FEMBRANCH: master
     outputs:
        matrix: ${{ steps.setmatrix.outputs.matrix }}
     steps:
     - name: printParameters
       run: |
-        echo "Using dune-core: BRANCH=${{ github.event.inputs.branch }}"
-        echo "Using dune-fem:  FEMBRANCH=${{ github.event.inputs.fembranch }}"
+        echo "${{ steps.vars.outputs.short_ref }}"
+        echo "Using log level : ${{ github.event.inputs.logLevel }}"
+        echo "Using dune-core branch: ${{ github.event.inputs.branch }}"
+        echo "Using dune-fem: brnach: ${{ github.event.inputs.fembranch }}"
     - name: checkout source code
       uses: actions/checkout@v1
     - id: setmatrix
