@@ -45,6 +45,7 @@ jobs:
     - name: printParameters
       run: |
         echo "${GITHUB_REF##*/}"
+        echo "${GITHUB_REF}"
         echo "Using log level : ${{ github.event.inputs.logLevel }}"
         echo "Using dune-core branch: ${{ github.event.inputs.branch }}"
         echo "Using dune-fem: branch: ${{ github.event.inputs.fembranch }}"
