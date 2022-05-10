@@ -39,9 +39,16 @@ jobs:
   # generate test file matrix
   getTests:
     runs-on: ubuntu-latest
+    env:
+      BRANCH: master
+      FEMBRANCH: master
     outputs:
        matrix: ${{ steps.setmatrix.outputs.matrix }}
     steps:
+    - name: printParameters
+      run: |
+        echo "BRANCH=${{ github.event.inputs.branch }}"
+        echo "FEMBRANCH=${{ github.event.inputs.fembranch }}"
     - name: checkout source code
       uses: actions/checkout@v1
     - id: setmatrix
