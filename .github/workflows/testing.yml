@@ -47,8 +47,8 @@ jobs:
     steps:
     - name: printParameters
       run: |
-        echo "BRANCH=${{ github.event.inputs.branch }}"
-        echo "FEMBRANCH=${{ github.event.inputs.fembranch }}"
+        echo "Using dune-core: BRANCH=${{ github.event.inputs.branch }}"
+        echo "Using dune-fem:  FEMBRANCH=${{ github.event.inputs.fembranch }}"
     - name: checkout source code
       uses: actions/checkout@v1
     - id: setmatrix
