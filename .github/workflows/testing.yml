@@ -44,9 +44,8 @@ jobs:
     steps:
     - name: printParameters
       run: |
-        echo "${GITHUB_REF##*/}"
-        echo "Using github branch   : ${GITHUB_REF}"
-        echo "Using github branch   : ${BRANCH_NAME}"
+        echo "Workflow parameters"
+        echo "Using github branch   : ${GITHUB_REF#refs/heads/}"
         echo "Using log level       : ${{ github.event.inputs.logLevel }}"
         echo "Using dune-core branch: ${{ github.event.inputs.branch }}"
         echo "Using dune-fem  branch: ${{ github.event.inputs.fembranch }}"
