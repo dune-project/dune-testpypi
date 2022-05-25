@@ -3,7 +3,7 @@
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
 # dune-common dependencies
-pip install -U jinja2 wheel setuptools mpi4py numpy
+pip install -U jinja2 wheel setuptools mpi4py numpy ninja
 # dune-fem dependencies
 pip install -U scipy fenics-ufl matplotlib
 
