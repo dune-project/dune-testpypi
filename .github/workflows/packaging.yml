@@ -115,7 +115,7 @@ jobs:
       - name: pipPreOrNot
         run: |
           if [ "$BRANCH" == "master" ]; then
-            echo "PIPPRE=\"--pre\"" >> $GITHUB_ENV
+            echo "PIPPRE=--pre" >> $GITHUB_ENV
           fi
       - name: environmentLog
         if: github.event.inputs.logLevel != ''
