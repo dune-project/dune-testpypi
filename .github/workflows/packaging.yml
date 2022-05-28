@@ -109,6 +109,8 @@ jobs:
       - name: environmentCore
         if: github.event.inputs.branch != ''
         run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
+        if: github.event.inputs.branch == 'master'
+        run: echo "PIPPRE=\"--pre\"" >> $GITHUB_ENV
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
@@ -171,13 +173,13 @@ jobs:
         run: |
           ls dist
           source dune-env/bin/activate
-          pip install  -v --find-links file://$PWD/dist dune-fem
+          pip install $PIPPRE  -v --find-links file://$PWD/dist dune-fem
         shell: bash
       - name: Install extension modules
         if: ${{ matrix.python == '3.9' || matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
-          pip install  -v --find-links file://$PWD/dist dune-fem-dg dune-vem
+          pip install $PIPPRE  -v --find-links file://$PWD/dist dune-fem-dg dune-vem
         shell: bash
       - name: Setup dune-py
         # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
