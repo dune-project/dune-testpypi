@@ -110,8 +110,10 @@ jobs:
         if: github.event.inputs.branch != ''
         run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
       - name: pipPreOrNot
-        if: github.event.inputs.branch == 'master'
-        run: echo "PIPPRE=\"--pre\"" >> $GITHUB_ENV
+        run: |
+          if [ "$BRANCH" == "master" ]; then
+            echo "PIPPRE=\"--pre\"" >> $GITHUB_ENV
+          fi  
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
