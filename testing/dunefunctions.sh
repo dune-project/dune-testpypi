@@ -8,17 +8,23 @@ femurl="$base/dune-fem"
 exturl="$base/extensions"
 stagurl="$base/staging"
 
+# setup external venv and install the prepared packages needed
+# for dune-functions:
 python3 -m venv dune-env
 . dune-env/bin/activate
 pip install mpi4py requests
 pip install --pre --find-links file://$PWD/../dist dune.grid dune.localfunctions dune.istl
 
+# source the clonemodule function
 . ../package
 
+# clone dune-functions and dune-typetree using the branch provided for core
 echo "cloning dune-functions with branch $1"
 clonemodule dune-typetree "$stagurl/dune-typetree.git" $1 $1
 clonemodule dune-functions "$stagurl/dune-functions.git" $1 $1
 echo "done"
+
+# configure
 dunecontrol --only=dune-typetree all
 dunecontrol --only=dune-functions all
 
