@@ -10,8 +10,6 @@ python -m venv dune-env
 pip install mpi4py requests
 pip install --pre --find-links file://$PWD/../dist dune.common dune.grid dune.geometry dune.localfunctions dune.istl dune.alugrid
 
-export DUNE_CONTROL_PATH=".:../repos"
-
 # clone dumux
 echo "cloning dumux master"
 clonemodule dumux "$dumux_url" master master
