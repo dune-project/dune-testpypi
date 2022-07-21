@@ -8,6 +8,7 @@ dumux_url="https://git.iws.uni-stuttgart.de/dumux-repositories/dumux.git"
 python -m venv dune-env
 . dune-env/bin/activate
 pip install mpi4py requests
+pip install --pre --find-links file://$PWD/../dist dune.common dune.grid dune.geometry dune.localfunctions dune.istl dune.alugrid
 
 export DUNE_CONTROL_PATH=".:../repos"
 
@@ -17,7 +18,7 @@ clonemodule dumux "$dumux_url" master master
 echo "done"
 
 # configure
-DUMUX_CMAKE_FLAGS="-DBUILD_SHARED_LIBS=1" ../repos/dune-common/bin/dunecontrol --opts=dumux/cmake.opts --module=dumux all
+DUMUX_CMAKE_FLAGS="-DBUILD_SHARED_LIBS=1" dunecontrol --opts=dumux/cmake.opts --only=dumux all
 
 pushd dumux/test/python
 python test_gridgeometry.py
