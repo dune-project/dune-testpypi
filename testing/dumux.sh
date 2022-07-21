@@ -12,7 +12,7 @@ pip install mpi4py requests
 export DUNE_CONTROL_PATH=".:../repos"
 
 # dumux Python bindings currently only work with shared libs
-export DUNE_CMAKE_FLAGS="-DBUILD_SHARED_LIBS=ON"
+export CMAKE_FLAGS="-DBUILD_SHARED_LIBS=ON"
 
 # clone dumux
 echo "cloning dumux master"
