@@ -4,11 +4,13 @@
 dumux_url="https://git.iws.uni-stuttgart.de/dumux-repositories/dumux.git"
 
 # source the clonemodule function and make the core module visible
-source ../package
+. ../package
+pip install mpi4py requests
+
 export DUNE_CONTROL_PATH=".:../repos"
 
 # dumux Python bindings currently only work with shared libs
-export DUNE_CMAKE_FLAGS=-DBUILD_SHARED_LIBS=ON
+export DUNE_CMAKE_FLAGS="-DBUILD_SHARED_LIBS=ON"
 
 # clone dumux
 echo "cloning dumux master"
@@ -16,7 +18,7 @@ clonemodule dumux "$dumux_url" master master
 echo "done"
 
 # configure
-dunecontrol --module=dumux all
+../repos/dune-common/bin/dunecontrol --module=dumux all
 
 pushd dumux/test/python
 python test_1p.py
