@@ -20,7 +20,7 @@ clonemodule dumux "$dumux_url" master master
 echo "done"
 
 # configure
-DUMUX_CMAKE_FLAGS="-DBUILD_SHARED_LIBS=1" dunecontrol --opts=dumux/cmake-opts --only=dumux all
+DUMUX_CMAKE_FLAGS="-DBUILD_SHARED_LIBS=1" ../repos/dune-common/bin/dunecontrol --opts=dumux/cmake.opts --only=dumux all
 
 pushd dumux/test/python
 python test_gridgeometry.py
