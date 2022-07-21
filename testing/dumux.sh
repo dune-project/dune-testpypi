@@ -23,5 +23,6 @@ echo "done"
 ../repos/dune-common/bin/dunecontrol --module=dumux all
 
 pushd dumux/test/python
+python test_gridgeometry.py
 python test_1p.py
 popd
