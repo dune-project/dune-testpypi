@@ -8,7 +8,7 @@ dumux_url="https://git.iws.uni-stuttgart.de/dumux-repositories/dumux.git"
 python -m venv dune-env
 . dune-env/bin/activate
 pip install mpi4py requests
-pip install --pre --find-links file://$PWD/../dist dune.common dune.grid dune.geometry dune.localfunctions dune.istl dune.alugrid
+pip install --pre --find-links file://$PWD/../dist dune.common dune.grid dune.geometry dune.localfunctions dune.istl
 
 # clone dumux
 echo "cloning dumux master"
