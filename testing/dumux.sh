@@ -3,15 +3,9 @@
 
 dumux_url="https://git.iws.uni-stuttgart.de/dumux-repositories/dumux.git"
 
-# setup external venv and install the prepared packages needed
-# for dumux
-python3 -m venv dune-env
-source dune-env/bin/activate
-pip install mpi4py requests
-pip install --pre --find-links file://$PWD/../dist dune.common dune.grid dune.geometry dune.localfunctions dune.istl dune.alugrid
-
-# source the clonemodule function
+# source the clonemodule function and make the core module visible
 source ../package
+export DUNE_CONTROL_PATH=".:../repos"
 
 # dumux Python bindings currently only work with shared libs
 export DUNE_CMAKE_FLAGS=-DBUILD_SHARED_LIBS=ON
@@ -22,7 +16,7 @@ clonemodule dumux "$dumux_url" master master
 echo "done"
 
 # configure
-dunecontrol --only=dumux all
+dunecontrol --module=dumux all
 
 pushd dumux/test/python
 python test_1p.py
