@@ -3,9 +3,9 @@
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
 # dune-common dependencies
-pip install -U jinja2 wheel setuptools mpi4py numpy ninja
+pip3 install -U jinja2 wheel setuptools mpi4py numpy ninja
 # dune-fem dependencies
-pip install -U scipy fenics-ufl matplotlib
+pip3 install -U scipy fenics-ufl matplotlib
 
 cd ../repos
 
@@ -47,19 +47,19 @@ echo "PYTHONPATH = $PYTHONPATH"
 
 echo "Running euler script"
 cd dune-fem-dg/pydemo/euler
-python testdg.py
+python3 testdg.py
 
 cd $DUNE_PATH
 
 echo "Running advection script"
 cd dune-fem-dg/pydemo/camc-paper
-# mpirun -np 2 --oversubscribe python advection.py 2
-python advection.py 2
+# mpirun -np 2 --oversubscribe python3 advection.py 2
+python3 advection.py 2
 
 cd $DUNE_PATH
 echo "Running fem-tutorial script"
-python -m dune.fem
+python3 -m dune.fem
 cd fem_tutorial
 
-#mpirun -np 2 --oversubscribe python laplace-adaptive.py
-python laplace-adaptive.py
+#mpirun -np 2 --oversubscribe python3 laplace-adaptive.py
+python3 laplace-adaptive.py

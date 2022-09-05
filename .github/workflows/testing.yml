@@ -2,7 +2,9 @@ name: testing scenarios
 
 # Controls when the action will run.
 on:
-  # schedual test for nightly build
+  # run on push
+  push:
+  # schedule test for nightly build
   schedule:
     - cron: "0 0 * * *"
   # Allows you to run this workflow manually from the Actions tab
@@ -116,10 +118,6 @@ jobs:
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
-      - name: setup python 3.9
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.9
       - name: Install dependencies
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
@@ -136,8 +134,6 @@ jobs:
             sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh libboost-all-dev
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew update
-            rm /usr/local/bin/2to3
-            brew install python@3.9
             brew install openmpi superlu suite-sparse paraview gmsh boost
           fi
         shell: bash
