@@ -27,6 +27,6 @@ cd -
 # handled in dune-py:
 python -m dune.fem
 cd fem_tutorial
-python chemical.py
+#python chemical.py      # <-- gives a segfault
 python mcf-algorithm.py
 cd ..
