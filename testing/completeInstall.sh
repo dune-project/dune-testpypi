@@ -1,4 +1,4 @@
-python -m venv dune-env
+python3 -m venv dune-env
 . dune-env/bin/activate
 pip install matplotlib mpi4py
 

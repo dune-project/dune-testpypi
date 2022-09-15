@@ -7,7 +7,7 @@ python3 -m venv dune-env
 . dune-env/bin/activate
 pip install scikit-build requests mpi4py
 
-pip install --pre --find-links file://$PWD/../dist dune.alugrid dune.istl dune.localfunctions
+pip install --pre --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
 
 # add dune-fem and test
 cp -r ../repos/dune-fem .

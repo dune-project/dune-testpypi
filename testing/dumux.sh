@@ -5,7 +5,7 @@ dumux_url="https://git.iws.uni-stuttgart.de/dumux-repositories/dumux.git"
 
 # source the clonemodule function and make the core module visible
 . ../package
-python -m venv dune-env
+python3 -m venv dune-env
 . dune-env/bin/activate
 pip install mpi4py requests
 pip install --pre --find-links file://$PWD/../dist dune.common dune.grid dune.geometry dune.localfunctions dune.istl

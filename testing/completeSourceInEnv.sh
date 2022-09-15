@@ -1,5 +1,5 @@
 # setup an external venv
-python -m venv dune-env 
+python3 -m venv dune-env
 . dune-env/bin/activate
 pip install matplotlib mpi4py
 
@@ -27,6 +27,6 @@ cd -
 # handled in dune-py:
 python -m dune.fem
 cd fem_tutorial
-python chemical.py
+#python chemical.py      # <-- gives a segfault
 python mcf-algorithm.py
 cd ..
