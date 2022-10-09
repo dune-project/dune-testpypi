@@ -169,13 +169,13 @@ jobs:
         run: |
           ls dist
           source dune-env/bin/activate
-          pip3 install $PIPPRE  -U -v --find-links file://$PWD/dist dune-fem
+          pip3 install $PIPPRE  -U -v --no-cache-dir --find-links file://$PWD/dist dune-fem
         shell: bash
       - name: Install extension modules
         if: ${{ matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
-          pip3 install $PIPPRE -U -v --find-links file://$PWD/dist dune-fem-dg dune-vem
+          pip3 install $PIPPRE -U -v --no-cache-dir --find-links file://$PWD/dist dune-fem-dg dune-vem
         shell: bash
       - name: Setup dune-py
         # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
