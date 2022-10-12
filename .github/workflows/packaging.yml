@@ -101,6 +101,7 @@ jobs:
         matrix:
             os: [ubuntu-latest, macOS-latest]
             test: [core, extensions]
+            python: [3.6, 3.10.6]
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
@@ -119,8 +120,12 @@ jobs:
       - name: environmentLog
         if: github.event.inputs.logLevel != ''
         run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
+      - name: setup python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
       - name: Install dependencies
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             # note: using 'apt-get -o Acquire::Retries=3' to dance around connectivity issues to Azure,
@@ -141,7 +146,7 @@ jobs:
           fi
         shell: bash
       - name: download artifacts
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
         uses: actions/download-artifact@v2
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
@@ -149,7 +154,7 @@ jobs:
           name: packages
           path: dist
       - name: Setup venv
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
         run: |
           python3 -m venv dune-env
           source dune-env/bin/activate
@@ -165,21 +170,21 @@ jobs:
           fi
         shell: bash
       - name: pip3 install dune modules
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
         run: |
           ls dist
           source dune-env/bin/activate
           pip3 install $PIPPRE  -U -v --find-links file://$PWD/dist dune-fem
         shell: bash
       - name: Install extension modules
-        if: ${{ matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
+        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
           pip3 install $PIPPRE -U -v --find-links file://$PWD/dist dune-fem-dg dune-vem
         shell: bash
       - name: Setup dune-py
         # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
         run: |
           set +e
           source dune-env/bin/activate
@@ -191,10 +196,12 @@ jobs:
         shell: bash
       - name: Run tutorial
         # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
-        if: ${{ matrix.os == 'ubuntu-latest' }}
+        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
         run: |
           set +e
           source dune-env/bin/activate
+          echo "USING python"
+          python --version
           export DUNEPY_DISABLE_PLOTTING=1
           export DUNE_LOG_LEVEL=$LOGLEVEL
           cd fem_tutorial
