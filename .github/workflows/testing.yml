@@ -25,7 +25,7 @@ on:
         #       and the build will fail
         description: 'core modules tag e.g. (master | v2.8.0) [master]'
         required: true
-        default: 'releases/2.9'
+        default: 'master'
       fembranch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
@@ -34,7 +34,7 @@ on:
         #       and the build will fail
         description: 'dune-fem modules tag e.g. (master | v2.8.0.1) [master]'
         required: true
-        default: 'releases/2.9'
+        default: 'master'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -71,8 +71,8 @@ jobs:
     name: build
     runs-on: [ubuntu-latest]
     env:
-      BRANCH: releases/2.9
-      FEMBRANCH: releases/2.9
+      BRANCH: master
+      FEMBRANCH: master
     steps:
       - name: environmentCore
         if: github.event.inputs.branch != ''
@@ -98,8 +98,8 @@ jobs:
     needs: [ build, getTests ]
     env:
       LOGLEVEL: Warning
-      BRANCH: releases/2.9
-      FEMBRANCH: releases/2.9
+      BRANCH: master
+      FEMBRANCH: master
     strategy:
         fail-fast: false
         # Note:
