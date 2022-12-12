@@ -134,7 +134,7 @@ jobs:
             sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh libboost-all-dev
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew update
-            brew install openmpi superlu suite-sparse paraview gmsh boost
+            brew install openmpi superlu suite-sparse gmsh boost
           fi
         shell: bash
       - name: download artifacts
