@@ -23,6 +23,9 @@ cd ..
 pip install --pre --find-links file://$PWD/dune-mmesh/dist --find-links file://$PWD/../dist dune.mmesh
 pip list
 
+# Workaround: install dune-fem again to fix version mixmatch
+pip install --force-reinstall --pre --find-links file://$PWD/../dist dune.fem
+
 # test that it can be used within dune-fem
 cd dune-mmesh/scripts
 python test.py
