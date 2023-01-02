@@ -134,6 +134,8 @@ jobs:
             sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh libboost-all-dev
           elif [ "$RUNNER_OS" == "macOS" ]; then
             brew update
+            brew install python@3.10 || true
+            brew install python@3.11 || true
             brew install openmpi superlu suite-sparse gmsh boost
           fi
         shell: bash
