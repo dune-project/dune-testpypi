@@ -137,6 +137,8 @@ jobs:
             brew install python@3.10 || true
             brew install python@3.11 || true
             brew install openmpi superlu suite-sparse gmsh boost
+            # Fix suitesparse 7.0.1 beta, there is a missing '}' in the following header
+            echo '}' >> /usr/local/Cellar/suite-sparse/7.0.1/include/ldl.h
           fi
         shell: bash
       - name: download artifacts
