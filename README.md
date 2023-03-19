@@ -28,7 +28,7 @@ Contains two _actions_
 Manually running action
 ------------------------
 
-1. Login into github and goto [https://github.com/adedner/dune-testpypi](https://github.com/adedner/dune-testpypi).
+1. Login into github and goto [https://github.com/dune-project/dune-testpypi](https://github.com/dune-project/dune-testpypi).
 2. Open the 'Actions' tab and on the left choose 'testing scenarios'.
 3. On the right click 'Run workflow' which opens a window with some fields to
 fill out. Select the corresponding branches in core and fem modules.
