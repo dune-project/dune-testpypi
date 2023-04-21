@@ -64,9 +64,9 @@ jobs:
         cat ./tmp
         # End Generate Json String
         matrixStringifiedObject=$(cat ./tmp) # Use this as jq @sh not working right
-        echo "::set-output name=matrix::$matrixStringifiedObject"
+        # echo "::set-output name=matrix::$matrixStringifiedObject"
         # this is the new version to fix deprecated set-output 
-        # echo "{name}={matrix::$matrixStringifiedObject}" >> $GITHUB_OUTPUT
+        echo "{name}={matrix::$matrixStringifiedObject}" >> $GITHUB_OUTPUT
 
   # build packages
   build:
@@ -83,13 +83,13 @@ jobs:
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
       - name: starting
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           pip install scikit-build
           ./clone-modules $BRANCH $FEMBRANCH "none"
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: packages
           path: dist/
@@ -110,7 +110,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: environment
         if: github.event.inputs.logLevel != ''
         run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
@@ -144,7 +144,7 @@ jobs:
           fi
         shell: bash
       - name: download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
         with:
