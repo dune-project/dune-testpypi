@@ -135,6 +135,13 @@ jobs:
             sudo apt-get update -o Acquire::Retries=3
             sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh libboost-all-dev
           elif [ "$RUNNER_OS" == "macOS" ]; then
+            # fixes an issue with homebrew can probably be remove once the issue is resolved
+            # https://github.com/orgs/Homebrew/discussions/4612#discussioncomment-6356325
+            export HOMEBREW_NO_INSTALL_FROM_API=
+            brew config
+            brew untap homebrew/core homebrew/cask
+            brew config
+            # normal service resumes...
             brew update
             brew install python@3.10 || true
             brew install python@3.11 || true
