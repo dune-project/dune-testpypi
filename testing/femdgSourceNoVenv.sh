@@ -3,12 +3,7 @@
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
 # we only do this for Mac OS, ubuntu has the necessary packages installed
-UNAME=`uname -a | grep "Linux"`
-echo "NoVenv on system: $UNAME"
-if test "$UNAME" == ""; then
-  echo "Skipping Mac OS"
-  exit 0
-
+if [ "$3" == "macOS" ]; then
   # dune-common dependencies
   python3 -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
   # dune-fem dependencies
