@@ -2,10 +2,15 @@
 
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
-# dune-common dependencies
-python3 -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
-# dune-fem dependencies
-python3 -m pip install -U scipy fenics-ufl matplotlib
+# we only do this for Mac OS, ubuntu has the necessary packages installed
+UNAME=`uname -a | grep "Linux"`
+echo "NoVenv on system: $UNAME"
+if [ "$UNAME" == "" ]; then
+  # dune-common dependencies
+  python3 -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
+  # dune-fem dependencies
+  python3 -m pip install -U scipy fenics-ufl matplotlib
+fi
 
 cd ../repos
 
