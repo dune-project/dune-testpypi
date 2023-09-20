@@ -24,19 +24,19 @@ on:
       branch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
-        #       e.g. N=2.8.0rc1
+        #       e.g. N=2.9.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'core tag e.g. (master | v2.8.0) [master]'
+        description: 'core tag e.g. (master | v2.9.0) [master]'
         required: true
         default: 'master'
       fembranch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
-        #       e.g. N=2.8.0rc1
+        #       e.g. N=2.9.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'fem tag e.g. (master | v2.8.0.1) [master]'
+        description: 'fem tag e.g. (master | v2.9.0.1) [master]'
         required: true
         default: 'master'
 
@@ -243,7 +243,7 @@ jobs:
           password: ${{ secrets.TEST_PYPI_API_TOKEN }}
           repository_url: https://test.pypi.org/legacy/
           ## this is needed so long as versioning for
-          ## fem and core packages can differ (i.e. 2.8.0.x) but are uploaded
+          ## fem and core packages can differ (i.e. 2.9.0.x) but are uploaded
           ## in same script.
           ## Test if required version for core is available on pypi and use
           ## instead of git?

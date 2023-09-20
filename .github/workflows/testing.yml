@@ -20,19 +20,19 @@ on:
       branch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
-        #       e.g. N=2.8.0rc1
+        #       e.g. N=2.9.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'core modules tag e.g. (master | v2.8.0) [master]'
+        description: 'core modules tag e.g. (master | v2.9.0) [master]'
         required: true
         default: 'master'
       fembranch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
-        #       e.g. N=2.8.0rc1
+        #       e.g. N=2.9.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
-        description: 'dune-fem modules tag e.g. (master | v2.8.0.1) [master]'
+        description: 'dune-fem modules tag e.g. (master | v2.9.0.1) [master]'
         required: true
         default: 'master'
 

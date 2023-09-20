@@ -5,7 +5,7 @@
 # we only do this for Mac OS, ubuntu has the necessary packages installed
 UNAME=`uname -a | grep "Linux"`
 echo "NoVenv on system: $UNAME"
-if [ "$UNAME" == "" ]; then
+if test "$UNAME" == ""; then
   echo "Skipping Mac OS"
   exit 0
 
