@@ -6,6 +6,9 @@
 UNAME=`uname -a | grep "Linux"`
 echo "NoVenv on system: $UNAME"
 if [ "$UNAME" == "" ]; then
+  echo "Skipping Mac OS"
+  exit 0
+
   # dune-common dependencies
   python3 -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
   # dune-fem dependencies
