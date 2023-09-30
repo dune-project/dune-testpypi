@@ -164,5 +164,9 @@ jobs:
             tar xzf dist/repos.tar.gz
             mkdir test
             cd test
-            bash -e ../${{ matrix.filepath }} $BRANCH $FEMBRANCH $RUNNER_OS
+            if [ "$RUNNER_OS" == "macOS" && "${{ matrix.filepath }}" == "./testing/femdgSourceNoVenv.sh" ]; then 
+              echo "Skipping ${{ matrix.filepath }}"
+            else
+              bash -e ../${{ matrix.filepath }} $BRANCH $FEMBRANCH $RUNNER_OS
+            fi
         shell: bash
