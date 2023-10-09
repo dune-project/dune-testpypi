@@ -1,3 +1,8 @@
+# do not run on macOS
+if [ "$3" == "macOS" ]; then
+  exit 0
+fi
+
 cd ../repos
 dune-common/bin/dunecontrol --module=dune.grid all
 runDune="$PWD/dune-common/build-cmake/run-in-dune-env"
