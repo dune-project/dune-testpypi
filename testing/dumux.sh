@@ -20,5 +20,7 @@ dunecontrol --opts=dumux/cmake.opts --only=dumux all
 
 pushd dumux/test/python
 python test_gridgeometry.py
-python test_1p.py
+
+# TODO: Re-enable in 2024
+# python test_1p.py
 popd

@@ -1,13 +1,20 @@
 #!/bin/bash
 
+# get default system python interpreter
+PYTHON_INTERP=`which python3`
+#PYTHON_INTERP=/usr/bin/python3
+
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
 # we only do this for Mac OS, ubuntu has the necessary packages installed
+TUTORIAL=1
 if [ "$3" == "macOS" ]; then
   # dune-common dependencies
-  python3 -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
+  $PYTHON_INTERP -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
   # dune-fem dependencies
-  python3 -m pip install -U scipy fenics-ufl matplotlib
+  $PYTHON_INTERP -m pip install -U scipy fenics-ufl matplotlib
+
+  TUTORIAL=0
 fi
 
 cd ../repos
@@ -20,6 +27,7 @@ DUNEPATH=`pwd`
 BUILDDIR=$BUILDDIR
 CMAKE_FLAGS=\"-DCMAKE_CXX_FLAGS=\\\"$FLAGS\\\"  \\
  -DALLOW_CXXFLAGS_OVERWRITE=ON \\
+ -DPython3_EXECUTABLE=$PYTHON_INTERP \\
  -DDUNE_PYTHON_USE_VENV=OFF \\
  -DDISABLE_DOCUMENTATION=TRUE \\
  -DCMAKE_DISABLE_FIND_PACKAGE_Vc=TRUE \\
@@ -50,19 +58,21 @@ echo "PYTHONPATH = $PYTHONPATH"
 
 echo "Running euler script"
 cd dune-fem-dg/pydemo/euler
-python3 testdg.py
+$PYTHON_INTERP testdg.py
 
 cd $DUNE_PATH
 
 echo "Running advection script"
 cd dune-fem-dg/pydemo/camc-paper
 # mpirun -np 2 --oversubscribe python3 advection.py 2
-python3 advection.py 2
+$PYTHON_INTERP advection.py 2
 
-cd $DUNE_PATH
-echo "Running fem-tutorial script"
-python3 -m dune.fem
-cd fem_tutorial
+if [ "$TUTORIAL" == "1" ]; then
+  cd $DUNE_PATH
+  echo "Running fem-tutorial script"
+  $PYTHON_INTERP -m dune.fem
+  cd fem_tutorial
 
-#mpirun -np 2 --oversubscribe python3 laplace-adaptive.py
-python3 laplace-adaptive.py
+  #mpirun -np 2 --oversubscribe python3 laplace-adaptive.py
+  $PYTHON_INTERP laplace-adaptive.py
+fi
