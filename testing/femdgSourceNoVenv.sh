@@ -12,7 +12,7 @@ if [ "$3" == "macOS" ]; then
   # dune-common dependencies
   $PYTHON_INTERP -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
   # dune-fem dependencies
-  $PYTHON_INTERP -m pip install -U scipy fenics-ufl matplotlib
+  $PYTHON_INTERP -m pip install -U scipy fenics-ufl==2022.2.0 matplotlib
 
   TUTORIAL=0
 fi
