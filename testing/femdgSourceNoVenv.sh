@@ -7,14 +7,11 @@ PYTHON_INTERP=`which python3`
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
 # we only do this for Mac OS, ubuntu has the necessary packages installed
-TUTORIAL=1
 if [ "$3" == "macOS" ]; then
   # dune-common dependencies
   $PYTHON_INTERP -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
   # dune-fem dependencies
   $PYTHON_INTERP -m pip install -U scipy fenics-ufl==2022.2.0 matplotlib
-
-  TUTORIAL=0
 fi
 
 cd ../repos
@@ -67,12 +64,10 @@ cd dune-fem-dg/pydemo/camc-paper
 # mpirun -np 2 --oversubscribe python3 advection.py 2
 $PYTHON_INTERP advection.py 2
 
-if [ "$TUTORIAL" == "1" ]; then
-  cd $DUNE_PATH
-  echo "Running fem-tutorial script"
-  $PYTHON_INTERP -m dune.fem
-  cd fem_tutorial
+cd $DUNE_PATH
+echo "Running fem-tutorial script"
+$PYTHON_INTERP -m dune.fem
+cd fem_tutorial
 
-  #mpirun -np 2 --oversubscribe python3 laplace-adaptive.py
-  $PYTHON_INTERP laplace-adaptive.py
-fi
+#mpirun -np 2 --oversubscribe python3 laplace-adaptive.py
+$PYTHON_INTERP laplace-adaptive.py
