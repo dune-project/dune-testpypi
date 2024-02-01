@@ -73,7 +73,7 @@ jobs:
         if: github.event.inputs.upload != ''
         run: echo "UPLOAD=${{ github.event.inputs.upload }}" >> $GITHUB_ENV
       - name: starting
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           set +e
@@ -105,7 +105,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: environmentCore
         if: github.event.inputs.branch != ''
         run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV

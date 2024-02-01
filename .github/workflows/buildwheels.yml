@@ -74,7 +74,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: starting
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           set +e
