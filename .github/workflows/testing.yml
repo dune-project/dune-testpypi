@@ -149,7 +149,7 @@ jobs:
           fi
         shell: bash
       - name: download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
         with:
