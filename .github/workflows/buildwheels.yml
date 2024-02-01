@@ -85,7 +85,7 @@ jobs:
           pip wheel ./dist/dune-common* -w output
           auditwheel repair output/dune_common*.whl -w output
         shell: bash  
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
