@@ -52,7 +52,7 @@ jobs:
         echo "Using dune-core branch: ${{ github.event.inputs.branch }}"
         echo "Using dune-fem  branch: ${{ github.event.inputs.fembranch }}"
     - name: checkout source code
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
     - id: setmatrix
       run: |
         matrixArray=$(find ./testing -name '*.sh') # Creates array of all files .sh withing testing
@@ -83,13 +83,13 @@ jobs:
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
       - name: starting
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           pip install scikit-build
           ./clone-modules $BRANCH $FEMBRANCH "none"
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: packages
           path: dist/
@@ -110,7 +110,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: environment
         if: github.event.inputs.logLevel != ''
         run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
@@ -149,7 +149,7 @@ jobs:
           fi
         shell: bash
       - name: download artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
         with:

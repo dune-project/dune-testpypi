@@ -74,7 +74,7 @@ jobs:
         with:
           python-version: ${{ matrix.python }}
       - name: starting
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           set +e
@@ -85,7 +85,7 @@ jobs:
           pip wheel ./dist/dune-common* -w output
           auditwheel repair output/dune_common*.whl -w output
         shell: bash  
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v4
         with:
           path: ./wheelhouse/*.whl
 
@@ -101,7 +101,7 @@ jobs:
         if: github.event.inputs.upload != ''
         run: echo "UPLOAD=${{ github.event.inputs.upload }}" >> $GITHUB_ENV
       - name: download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         continue-on-error: true
         with:
           name: packages

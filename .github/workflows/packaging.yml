@@ -73,14 +73,14 @@ jobs:
         if: github.event.inputs.upload != ''
         run: echo "UPLOAD=${{ github.event.inputs.upload }}" >> $GITHUB_ENV
       - name: starting
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
         run: |
           set +e
           pip3 install scikit-build
           ./clone-modules $BRANCH $FEMBRANCH $UPLOAD $DOWNLOAD
       - name: upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: packages
           path: dist
@@ -105,7 +105,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: environmentCore
         if: github.event.inputs.branch != ''
         run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
@@ -147,7 +147,7 @@ jobs:
         shell: bash
       - name: download artifacts
         if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
         with:
@@ -220,7 +220,7 @@ jobs:
         if: github.event.inputs.upload != ''
         run: echo "UPLOAD=${{ github.event.inputs.upload }}" >> $GITHUB_ENV
       - name: download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
         continue-on-error: true
         with:
           name: packages
