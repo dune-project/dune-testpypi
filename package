@@ -9,7 +9,8 @@ package()
   # version number (assumes the tag is a valid python package version, i.e., v2.8.0rc1
   # otherwise use the default 'dev' numbering.
   # Note: the current commit could have multiple tags - make sure to use the latest
-  tag=$(git tag --contains | sort | tail -1)
+  tag=$(git describe --tags --abbrev=0)
+  # this version failed with v2.9.0 and v2.9.0rc1: tag=$(git tag --contains | sort | tail -1)
 
   if [ "$tag" = "" ]; then
     echo "Use dev versioning"
@@ -44,6 +45,16 @@ clonemodule()
       fi
       cd $m
       git log | head
+      if [ "$m" = "dune-fem" ]; then
+        comHash=`git ls-remote https://gitlab.dune-project.org/dune-fem/dune-fempy.git master | cut -f 1`
+        if [ "$comHash" = "" ]; then
+            echo "could not retrieve hash for dune-fempy"
+            exit 1
+        fi
+        comStr="__pypi_dochash__ = "\"${comHash}\"
+        sed -i -e "1i ${comStr}" python/dune/fem/__main__.py
+        # sed -i -e '1i__pypi_dochash__ = "'${comHash}'"\' python/dune/fem/__main__.py
+      fi
       package $base
       cd ..
   else
