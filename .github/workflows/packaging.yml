@@ -39,6 +39,10 @@ on:
         description: 'fem tag e.g. (master | v2.9.0.1) [master]'
         required: true
         default: 'master'
+      femversion:
+        description: 'install dune-fem package == version - leave empty if you want to use latest version'
+        required: false
+        default: ''
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -60,6 +64,7 @@ jobs:
           echo "Using upload          : ${{ github.event.inputs.upload }}"
           echo "Using dune-core branch: ${{ github.event.inputs.branch }}"
           echo "Using dune-fem  branch: ${{ github.event.inputs.fembranch }}"
+          echo "Using dune-fem  branch: ${{ github.event.inputs.femversion }}"
       - name: environmentCore
         if: github.event.inputs.branch != ''
         run: echo "BRANCH=${{ github.event.inputs.branch }}" >> $GITHUB_ENV
@@ -96,12 +101,12 @@ jobs:
     strategy:
         fail-fast: false
         # Note:
-        # 1) macOS and python 3.6 is disabled due to linker error
-        # 2) macOS does not install petsc4py
+        # macOS does not install petsc4py
         matrix:
             os: [ubuntu-latest, macOS-latest]
-            test: [core, extensions]
-            python: [3.6, 3.10.6]
+            # os: [ubuntu-20.04, macOS-latest]
+            test: [coreA, coreB, extensions]
+            python: [3.8, 3.11]
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
@@ -112,20 +117,22 @@ jobs:
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
+      - name: environmentFemVersion
+        if: github.event.inputs.femversion != ''
+        run: echo "FEMVERSION=${{ github.event.inputs.femversion }}" >> $GITHUB_ENV
       - name: pipPreOrNot
         run: |
-          if [ "$BRANCH" == "master" ]; then
-            echo "PIPPRE=--pre" >> $GITHUB_ENV
-          fi
+          echo "PIPPRE=--pre" >> $GITHUB_ENV
       - name: environmentLog
         if: github.event.inputs.logLevel != ''
         run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
       - name: setup python ${{ matrix.python }}
-        uses: actions/setup-python@v2
+        # if: ${{ matrix.python == '3.11' || matrix.os == 'ubuntu-latest' }}
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
       - name: Install dependencies
-        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
+        # if: ${{ matrix.python == '3.11' || matrix.os == 'ubuntu-latest' }}
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
             # note: using 'apt-get -o Acquire::Retries=3' to dance around connectivity issues to Azure,
@@ -137,16 +144,16 @@ jobs:
             sudo apt-spy2 fix --commit
             # after selecting a specific mirror, we need to run 'apt-get update'
             sudo apt-get update -o Acquire::Retries=3
-            sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview
-            # gmsh
+            sudo apt upgrade -y
+            sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev gmsh python3-petsc4py-real
           elif [ "$RUNNER_OS" == "macOS" ]; then
+            rm -rf /usr/local/bin/2to3 # otherwise a python upgrade fails in next step
             brew update
-            brew install openmpi superlu suite-sparse paraview
-            # gmsh
+            brew install openmpi superlu suite-sparse gmsh boost
           fi
         shell: bash
       - name: download artifacts
-        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
+        # if: ${{ matrix.python == '3.11' || matrix.os == 'ubuntu-latest' }}
         uses: actions/download-artifact@v4
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
@@ -154,37 +161,50 @@ jobs:
           name: packages
           path: dist
       - name: Setup venv
-        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
+        # if: ${{ matrix.python == '3.11' || matrix.os == 'ubuntu-latest' }}
         run: |
           python3 -m venv dune-env
           source dune-env/bin/activate
-          PYVERS=$(python --version)
+          PYVERS=$(python3 --version)
           echo "Selected python version $PYVERS"
           pip3 install --upgrade pip
-          pip3 install matplotlib scipy triangle scikit-build mpi4py
-          # pygmsh
+          pip3 install matplotlib scipy scikit-build mpi4py pygmsh wheel
           if [ "$RUNNER_OS" == "Linux" ]; then
-            echo "CURRENTLY MPI4PY IS DISABLED"
+            echo "CURRENTLY PETSC4PY IS DISABLED"
             # petsc4py is failing at the moment - need to check
-            # pip3 install petsc4py
+            # at the moment need to downgrade to 20.0.2 https://gitlab.com/petsc/petsc/-/issues/1369
+            # PETSC_CONFIGURE_OPTIONS="--download-scalapack --download-suitesparse --download-hypre --download-mumps --download-ml --download-superlu"
+            # pip3 install -v petsc petsc4py
+          else
+            echo "CURRENTLY PETSC4PY IS DISABLED on MACOs due to issues with mpif90 - needs checking"
+            # while building petsc the following error is produced
+            #     Fortran compiler you provided with --with-fc=/usr/local/bin/mpif90 cannot be found or does not work.
+            #     Cannot compile FC with /usr/local/bin/mpif90.
           fi
         shell: bash
       - name: pip3 install dune modules
-        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
+        # if: ${{ matrix.python == '3.11' || matrix.os == 'ubuntu-latest' }}
         run: |
           ls dist
           source dune-env/bin/activate
-          pip3 install $PIPPRE  -U -v --find-links file://$PWD/dist dune-fem
+          if [ "$FEMVERSION" == "" ]; then
+            pip3 install $PIPPRE  -U -v --find-links file://$PWD/dist dune-fem
+          else
+            pip3 install $PIPPRE  -U -v --find-links file://$PWD/dist dune-fem==$FEMVERSION
+          fi
         shell: bash
       - name: Install extension modules
-        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' && matrix.test == 'extensions' }}
+        # if: ${{ (matrix.python == '3.11' || matrix.os == 'ubuntu-latest') && matrix.test == 'extensions' }}
         run: |
           source dune-env/bin/activate
-          pip3 install $PIPPRE -U -v --find-links file://$PWD/dist dune-fem-dg dune-vem
+          if [ "$FEMVERSION" == "" ]; then
+            pip3 install $PIPPRE -U -v --find-links file://$PWD/dist dune-fem-dg dune-vem
+          else
+            pip3 install $PIPPRE -U -v --find-links file://$PWD/dist dune-fem-dg==$FEMVERSION dune-vem==$FEMVERSION
+          fi
         shell: bash
       - name: Setup dune-py
-        # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
-        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
+        # if: ${{ matrix.python == '3.11' || matrix.os == 'ubuntu-latest' }}
         run: |
           set +e
           source dune-env/bin/activate
@@ -192,11 +212,10 @@ jobs:
           if [[ $BRANCH = 2.8* ]] ; then
             DUNE_CONTROL_PATH=dune-env setup-dunepy.py --opts=config.opts
           fi
-          python -m dune.fem tutorial
+          python -m dune.fem # tutorial
         shell: bash
       - name: Run tutorial
-        # macOS fails with python 3.6: Symbol not found: _PyCMethod_New
-        if: ${{ matrix.python == '3.10.6' || matrix.os == 'ubuntu-latest' }}
+        # if: ${{ matrix.python == '3.11' || matrix.os == 'ubuntu-latest' }}
         run: |
           set +e
           source dune-env/bin/activate
