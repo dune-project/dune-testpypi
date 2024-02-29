@@ -12,7 +12,7 @@ pip install --pre --find-links file://$PWD/../dist dune.fem
 . ../package
 
 echo "cloning dune-mmesh with branch $1"
-clonemodule dune-mmesh "$base/samuel.burbulla/dune-mmesh.git" $1 $1
+clonemodule dune-mmesh "$base/extensions/dune-mmesh.git" $1 $1
 echo "done"
 
 cd dune-mmesh
