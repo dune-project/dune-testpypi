@@ -14,6 +14,7 @@ on:
     #       need to be done twice!
     inputs:
       logLevel:
+        type: boolean
         description: 'Log level'
         required: true
         default: 'Warning'
@@ -23,6 +24,7 @@ on:
         #       e.g. N=2.9.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
+        type: string
         description: 'core modules tag e.g. (master | v2.9.0) [master]'
         required: true
         default: 'master'
@@ -32,11 +34,23 @@ on:
         #       e.g. N=2.9.0rc1
         #       otherwise the distributions will not be generated
         #       and the build will fail
+        type: string
         description: 'dune-fem modules tag e.g. (master | v2.9.0.1) [master]'
         required: true
         default: 'master'
+      runTests:
+        type: boolean
+        description: run tests [true]
+        required: false
+        default: true
+      download:
+        type: string
+        description: 'source location [https://gitlab.dune-project.org]'
+        required: true
+        default: 'https://gitlab.dune-project.org'
       # needed only for dispatching from other repo
       distinct_id:
+        required: false
         description: 'set when dispatching from external repo - leave empty'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -49,7 +63,7 @@ jobs:
     steps:
       - name: echo distinct ID ${{ github.event.inputs.distinct_id }}
         if: github.event.inputs.distinct_id != ''
-        run: echo ${{ github.event.inputs.distinct_id }}          
+        run: echo ${{ github.event.inputs.distinct_id }}
       - name: printParameters
         run: |
           echo "Workflow parameters"
@@ -57,6 +71,8 @@ jobs:
           echo "Using log level       : ${{ github.event.inputs.logLevel }}"
           echo "Using dune-core branch: ${{ github.event.inputs.branch }}"
           echo "Using dune-fem  branch: ${{ github.event.inputs.fembranch }}"
+          echo "Source repo download from ${{ github.event.inputs.download }}"
+          echo "Run tests: ${{ github.event.inputs.runTests }}"
       - name: checkout source code
         uses: actions/checkout@v4
       - id: setmatrix
@@ -79,8 +95,9 @@ jobs:
     name: build
     runs-on: [ubuntu-latest]
     env:
-      BRANCH: master
-      FEMBRANCH: master
+      BRANCH: 'master'
+      FEMBRANCH: 'master'
+      DOWNLOAD: 'https://gitlab.dune-project.org'
     steps:
       - name: environmentLog
         if: github.event.inputs.logLevel != ''
@@ -91,18 +108,15 @@ jobs:
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
-      - name: environmentRepDispatch
-        if: github.event_name == 'repository_dispatch'
-        run: |
-          echo "LOGLEVEL=${{ github.client_payload.logLevel }}" >> $GITHUB_ENV
-          echo "BRANCH=${{ github.client_payload.branch }}" >> $GITHUB_ENV
-          echo "FEMBRANCH=${{ github.client_payload.fembranch }}" >> $GITHUB_ENV
+      - name: environmentDownload
+        if: github.event.inputs.download != ''
+        run: echo "DOWNLOAD=${{ github.event.inputs.download }}" >> $GITHUB_ENV
       - name: starting
         uses: actions/checkout@v4
-      - name: clone dune branch ${{ env.BRANCH }} and build python packages
+      - name: clone dune from ${{ env.DOWNLOAD }} using branch ${{ env.BRANCH }} and build python packages
         run: |
           pip install scikit-build
-          ./clone-modules $BRANCH $FEMBRANCH "none"
+          ./clone-modules $BRANCH $FEMBRANCH "none" $DOWNLOAD
       - name: upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -111,6 +125,7 @@ jobs:
 
   # test packages
   test:
+    if: ${{ github.event.inputs.runTests == true }}
     name: testing tutorial
     needs: [build, getTests]
     env:
@@ -135,12 +150,6 @@ jobs:
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
-      - name: environmentRepDispatch
-        if: github.event_name == 'repository_dispatch'
-        run: |
-          echo "LOGLEVEL=${{ github.client_payload.logLevel }}" >> $GITHUB_ENV
-          echo "BRANCH=${{ github.client_payload.branch }}" >> $GITHUB_ENV
-          echo "FEMBRANCH=${{ github.client_payload.fembranch }}" >> $GITHUB_ENV
       - name: Install dependencies
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then

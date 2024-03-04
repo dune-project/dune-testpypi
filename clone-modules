@@ -1,31 +1,22 @@
 coretag=$1
 femtag=$2
-upload=$3
+upload=$3                     # not used - consider removing
 download=$4
 coreversion="${1:1}"
 femversion="${2:1}"
 
-case "$download" in
-dune) echo "using dune gitlab for download"
-      base="https://gitlab.dune-project.org"
-      coreurl="$base/core"
-      femurl="$base/dune-fem"
-      exturl="$base/extensions"
-      ;;
-lund) echo "using lund fork for download"
-      base="https://gitlab.maths.lu.se/dune"
-      coreurl="$base"
-      femurl="$base"
-      exturl="$base"
-      ;;
-*)    echo "no valid download location specified - using dune"
-      base="https://gitlab.dune-project.org"
-      coreurl="$base/core"
-      femurl="$base/dune-fem"
-      exturl="$base/extensions"
-      ;;
-esac
-
+base=$download
+if [ "$base" = "https://gitlab.dune-project.org" ]; then
+  echo "using dune gitlab for download"
+  coreurl="$base/core"
+  femurl="$base/dune-fem"
+  exturl="$base/extensions"
+else
+  echo "using fork for download - assuming no subgrouping is used"
+  coreurl="$base"
+  femurl="$base"
+  exturl="$base"
+fi
 echo "versions: $coreversion, $femversion (tags $coretag, $femtag)"
 ls .
 echo Downloading dune-common into $PWD
