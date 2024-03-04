@@ -35,9 +35,6 @@ on:
         description: 'dune-fem modules tag e.g. (master | v2.9.0.1) [master]'
         required: true
         default: 'master'
-  # allow to trigger this workflow from a different repo
-  repository_dispatch:
-    types: [run_tests]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
