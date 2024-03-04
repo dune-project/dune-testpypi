@@ -45,7 +45,7 @@ jobs:
   getTests:
     runs-on: ubuntu-latest
     outputs:
-       matrix: ${{ steps.setmatrix.outputs.matrix }}
+      matrix: ${{ steps.setmatrix.outputs.matrix }}
     steps:
     - name: printParameters
       run: |
@@ -68,7 +68,7 @@ jobs:
         # End Generate Json String
         matrixStringifiedObject=$(cat ./tmp) # Use this as jq @sh not working right
         # echo "::set-output name=matrix::$matrixStringifiedObject"
-        # this is the new version to fix deprecated set-output 
+        # this is the new version to fix deprecated set-output
         echo "matrix=$matrixStringifiedObject" >> $GITHUB_OUTPUT
 
   # build packages
@@ -90,10 +90,10 @@ jobs:
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
       - name: environmentRepDispatch
         if: github.event_name == 'repository_dispatch'
-          run: |
-            echo "LOGLEVEL=${{ github.client_payload.logLevel }}" >> $GITHUB_ENV
-            echo "BRANCH=${{ github.client_payload.branch }}" >> $GITHUB_ENV
-            echo "FEMBRANCH=${{ github.client_payload.fembranch }}" >> $GITHUB_ENV
+        run: |
+          echo "LOGLEVEL=${{ github.client_payload.logLevel }}" >> $GITHUB_ENV
+          echo "BRANCH=${{ github.client_payload.branch }}" >> $GITHUB_ENV
+          echo "FEMBRANCH=${{ github.client_payload.fembranch }}" >> $GITHUB_ENV
       - name: starting
         uses: actions/checkout@v4
       - name: clone dune branch ${{ env.BRANCH }} and build python packages
@@ -109,16 +109,16 @@ jobs:
   # test packages
   test:
     name: testing tutorial
-    needs: [ build, getTests ]
+    needs: [build, getTests]
     env:
       LOGLEVEL: Warning
       BRANCH: master
       FEMBRANCH: master
     strategy:
-        fail-fast: false
-        # Note:
-        # 1) macOS does not install petsc4py
-        matrix: ${{fromJson(needs.getTests.outputs.matrix)}}
+      fail-fast: false
+      # Note:
+      # 1) macOS does not install petsc4py
+      matrix: ${{fromJson(needs.getTests.outputs.matrix)}}
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
@@ -134,10 +134,10 @@ jobs:
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
       - name: environmentRepDispatch
         if: github.event_name == 'repository_dispatch'
-          run: |
-            echo "LOGLEVEL=${{ github.client_payload.logLevel }}" >> $GITHUB_ENV
-            echo "BRANCH=${{ github.client_payload.branch }}" >> $GITHUB_ENV
-            echo "FEMBRANCH=${{ github.client_payload.fembranch }}" >> $GITHUB_ENV
+        run: |
+          echo "LOGLEVEL=${{ github.client_payload.logLevel }}" >> $GITHUB_ENV
+          echo "BRANCH=${{ github.client_payload.branch }}" >> $GITHUB_ENV
+          echo "FEMBRANCH=${{ github.client_payload.fembranch }}" >> $GITHUB_ENV
       - name: Install dependencies
         run: |
           if [ "$RUNNER_OS" == "Linux" ]; then
