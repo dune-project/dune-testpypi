@@ -41,7 +41,7 @@ on:
       runTests:
         type: boolean
         description: run tests [true]
-        required: false
+        required: true
         default: true
       download:
         type: string
@@ -50,7 +50,7 @@ on:
         default: 'https://gitlab.dune-project.org'
       # needed only for dispatching from other repo
       distinct_id:
-        required: false
+        required: true
         description: 'set when dispatching from external repo - leave empty'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -125,7 +125,7 @@ jobs:
 
   # test packages
   test:
-    if: ${{ github.event.inputs.runTests }}
+    if: ${{ !contains(inputs.runTests, 'false') }}
     name: testing tutorial
     needs: [build, getTests]
     env:
