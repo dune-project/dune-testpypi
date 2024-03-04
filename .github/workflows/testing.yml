@@ -35,6 +35,9 @@ on:
         description: 'dune-fem modules tag e.g. (master | v2.9.0.1) [master]'
         required: true
         default: 'master'
+      # needed only for dispatching from other repo
+      distinct_id:
+        description: 'set when dispatching from external repo - leave empty'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
