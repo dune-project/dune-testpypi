@@ -14,7 +14,7 @@ on:
     #       need to be done twice!
     inputs:
       logLevel:
-        type: boolean
+        type: string
         description: 'Log level'
         required: true
         default: 'Warning'
@@ -125,7 +125,7 @@ jobs:
 
   # test packages
   test:
-    if: ${{ github.event.inputs.runTests == true }}
+    if: ${{ github.event.inputs.runTests }}
     name: testing tutorial
     needs: [build, getTests]
     env:
