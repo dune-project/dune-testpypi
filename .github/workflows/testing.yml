@@ -54,6 +54,7 @@ jobs:
           echo "Using log level       : ${{ github.event.inputs.logLevel }}"
           echo "Using dune-core branch: ${{ github.event.inputs.branch }}"
           echo "Using dune-fem  branch: ${{ github.event.inputs.fembranch }}"
+          echo "Disting id from dispatch (if applicable): ${{ github.event.inputs.distinct_id }}"
       - name: checkout source code
         uses: actions/checkout@v4
       - id: setmatrix
