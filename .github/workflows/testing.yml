@@ -1,7 +1,9 @@
+---
 name: testing scenarios
+# yamllint disable rule:line-length
 
 # Controls when the action will run.
-on:
+on:    # yamllint disable-line rule:truthy
   # run on push
   push:
   # schedule test for nightly build
@@ -14,10 +16,15 @@ on:
     #       need to be done twice!
     inputs:
       logLevel:
-        type: string
-        description: 'Log level'
+        type: choice
+        description: 'Log level [Warning]'
         required: true
         default: 'Warning'
+        options:
+          - Debug
+          - Warning
+          - Info
+          - error
       branch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
