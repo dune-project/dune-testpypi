@@ -15,16 +15,6 @@ on:    # yamllint disable-line rule:truthy
     #       of some of the jobs so any change to the default
     #       need to be done twice!
     inputs:
-      logLevel:
-        type: choice
-        description: 'Log level [Warning]'
-        required: true
-        default: 'Warning'
-        options:
-          - Debug
-          - Warning
-          - Info
-          - error
       branch:
         # note: this should be either 'master' or a tag of the form
         #       vN where 'N' is a legal python package version
@@ -50,6 +40,16 @@ on:    # yamllint disable-line rule:truthy
         description: run tests [true]
         required: true
         default: true
+      logLevel:
+        type: choice
+        description: 'Log level [Warning]'
+        required: true
+        default: 'Warning'
+        options:
+          - Debug
+          - Warning
+          - Info
+          - error
       download:
         type: string
         description: 'source location [https://gitlab.dune-project.org]'
