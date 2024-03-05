@@ -157,34 +157,6 @@ jobs:
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
-      - name: Install dependencies
-        run: |
-          if [ "$RUNNER_OS" == "Linux" ]; then
-            # note: using 'apt-get -o Acquire::Retries=3' to dance around connectivity issues to Azure,
-            # use apt-spy2 to select closest apt mirror,
-            # which helps avoid connectivity issues in Azure;
-            # see https://github.com/actions/virtual-environments/issues/675
-            # APT-SPY2 fails also
-            # sudo gem install apt-spy2
-            # sudo apt-spy2 check
-            # sudo apt-spy2 fix --commit
-            # after selecting a specific mirror, we need to run 'apt-get update'
-            sudo apt-get update -o Acquire::Retries=3
-            sudo apt-get install libopenmpi-dev openmpi-bin libsuperlu-dev libsuitesparse-dev petsc-dev paraview python3-paraview gmsh libboost-all-dev python3-numpy python3-matplotlib python3-scipy python3-mpi4py python3-ufl
-          elif [ "$RUNNER_OS" == "macOS" ]; then
-            # fixes an issue with homebrew can probably be remove once the issue is resolved
-            # https://github.com/orgs/Homebrew/discussions/4612#discussioncomment-6356325
-            export HOMEBREW_NO_INSTALL_FROM_API=
-            brew config
-            brew untap homebrew/core homebrew/cask
-            brew config
-            # normal service resumes...
-            brew update
-            brew install python@3.10 || true
-            brew install python@3.11 || true
-            brew install openmpi superlu suite-sparse gmsh boost pkg-config || true
-          fi
-        shell: bash
       - name: download artifacts
         uses: actions/download-artifact@v4
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
@@ -192,6 +164,9 @@ jobs:
         with:
           name: packages
           path: dist
+      - name: Install dependencies
+        run: bash ../ossetup "$RUNNER_OS"
+        shell: bash
       - name: Run test
         run: |
             export DUNEPY_DISABLE_PLOTTING=1
