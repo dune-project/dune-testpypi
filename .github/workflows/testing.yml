@@ -165,7 +165,7 @@ jobs:
           name: packages
           path: dist
       - name: Install dependencies
-        run: bash ../ossetup "$RUNNER_OS"
+        run: bash ./ossetup "$RUNNER_OS"
         shell: bash
       - name: Run test
         run: |
