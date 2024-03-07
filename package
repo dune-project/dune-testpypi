@@ -11,7 +11,10 @@ package()
   # Note: the current commit could have multiple tags - make sure to use the latest
   tag=$(git tag --contains | sort | tail -1)
 
-  if [ "$tag" = "" ]; then
+  python testpyversion.py $tag
+  badVersion=$?
+
+  if [ "$tag" = "" ] || [ $badVersion -ne 0 ]; then
     echo "Use dev versioning"
     $packaging --onlysdist
   else
