@@ -1,5 +1,6 @@
 package()
 {
+  set +e
   packaging="$1/dune-common/bin/dunepackaging.py"
   if [ ! -f $packaging ]; then
     packaging="dunepackaging.py"
@@ -10,7 +11,6 @@ package()
   # otherwise use the default 'dev' numbering.
   # Note: the current commit could have multiple tags - make sure to use the latest
   tag=$(git tag --contains | sort | tail -1)
-
   
   python $GITHUB_WORKSPACE/testpyversion.py $tag
   badVersion=$?
