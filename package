@@ -12,7 +12,7 @@ package()
   tag=$(git tag --contains | sort | tail -1)
 
   
-  python $GITHUB_WORKSPACE/dune-testpypi/testpyversion.py $tag
+  python $GITHUB_WORKSPACE/testpyversion.py $tag
   badVersion=$?
 
   if [ "$tag" = "" ] || [ $badVersion -ne 0 ]; then
