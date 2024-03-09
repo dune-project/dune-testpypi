@@ -11,16 +11,17 @@ package()
   # otherwise use the default 'dev' numbering.
   # Note: the current commit could have multiple tags - make sure to use the latest
   tag=$(git tag --contains | sort | tail -1)
+  ver=${tag/v/} # remove the 'v' from the tag to get the version
   
-  python $GITHUB_WORKSPACE/testpyversion.py $tag
+  python $GITHUB_WORKSPACE/testpyversion.py $ver
   badVersion=$?
 
-  if [ "$tag" = "" ] || [ $badVersion -ne 0 ]; then
-    echo "Use dev versioning"
+  if [ "$ver" = "" ] || [ $badVersion -ne 0 ]; then
+    echo "Use dev versioning - $tag did not provide a version ($ver)"
     $packaging --onlysdist
   else
-    echo "Use version" $tag
-    $packaging --onlysdist --version=$tag
+    echo "Use version" $ver
+    $packaging --onlysdist --version=$ver
   fi
 }
 
