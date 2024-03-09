@@ -133,7 +133,7 @@ jobs:
   # test packages
   test:
     if: ${{ !contains(inputs.runTests, 'false') }}
-    name: testing tutorial
+    name: run scripts
     needs: [build, getTests]
     env:
       LOGLEVEL: Warning
