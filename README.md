@@ -18,6 +18,8 @@ fill out. Select the corresponding branches in core and fem modules.
 __Note__: if you can not see a 'Run workflow' button then you need to be
 added to the 'dune-project' group. Please ask somebody to do that.
 
+__Note__: currently there is an issue with testing release versions of the modules. Providing an existing tag as workflow input like `v2.9.1` is possible and the correct packages will be generated __but__ the tests use `pip install --pre` to install dune packages and this will prefer the development versions, e.g., `2.10.dev*` over the locally generated release packages. The tests might even all pass but will have tested the packages uploaded to pypi and not the release packages. This needs fixing.
+
 Running locally
 ---------------
 Each test script can be run locally with a setup similar to the github setting.
