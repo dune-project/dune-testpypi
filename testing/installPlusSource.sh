@@ -7,6 +7,9 @@ python3 -m venv dune-env
 . dune-env/bin/activate
 pip install scikit-build requests mpi4py
 
+# enable pre-compiled modules
+export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
+
 pip install --pre --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
 
 # add dune-fem and test
