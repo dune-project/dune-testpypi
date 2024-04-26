@@ -28,7 +28,8 @@ cd -
 
 $runDune python3 -m dune.fem
 cd fem_tutorial
-$runDune python3 solvers.py
+$runDune python3 solversInternal.py
+$runDune python3 solversExternal.py
 $runDune python3 discontinuousgalerkin.py
 cd ..
 
