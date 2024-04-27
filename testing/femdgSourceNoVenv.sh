@@ -9,9 +9,9 @@ PYTHON_INTERP=`which python3`
 # we only do this for Mac OS, ubuntu has the necessary packages installed
 if [ "$3" == "macOS" ]; then
   # dune-common dependencies
-  $PYTHON_INTERP -m pip install -U jinja2 wheel setuptools mpi4py numpy ninja
+  $PYTHON_INTERP -m pip install --user --break-system-packages -U jinja2 wheel setuptools mpi4py numpy ninja
   # dune-fem dependencies
-  $PYTHON_INTERP -m pip install -U scipy fenics-ufl==2022.2.0 matplotlib
+  $PYTHON_INTERP -m pip install --user --break-system-packages -U scipy fenics-ufl==2022.2.0 matplotlib
 fi
 
 cd ../repos
