@@ -3,6 +3,7 @@ coreurl="$base/core"
 femurl="$base/dune-fem"
 exturl="$base/extensions"
 
+export TMPDIR=/tmp
 python3 -m venv dune-env
 . dune-env/bin/activate
 pip install scikit-build requests mpi4py
