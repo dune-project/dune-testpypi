@@ -18,8 +18,9 @@ cp -r ../repos/dune-fem .
 dunecontrol --only=dune-fem all
 python -m dune.fem
 cd fem_tutorial
-pip list
-/usr/bin/time python concepts.py
+# pip list
+# /usr/bin/time python concepts.py
+python concepts.py
 cd ..
 
 # install polygongrid and test that can be used within dune-fem
