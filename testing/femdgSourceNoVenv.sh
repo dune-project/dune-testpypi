@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# enable pre-compiled modules
+export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
+
 # get default system python interpreter
 PYTHON_INTERP=`which python3`
 #PYTHON_INTERP=/usr/bin/python3
