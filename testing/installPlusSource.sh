@@ -4,9 +4,21 @@ femurl="$base/dune-fem"
 exturl="$base/extensions"
 
 export TMPDIR=/tmp
-python3 -m venv dune-env
+python3 -m venv --system-site-packages dune-env
 . dune-env/bin/activate
 pip install scikit-build requests mpi4py
+
+# this script is supposed to use petsc4py - let's make sure it can be
+# accessed from the site-packages
+testScript="\
+import sys ;\
+import petsc4py ;\
+petsc4py.init(sys.argv) ;\
+from petsc4py import PETSc ;\
+print(petsc4py.__version__) ;\
+"
+python -c "$testScript"
+
 
 # enable pre-compiled modules
 export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
@@ -19,7 +31,8 @@ dunecontrol --only=dune-fem all
 python -m dune.fem
 cd fem_tutorial
 pip list
-/usr/bin/time python concepts.py
+/usr/bin/time python concepts.py &
+/usr/bin/time python externaleSolvers.py
 cd ..
 
 # install polygongrid and test that can be used within dune-fem
