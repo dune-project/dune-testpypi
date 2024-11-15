@@ -27,6 +27,18 @@ export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 
 pip install --pre --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
 
+# let's make sure we can construct a field vector
+# since we are precompiling the field vector this should take almost no time
+testScript="\
+import dune.common
+x = dune.common.FieldVector([1,2,3])
+print(\"===============================\") ;\
+print(\"a dune-common fieldvector:\",x) ;\
+print(\"===============================\") ;\
+"
+/usr/bin/time python -c "$testScript"
+
+
 # add dune-fem and test
 cp -r ../repos/dune-fem .
 dunecontrol --only=dune-fem all
