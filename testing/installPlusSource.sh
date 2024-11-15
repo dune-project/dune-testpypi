@@ -20,7 +20,12 @@ print(\"===============================\") ;\
 print(\"petsc4py version:\",petsc4py.__version__) ;\
 print(\"===============================\") ;\
 "
-python -c "$testScript"
+# we need site-packages to get this to work but we get problems with 
+# File "/home/runner/work/dune-testpypi/dune-testpypi/test/dune-env/lib/python3.10/site-packages/dune/common/__init__.py", line 44, in <module>
+#    from ._common import *
+# in next test script
+ModuleNotFoundError: No module named 'dune.common._common'
+# python -c "$testScript"
 
 # enable pre-compiled modules
 export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
