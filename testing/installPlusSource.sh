@@ -21,11 +21,11 @@ print(\"===============================\") ;\
 "
 python -c "$testScript"
 
-
 # enable pre-compiled modules
 export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 
 pip install --pre --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
+pip list
 
 # let's make sure we can construct a field vector
 # since we are precompiling the field vector this should take almost no time
