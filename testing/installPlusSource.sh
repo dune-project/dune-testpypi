@@ -4,7 +4,8 @@ femurl="$base/dune-fem"
 exturl="$base/extensions"
 
 export TMPDIR=/tmp
-python3 -m venv --system-site-packages dune-env
+# python3 -m venv --system-site-packages dune-env # this fails?
+python3 -m venv dune-env
 . dune-env/bin/activate
 pip install scikit-build requests mpi4py
 
@@ -22,7 +23,7 @@ print(\"===============================\") ;\
 python -c "$testScript"
 
 # enable pre-compiled modules
-# export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
+export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 
 pip install --pre --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
 pip list
