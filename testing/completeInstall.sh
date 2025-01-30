@@ -11,5 +11,6 @@ cd ..
 pip install --pre --find-links file://$PWD/../dist dune.vem
 python -m dune.fem
 cd fem_tutorial
+python laplace-adaptive.py
 python vemdemo.py
 cd ..

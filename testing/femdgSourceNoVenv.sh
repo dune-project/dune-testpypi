@@ -73,5 +73,5 @@ $PYTHON_INTERP -m dune.fem
 cd fem_tutorial
 
 #mpirun -np 2 --oversubscribe python3 laplace-adaptive.py
-$PYTHON_INTERP laplace-adaptive.py
+# $PYTHON_INTERP laplace-adaptive.py
 $PYTHON_INTERP twophaseflow.py testing
