@@ -23,6 +23,6 @@ elif [ "$RUNNER_OS" == "macOS" ]; then
   brew update
   brew install python@3.10 || true
   brew install python@3.11 || true
-  brew install openmpi suite-sparse gmsh boost pkg-config || true
+  brew install openmpi suite-sparse gmsh boost || true
   # + superlu (is failing currently)
 fi
