@@ -3,6 +3,9 @@ python3 -m venv dune-env
 pip install matplotlib mpi4py
 
 pip install --pre --find-links file://$PWD/../dist dune.grid
+
+pip list
+
 python -m dune.grid
 cd grid_tutorial
 python example.py
