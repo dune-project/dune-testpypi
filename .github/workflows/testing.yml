@@ -22,7 +22,7 @@ on:    # yamllint disable-line rule:truthy
         #       otherwise the distributions will not be generated
         #       and the build will fail
         type: string
-        description: 'core modules tag e.g. (master | v2.9.0) [master]'
+        description: 'core modules tag e.g. (master | v2.10.0) [master]'
         required: true
         default: 'master'
       fembranch:
@@ -32,7 +32,7 @@ on:    # yamllint disable-line rule:truthy
         #       otherwise the distributions will not be generated
         #       and the build will fail
         type: string
-        description: 'dune-fem modules tag e.g. (master | v2.9.0.1) [master]'
+        description: 'dune-fem modules tag e.g. (master | v2.10.0.1) [master]'
         required: true
         default: 'master'
       runTests:
@@ -64,7 +64,7 @@ on:    # yamllint disable-line rule:truthy
 jobs:
   # generate test file matrix
   getTests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.setmatrix.outputs.matrix }}
     steps:
@@ -88,7 +88,7 @@ jobs:
           # Start Generate Json String
           echo "$matrixArray" | \
             jq --slurp --raw-input 'split("\n")[:-1]' | \
-            jq  "{\"filepath\": .[], \"os\":\"ubuntu-latest\" }, {\"filepath\": .[], \"os\": \"macOS-latest\" }" | \
+            jq  "{\"filepath\": .[], \"os\":\"ubuntu-24.04\" }, {\"filepath\": .[], \"os\": \"macOS-latest\" }" | \
             jq -sc "{ \"include\": . }" > tmp
           cat ./tmp
           # End Generate Json String
@@ -100,7 +100,7 @@ jobs:
   # build packages
   build:
     name: build
-    runs-on: [ubuntu-latest]
+    runs-on: [ubuntu-24.04]
     env:
       BRANCH: 'master'
       FEMBRANCH: 'master'
