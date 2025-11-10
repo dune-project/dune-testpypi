@@ -1,9 +1,3 @@
-# do not run on macOS
-if [ "$3" == "macOS" ]; then
-  exit 0
-fi
-
-
 base="https://gitlab.dune-project.org"
 coreurl="$base/core"
 femurl="$base/dune-fem"
