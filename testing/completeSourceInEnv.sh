@@ -1,8 +1,3 @@
-# do not run on macOS
-if [ "$3" == "macOS" ]; then
-  exit 0
-fi
-
 # setup an external venv
 python3 -m venv dune-env
 . dune-env/bin/activate
