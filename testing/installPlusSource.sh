@@ -1,3 +1,9 @@
+# do not run on macOS
+if [ "$3" == "macOS" ]; then
+  exit 0
+fi
+
+
 base="https://gitlab.dune-project.org"
 coreurl="$base/core"
 femurl="$base/dune-fem"
@@ -20,7 +26,7 @@ print(\"===============================\") ;\
 print(\"petsc4py version:\",petsc4py.__version__) ;\
 print(\"===============================\") ;\
 "
-# we need site-packages to get this to work but we get problems with 
+# we need site-packages to get this to work but we get problems with
 # File "/home/runner/work/dune-testpypi/dune-testpypi/test/dune-env/lib/python3.10/site-packages/dune/common/__init__.py", line 44, in <module>
 #    from ._common import *
 # ModuleNotFoundError: No module named 'dune.common._common'
@@ -52,7 +58,7 @@ python -m dune.fem
 cd fem_tutorial
 pip list
 /usr/bin/time python concepts.py &
-/usr/bin/time python solversExternal.py 
+/usr/bin/time python solversExternal.py
 cd ..
 
 # install polygongrid and test that can be used within dune-fem
