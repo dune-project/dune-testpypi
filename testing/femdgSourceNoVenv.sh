@@ -7,17 +7,45 @@ export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 PYTHON_INTERP=`which python3`
 #PYTHON_INTERP=/usr/bin/python3
 
+extractPythonRequired()
+{
+  # Python-Requires:
+  PYTHONREQALL=`grep "Python-Requires" $1 | cut -d ':' -f 2`
+  PYTHONREQ=
+  # skip all dune packages here
+  for PACK in $PYTHONREQALL; do
+    SKIP=`echo $PACK | grep "dune"`
+    if [ "$SKIP" != "" ]; then
+      continue
+    else
+      PYTHONREQ="$PYTHONREQ $PACK"
+    fi
+  done
+  echo $PYTHONREQ
+}
+
+cd ../repos
+
 # install missing python packages in users local environment
 # Note: wheel and setuptools may not be required
 # we only do this for Mac OS, ubuntu has the necessary packages installed
 if [ "$3" == "macOS" ]; then
-  # dune-common dependencies
-  $PYTHON_INTERP -m pip install --user --break-system-packages -U jinja2 wheel setuptools mpi4py numpy ninja
-  # dune-fem dependencies
-  $PYTHON_INTERP -m pip install --user --break-system-packages -U scipy fenics-ufl==2022.2.0 matplotlib
-fi
+  # extract fenics-ufl version from dune-fem/dune.module for consistency
+  # FENICSUFL=`grep -o "fenics-ufl[==]*20[0-9]*.[0-9]*.[0-9]*" dune-fem/dune.module`
 
-cd ../repos
+  COMREQ=`extractPythonRequired "dune-common/dune.module"`
+  FEMREQ=`extractPythonRequired "dune-fem/dune.module"`
+
+  if [ "$FEMREQ" == "" ]; then
+    echo "Python-Requires not found in dune-fem/dune.module!"
+    exit 1
+  fi
+
+  # dune-common dependencies
+  $PYTHON_INTERP -m pip install --user --break-system-packages -U $COMREQ mpi4py ninja
+  # dune-fem dependencies
+  $PYTHON_INTERP -m pip install --user --break-system-packages -U $FEMREQ
+fi
 
 FLAGS="-O3 -DNDEBUG"
 BUILDDIR=build-cmake
