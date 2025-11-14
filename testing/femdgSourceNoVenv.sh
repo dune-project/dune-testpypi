@@ -84,19 +84,25 @@ for MOD in $MODULES; do
 done
 echo "PYTHONPATH = $PYTHONPATH"
 
-echo "Running euler script"
+echo "********************************************"
+echo "Running dune-fem-dg/pydemo/testdg.py script"
+echo "********************************************\n"
 cd dune-fem-dg/pydemo/euler
 $PYTHON_INTERP testdg.py
 
 cd $DUNE_PATH
 
-echo "Running advection script"
+echo "**********************************************************"
+echo "Running dune-fem-dg/pydemo/camc-paper/advection.py script"
+echo "**********************************************************\n"
 cd dune-fem-dg/pydemo/camc-paper
 # mpirun -np 2 --oversubscribe python3 advection.py 2
 $PYTHON_INTERP advection.py 2
 
 cd $DUNE_PATH
-echo "Running fem-tutorial script"
+echo "*****************************************"
+echo "Running twophaseflow.py from fem-tutorial"
+echo "*****************************************\n"
 $PYTHON_INTERP -m dune.fem
 cd fem_tutorial
 
