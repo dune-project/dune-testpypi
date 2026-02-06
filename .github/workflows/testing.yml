@@ -81,7 +81,7 @@ jobs:
           echo "Source repo download from ${{ github.event.inputs.download }}"
           echo "Run tests: ${{ github.event.inputs.runTests }}"
       - name: checkout source code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - id: setmatrix
         run: |
           matrixArray=$(find ./testing -name '*.sh') # Creates array of all files .sh withing testing
@@ -119,13 +119,13 @@ jobs:
         if: github.event.inputs.download != ''
         run: echo "DOWNLOAD=${{ github.event.inputs.download }}" >> $GITHUB_ENV
       - name: starting
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: clone dune from ${{ env.DOWNLOAD }} using branch ${{ env.BRANCH }} and build python packages
         run: |
           pip install scikit-build
           ./clone-modules $BRANCH $FEMBRANCH "none" $DOWNLOAD
       - name: upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: packages
           path: dist/
@@ -147,7 +147,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - name: starting
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
       - name: environmentLog
         if: github.event.inputs.logLevel != ''
         run: echo "LOGLEVEL=${{ github.event.inputs.logLevel }}" >> $GITHUB_ENV
@@ -158,7 +158,7 @@ jobs:
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
       - name: download artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v7
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
         continue-on-error: true
         with:
