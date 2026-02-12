@@ -25,7 +25,7 @@ print(\"a dune-common fieldvector:\",x) ;\
 print(\"===============================\") ;\
 "
 /usr/bin/time python -c "$testScript"
-
+unset CMAKE_FLAGS
 # add dune-fem and test
 cp -r ../repos/dune-fem .
 dunecontrol --only=dune-fem all
