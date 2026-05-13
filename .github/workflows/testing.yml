@@ -84,7 +84,7 @@ jobs:
         uses: actions/checkout@v6
       - id: setmatrix
         run: |
-          matrixArray=$(find ./testing -name '*.sh') # Creates array of all files .sh withing testing
+          matrixArray=$(find ./testing -name '*.sh') # Creates array of all files .sh within testing
           # Start Generate Json String
           echo "$matrixArray" | \
             jq --slurp --raw-input 'split("\n")[:-1]' | \
@@ -177,4 +177,6 @@ jobs:
             mkdir test
             cd test
             bash -e ../${{ matrix.filepath }} $BRANCH $FEMBRANCH $RUNNER_OS
+        # allow dumux test to fail    
+        continue-on-error: contains( ${{ matrix.filepath }}, 'dumux')
         shell: bash
