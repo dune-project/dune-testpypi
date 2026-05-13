@@ -6,4 +6,4 @@ request = requests.get(f"{pypi_url}/pypi/{name}/json")
 try:
     sys.exit(0 if version in request.json()["releases"].keys() else 1)
 except KeyError:
-    return 2
+    sys.exit(2)
