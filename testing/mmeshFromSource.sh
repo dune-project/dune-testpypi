@@ -1,6 +1,3 @@
-echo "$0 currently disabled due to package version collision."
-exit 0
-
 # do not run on macOS, currently failing because of CGAL
 if [ "$3" == "macOS" ]; then
   echo "$0 disabled on Mac OS"
