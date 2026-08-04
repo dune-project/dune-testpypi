@@ -13,7 +13,7 @@ stagurl="$base/staging"
 python3 -m venv dune-env
 . dune-env/bin/activate
 pip install mpi4py requests
-pip install --pre --find-links file://$PWD/../dist dune.grid dune.localfunctions dune.istl
+pip install --find-links file://$PWD/../dist dune.grid dune.localfunctions dune.istl
 
 # source the clonemodule function
 . ../package

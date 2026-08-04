@@ -11,7 +11,7 @@ pip install scikit-build requests mpi4py
 export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 export CMAKE_FLAGS="-DDUNE_USE_SYSTEM_PYBIND11=1"
 
-pip install --pre --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
+pip install --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
 pip list
 find . -name "pybind11.h"
 

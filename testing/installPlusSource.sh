@@ -30,7 +30,7 @@ print(\"===============================\") ;\
 # enable pre-compiled modules
 export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 
-pip install --pre --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
+pip install --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
 pip list
 
 # let's make sure we can construct a field vector
@@ -68,7 +68,7 @@ package $PWD/../..
 echo "PACKAGED"
 mv dist/* ../../dist
 cd ..
-pip install --pre --find-links file://$PWD/../dist dune.polygongrid
+pip install --find-links file://$PWD/../dist dune.polygongrid
 pip list
 testScript="\
 from dune.polygongrid import polygonGrid as leafGridView ;\

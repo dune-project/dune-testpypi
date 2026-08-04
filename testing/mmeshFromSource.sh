@@ -16,7 +16,7 @@ exturl="$base/extensions"
 python3 -m venv dune-env
 . dune-env/bin/activate
 pip install scikit-build requests mpi4py
-pip install --pre --find-links file://$PWD/../dist dune.fem
+pip install --find-links file://$PWD/../dist dune.fem
 
 # install dune-mmesh
 . ../package
@@ -30,11 +30,11 @@ echo $PWD
 package $PWD/../..
 echo "PACKAGED"
 cd ..
-pip install --pre --find-links file://$PWD/dune-mmesh/dist --find-links file://$PWD/../dist dune.mmesh
+pip install --find-links file://$PWD/dune-mmesh/dist --find-links file://$PWD/../dist dune.mmesh
 pip list
 
 # Workaround: install dune-fem again to fix version mixmatch
-pip install --force-reinstall --pre --find-links file://$PWD/../dist dune.fem
+pip install --force-reinstall --find-links file://$PWD/../dist dune.fem
 
 # test that it can be used within dune-fem
 cd dune-mmesh/scripts
