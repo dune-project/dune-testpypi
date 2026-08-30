@@ -182,7 +182,7 @@ jobs:
             tar xzf dist/repos.tar.gz
             mkdir test
             cd test
-            bash -e ../${{ matrix.filepath }} $BRANCH $FEMBRANCH $RUNNER_OS
+            bash -e ../${{ matrix.filepath }} $BRANCH $FEMBRANCH $RUNNER_OS $DOWNLOAD 
         # allow dumux test to fail    
         continue-on-error: contains( ${{ matrix.filepath }}, 'dumux')
         shell: bash

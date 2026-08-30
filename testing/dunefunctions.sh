@@ -2,11 +2,19 @@
 # without python bindings (typetree) are correctly handled in dune-py
 # no dune-functions tests are run at the moment
 
-base="https://gitlab.dune-project.org"
-coreurl="$base/core"
-femurl="$base/dune-fem"
-exturl="$base/extensions"
-stagurl="$base/staging"
+#base="https://gitlab.dune-project.org"
+base=$4
+coreurl=$base
+femurl=$base
+exturl=$base
+stagurl=$base
+
+if [ "$base" = "https://gitlab.dune-project.org" ]; then
+  coreurl="$base/core"
+  femurl="$base/dune-fem"
+  exturl="$base/extensions"
+  stagurl="$base/staging"
+fi
 
 # setup external venv and install the prepared packages needed
 # for dune-functions:

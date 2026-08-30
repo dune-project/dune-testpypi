@@ -1,7 +1,14 @@
-base="https://gitlab.dune-project.org"
-coreurl="$base/core"
-femurl="$base/dune-fem"
-exturl="$base/extensions"
+#base="https://gitlab.dune-project.org"
+base=$4
+coreurl=$base
+femurl=$base
+exturl=$base
+
+if [ "$base" = "https://gitlab.dune-project.org" ]; then
+  coreurl="$base/core"
+  femurl="$base/dune-fem"
+  exturl="$base/extensions"
+fi
 
 export TMPDIR=/tmp
 # python3 -m venv --system-site-packages dune-env # this fails?
