@@ -1,3 +1,4 @@
+#!/bin/bash
 # call with three arguments:
 # - the test script to run
 # - the branch/tag to use for the core modules
@@ -8,6 +9,8 @@
 testScript=$1
 coreBranch=$2
 femBranch=$3
+#download=https://github.com/dune-project
+download=https://gitlab.dune-project.org
 LOGLEVEL=DEBUG
 
 testBase=$PWD/..
@@ -18,6 +21,7 @@ cd $TMPNAME
 ln -s .. testing
 ln -s ../../clone-modules .
 ln -s ../../testpypi.py .
+ln -s ../../testpyversion.py .
 ln -s ../../package .
 
 # start to clone dune modules and make distribution
@@ -25,7 +29,7 @@ python3 -m venv tempenv
 . tempenv/bin/activate
 pip install scikit-build
 pip install requests
-./clone-modules $coreBranch $femBranch "none"
+./clone-modules $coreBranch $femBranch "none" $download
 deactivate
 
 # now run test
@@ -33,4 +37,4 @@ export DUNEPY_DISABLE_PLOTTING=1
 export DUNE_LOG_LEVEL=$LOGLEVEL
 mkdir test
 cd test
-bash -e ../testing/$1 $coreBranch $femBranch
+bash -e ../testing/$1 $coreBranch $femBranch "linux" $download
