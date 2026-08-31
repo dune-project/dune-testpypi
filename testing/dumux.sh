@@ -1,7 +1,7 @@
 # this tests dumux as external package which provides
 # a Python package outside the dune namespace
 
-dumux_url="https://git.iws.uni-stuttgart.de/dumux-repositories/dumux.git"
+dumux_url="https://github.com/dumux/dumux.git"
 
 # source the clonemodule function and make the core module visible
 . ../package
