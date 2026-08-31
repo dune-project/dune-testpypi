@@ -2,16 +2,23 @@ echo "$0 currently disabled due to package version collision."
 exit 0
 
 # do not run on macOS, currently failing because of CGAL
-if [ "$3" == "macOS" ]; then
+if [ "$3" = "macOS" ]; then
   echo "$0 disabled on Mac OS"
   exit 0
 fi
 
 
-base="https://gitlab.dune-project.org"
-coreurl="$base/core"
-femurl="$base/dune-fem"
-exturl="$base/extensions"
+#base="https://gitlab.dune-project.org"
+base=$4
+coreurl="$base"
+femurl="$base"
+exturl="$base"
+
+if [ "$base" = "https://gitlab.dune-project.org" ]; then
+  coreurl="$base/core"
+  femurl="$base/dune-fem"
+  exturl="$base/extensions"
+fi
 
 python3 -m venv dune-env
 . dune-env/bin/activate

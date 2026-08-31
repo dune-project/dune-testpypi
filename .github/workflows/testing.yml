@@ -52,9 +52,11 @@ on:    # yamllint disable-line rule:truthy
           - error
       download:
         type: string
-        description: 'source location [https://gitlab.dune-project.org]'
+        #description: 'source location [https://gitlab.dune-project.org]'
+        description: 'source location [https://github.com/dune-project/]'
         required: true
-        default: 'https://gitlab.dune-project.org'
+        #default: 'https://gitlab.dune-project.org'
+        default: 'https://github.com/dune-project'
       # needed only for dispatching from other repo
       distinct_id:
         required: false
@@ -104,7 +106,8 @@ jobs:
     env:
       BRANCH: 'master'
       FEMBRANCH: 'master'
-      DOWNLOAD: 'https://gitlab.dune-project.org'
+      #DOWNLOAD: 'https://gitlab.dune-project.org'
+      DOWNLOAD: 'https://github.com/dune-project'
     steps:
       - name: environmentLog
         if: github.event.inputs.logLevel != ''
@@ -157,6 +160,9 @@ jobs:
       - name: environmentFem
         if: github.event.inputs.fembranch != ''
         run: echo "FEMBRANCH=${{ github.event.inputs.fembranch }}" >> $GITHUB_ENV
+      - name: environmentDownload
+        if: github.event.inputs.download != ''
+        run: echo "DOWNLOAD=${{ github.event.inputs.download }}" >> $GITHUB_ENV
       - name: download artifacts
         uses: actions/download-artifact@v7
         # if all packages exist on pypi then no artifacts are uploaded so don't fail
@@ -176,7 +182,7 @@ jobs:
             tar xzf dist/repos.tar.gz
             mkdir test
             cd test
-            bash -e ../${{ matrix.filepath }} $BRANCH $FEMBRANCH $RUNNER_OS
+            bash -e ../${{ matrix.filepath }} $BRANCH $FEMBRANCH $RUNNER_OS $DOWNLOAD
         # allow dumux test to fail    
         continue-on-error: contains( ${{ matrix.filepath }}, 'dumux')
         shell: bash
