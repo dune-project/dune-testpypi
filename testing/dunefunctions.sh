@@ -27,7 +27,7 @@ pip install --find-links file://$PWD/../dist dune.grid dune.localfunctions dune.
 . ../package
 
 # clone dune-functions and dune-typetree using the branch provided for core
-echo "cloning dune-functions with branch $1"
+echo "cloning dune-functions with branch $1 from $stagurl"
 clonemodule dune-uggrid "$stagurl/dune-uggrid.git" $1 $1
 clonemodule dune-typetree "$stagurl/dune-typetree.git" $1 $1
 clonemodule dune-functions "$stagurl/dune-functions.git" $1 $1
