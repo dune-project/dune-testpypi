@@ -52,11 +52,11 @@ on:    # yamllint disable-line rule:truthy
           - error
       download:
         type: string
-        #description: 'source location [https://gitlab.dune-project.org]'
         description: 'source location [https://github.com/dune-project/]'
         required: true
-        #default: 'https://gitlab.dune-project.org'
         default: 'https://github.com/dune-project'
+      #default: 'https://gitlab.dune-project.org'
+      #description: 'source location [https://gitlab.dune-project.org]'
       # needed only for dispatching from other repo
       distinct_id:
         required: false
@@ -142,6 +142,7 @@ jobs:
       LOGLEVEL: Warning
       BRANCH: master
       FEMBRANCH: master
+      DOWNLOAD: 'https://github.com/dune-project'
     strategy:
       fail-fast: false
       # Note:
