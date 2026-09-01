@@ -2,6 +2,14 @@
 name: testing scenarios
 # yamllint disable rule:line-length
 
+# environment variables and their defaults for push 
+# and schedules events where the input is empty
+env:
+  LOGLEVEL: Warning
+  BRANCH: master
+  FEMBRANCH: master
+  DOWNLOAD: 'https://github.com/dune-project'
+
 # Controls when the action will run.
 on:    # yamllint disable-line rule:truthy
   # run on push
@@ -52,9 +60,10 @@ on:    # yamllint disable-line rule:truthy
           - error
       download:
         type: string
-        description: 'source location [https://github.com/dune-project/]'
+        description: 'source location, change if needed'
         required: true
         default: 'https://github.com/dune-project'
+      #  'https://github.com/dune-project'
       #default: 'https://gitlab.dune-project.org'
       #description: 'source location [https://gitlab.dune-project.org]'
       # needed only for dispatching from other repo
@@ -103,11 +112,6 @@ jobs:
   build:
     name: build
     runs-on: [ubuntu-latest]
-    env:
-      BRANCH: 'master'
-      FEMBRANCH: 'master'
-      #DOWNLOAD: 'https://gitlab.dune-project.org'
-      DOWNLOAD: 'https://github.com/dune-project'
     steps:
       - name: environmentLog
         if: github.event.inputs.logLevel != ''
@@ -138,11 +142,6 @@ jobs:
     if: ${{ !contains(inputs.runTests, 'false') }}
     name: run scripts
     needs: [build, getTests]
-    env:
-      LOGLEVEL: Warning
-      BRANCH: master
-      FEMBRANCH: master
-      DOWNLOAD: 'https://github.com/dune-project'
     strategy:
       fail-fast: false
       # Note:
