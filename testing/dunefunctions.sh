@@ -4,6 +4,13 @@
 
 #base="https://gitlab.dune-project.org"
 base=$4
+
+if [ "$base" = "" ]; then
+  echo "base url is empty"
+  exit 1
+fi
+
+
 coreurl=$base
 femurl=$base
 exturl=$base
