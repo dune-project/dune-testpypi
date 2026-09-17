@@ -10,6 +10,11 @@ if [ "$base" = "" ]; then
   exit 1
 fi
 
+if [ "$base" = "https://github.com/adedner" ]; then
+  echo "Skipping this test for sync and mirror"
+  exit 0
+fi
+
 
 coreurl=$base
 femurl=$base
