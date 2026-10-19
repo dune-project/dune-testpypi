@@ -14,7 +14,7 @@ cd -
 # and test if dune-grid is working...
 python -m dune.grid
 cd grid_tutorial
-python example.py
+python -u example.py
 cd ..
 
 # now add dune-fem and dune-fem-dg to the toolchain
@@ -27,7 +27,7 @@ cd -
 # handled in dune-py:
 python -m dune.fem
 cd fem_tutorial
-python backuprestore.py
+python -u backuprestore.py
 #python chemical.py      # <-- gives a segfault
-python mcf-algorithm.py
+python -u mcf-algorithm.py
 cd ..
