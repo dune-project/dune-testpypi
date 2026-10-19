@@ -40,18 +40,45 @@ clonemodule()
   # test if package with this version is already uploaded to pypi
   # if it is no new package will be build and the pypi package is used
   if ! python3 ../testpypi.py $m $v ; then
+      "${p:?p must be set to a non-empty url}"
+      "${m:?m must be set to a non-empty clone destination}"
       echo "Try cloning from $p branch $t"
-      git clone --depth 1 -b $t $p # > /dev/null 2>&1
-      if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master - if no upload is to be done
-        if [ ! "$upload" = "none" ] && [ ! "$upload" = "" ]; then
-          echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
-          echo "Rerun test with 'upload=none'."
-          exit 1
-        fi
-        echo "using master since $t branch not found!"
-        git clone --depth 1 $p # > /dev/null 2>&1
-      fi
+      # first check if $t exists
+      # Fail on a network/access error; don't mistake it for a missing branch.
+      remote_refs=$(git ls-remote --heads "$p") || exit 1
+      has_branch() {
+          printf '%s\n' "$remote_refs" |
+          awk -v ref="refs/heads/$1" '$2 == ref { found=1 } END { exit !found }'
+      }
+      # make multiple attemps incase restriction are applied on git server
+      for attempt in 1 2 3 4; do
+          rm -rf "$m"
+          if has_branch "$t"; then
+              if git clone --depth 1 --single-branch --branch "$t" "$p" "$m"; then
+                  break
+              fi
+          else
+              if git clone --depth 1 --single-branch "$p" "$m"; then
+                  break
+              fi
+          fi
+          if [ "$attempt" -eq 4 ]; then
+              echo "Clone failed after $attempt attempts" >&2
+              exit 1
+          fi
+          delay=$((attempt * 10))
+          echo "Clone failed; retrying in ${delay}s (attempt $((attempt + 1))/4)..." >&2
+          sleep "$delay"
+      done
       cd $m
+      if [ ! $? = 0 ]; then # the branch/tag didn't exist so use master - if no upload is to be done
+          if [ ! "$upload" = "none" ] && [ ! "$upload" = "" ]; then
+              echo "required branch $t not found in $m - this inconsistent state should not be uploaded."
+              echo "Rerun test with 'upload=none'."
+              exit 1
+          fi
+          echo "using master since $t branch not found!"
+      fi
       git log | head
       package $base
       cd ..
