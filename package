@@ -31,6 +31,11 @@ package()
 
 clonemodule()
 {
+  echo "OS=$RUNNER_OS"
+  echo "Time=$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+  echo -n "Egress IPv4="
+  curl -4 --fail --silent --show-error https://api.ipify.org || true
+  echo
   set +e
   m=$1 # module name
   p=$2 # path to module

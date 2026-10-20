@@ -60,12 +60,12 @@ on:    # yamllint disable-line rule:truthy
           - error
       download:
         type: string
-        description: 'source location, change if needed'
+        description: 'source location, change if needed [https://gitlab.dune-project.org]'
         required: true
-        default: 'https://github.com/dune-project'
-      #  'https://github.com/dune-project'
-      #default: 'https://gitlab.dune-project.org'
-      #description: 'source location [https://gitlab.dune-project.org]'
+        # set default to dune gitlab for manual triggering for schedual github is used
+        # (see setting of DOWNLAOD in env above)
+        # default: 'https://github.com/dune-project'
+        default: 'https://gitlab.dune-project.org'
       # needed only for dispatching from other repo
       distinct_id:
         required: false

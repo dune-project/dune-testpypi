@@ -65,12 +65,6 @@ cd ..
 # install polygongrid and test that can be used within dune-fem
 . ../package
 
-echo "OS=$RUNNER_OS"
-echo "Time=$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-echo -n "Egress IPv4="
-curl -4 --fail --silent --show-error https://api.ipify.org || true
-echo
-
 echo "cloning dune-poylygongrid with branch $1"
 clonemodule dune-polygongrid "$exturl/dune-polygongrid.git" $1 $1
 echo "done"
