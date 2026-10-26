@@ -45,7 +45,14 @@ if [ "$3" == "macOS" ]; then
   $PYTHON_INTERP -m pip install --user --break-system-packages -U $COMREQ mpi4py ninja
   # dune-fem dependencies
   $PYTHON_INTERP -m pip install --user --break-system-packages -U $FEMREQ
+else
+  # extract fenics-ufl version from dune-fem/dune.module for consistency
+  FENICSUFL=`grep -o "fenics-ufl[==]*20[0-9]*.[0-9]*.[0-9]*" dune-fem/dune.module`
+
+  # fenics-ufl specific version
+  $PYTHON_INTERP -m pip install --user --break-system-packages $FENICSUFL
 fi
+
 
 FLAGS="-O3 -DNDEBUG"
 BUILDDIR=build-cmake
