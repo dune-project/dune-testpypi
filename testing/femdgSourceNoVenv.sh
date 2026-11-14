@@ -85,7 +85,7 @@ done
 echo "PYTHONPATH = $PYTHONPATH"
 
 echo "********************************************"
-echo "Running dune-fem-dg/pydemo/testdg.py script"
+echo "Running dune-fem-dg/pydemo/euler/testdg.py script"
 echo "********************************************\n"
 cd dune-fem-dg/pydemo/euler
 $PYTHON_INTERP testdg.py

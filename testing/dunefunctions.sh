@@ -32,7 +32,7 @@ fi
 # for dune-functions:
 python3 -m venv dune-env
 . dune-env/bin/activate
-pip install mpi4py requests scikit-build
+pip install mpi4py requests scikit-build-core
 pip install --find-links file://$PWD/../dist dune.grid dune.localfunctions dune.istl
 
 # source the clonemodule function
