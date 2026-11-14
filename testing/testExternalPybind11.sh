@@ -12,7 +12,7 @@ fi
 export TMPDIR=/tmp
 python3 -m venv dune-env
 . dune-env/bin/activate
-pip install scikit-build requests mpi4py
+pip install scikit-build-core requests mpi4py
 
 export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 export CMAKE_FLAGS="-DDUNE_USE_SYSTEM_PYBIND11=1"

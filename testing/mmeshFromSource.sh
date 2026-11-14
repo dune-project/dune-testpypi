@@ -22,7 +22,7 @@ fi
 
 python3 -m venv dune-env
 . dune-env/bin/activate
-pip install scikit-build requests mpi4py
+pip install scikit-build-core requests mpi4py
 pip install --find-links file://$PWD/../dist dune.fem
 
 # install dune-mmesh

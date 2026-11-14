@@ -14,7 +14,7 @@ export TMPDIR=/tmp
 # python3 -m venv --system-site-packages dune-env # this fails?
 python3 -m venv dune-env
 . dune-env/bin/activate
-pip install scikit-build requests mpi4py
+pip install scikit-build-core requests mpi4py
 
 # this script is supposed to use petsc4py - let's make sure it can be
 # accessed from the site-packages
