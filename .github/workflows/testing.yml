@@ -129,7 +129,7 @@ jobs:
         uses: actions/checkout@v6
       - name: clone dune from ${{ env.DOWNLOAD }} using branch ${{ env.BRANCH }} and build python packages
         run: |
-          pip install scikit-build-core
+          pip install packaging requests build scikit-build-core cmake jinja2 numpy portalocker setuptools
           ./clone-modules $BRANCH $FEMBRANCH "none" $DOWNLOAD
       - name: upload artifacts
         uses: actions/upload-artifact@v6
