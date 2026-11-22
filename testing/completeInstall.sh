@@ -8,7 +8,7 @@ cd grid_tutorial
 python example.py
 cd ..
 
-pip install --find-links file://$PWD/../dist dune.vem
+pip install --find-links file://$PWD/../dist dune.fem[full]
 python -m dune.fem
 cd fem_tutorial
 python laplace-adaptive.py

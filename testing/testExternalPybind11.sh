@@ -17,7 +17,7 @@ pip install scikit-build-core requests mpi4py
 export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 export CMAKE_FLAGS="-DDUNE_USE_SYSTEM_PYBIND11=1"
 
-pip install --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
+pip install --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.alugrid
 pip list
 find . -name "pybind11.h"
 
@@ -35,6 +35,7 @@ unset CMAKE_FLAGS
 # add dune-fem and test
 cp -r ../repos/dune-fem .
 dunecontrol --only=dune-fem all
+pip install matplotlib
 python -m dune.fem
 cd fem_tutorial
 pip list

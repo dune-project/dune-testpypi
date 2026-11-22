@@ -37,7 +37,7 @@ print(\"===============================\") ;\
 # enable pre-compiled modules
 export DUNE_ENABLE_PYTHONMODULE_PRECOMPILE=ON
 
-pip install --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.istl dune.alugrid
+pip install --find-links file://$PWD/../dist dune.common dune.geometry dune.grid dune.istl dune.localfunctions dune.alugrid
 pip list
 
 # let's make sure we can construct a field vector
@@ -55,6 +55,7 @@ print(\"===============================\") ;\
 # add dune-fem and test
 cp -r ../repos/dune-fem .
 dunecontrol --only=dune-fem all
+pip install matplotlib
 python -m dune.fem
 cd fem_tutorial
 pip list
