@@ -12,10 +12,10 @@ if [ "$3" == "macOS" ]; then
   # dune-common dependencies
   $runDune pip3 install -U jinja2 wheel setuptools mpi4py numpy ninja
   # dune-fem dependencies
-  $runDune pip3 install -U scipy fenics-ufl matplotlib
+  $runDune pip3 install -U fenics-ufl
 fi
 
-$runDune pip3 install matplotlib
+$runDune pip3 install matplotlib scipy
 
 $runDune python3 -m dune.grid
 cd grid_tutorial

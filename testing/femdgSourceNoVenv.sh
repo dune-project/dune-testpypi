@@ -52,6 +52,8 @@ else
   # fenics-ufl specific version
   $PYTHON_INTERP -m pip install --user --break-system-packages $FENICSUFL
 fi
+  $PYTHON_INTERP -m pip install --user --break-system-packages -U matplotlib scipy
+
 
 
 FLAGS="-O3 -DNDEBUG"

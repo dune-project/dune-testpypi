@@ -55,7 +55,7 @@ print(\"===============================\") ;\
 # add dune-fem and test
 cp -r ../repos/dune-fem .
 dunecontrol --only=dune-fem all
-pip install matplotlib
+pip install matplotlib scipy
 python -m dune.fem
 cd fem_tutorial
 pip list
